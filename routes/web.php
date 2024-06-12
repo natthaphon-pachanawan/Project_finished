@@ -56,5 +56,5 @@ Route::middleware(['CheckLogin', 'IsDoctor'])->group(function () {
     });
 
 });
-
+//////////////////
 
