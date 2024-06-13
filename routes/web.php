@@ -17,7 +17,7 @@ use App\Http\Controllers\UserController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('homepage');
 });
 
 Route::get('add-personnel-types', [PersonnelController::class, 'addPersonnelTypes']);
@@ -26,6 +26,7 @@ Route::get('add-user', [UserController::class, 'addUser']);
 
 Route::controller(AuthController::class)->group(function(){
 
+    Route::get('homepage','Homepage');
     Route::get('login','login');
     Route::post('/login','loginUser')->name('login.submit');
 
