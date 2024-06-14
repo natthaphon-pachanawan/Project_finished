@@ -26,6 +26,47 @@
             z-index: 1000;
         }
 
+        .navbar .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            margin-left: 20px;
+        }
+
+        .navbar .user-info {
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+
+        .navbar .user-info img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+            cursor: pointer;
+        }
+
+        .navbar .user-info .dropdown {
+            display: none;
+            position: absolute;
+            top: 50px;
+            right: 0;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            z-index: 1001;
+        }
+
+        .navbar .user-info .dropdown a {
+            display: block;
+            padding: 10px 20px;
+            color: #333;
+            text-decoration: none;
+        }
+
+        .navbar .user-info .dropdown a:hover {
+            background-color: #f4f4f4;
+        }
+
         .sidebar {
             width: 200px;
             background-color: #f4f4f4;
@@ -81,21 +122,61 @@
             <a href="#">หน้าแรก</a>
             <a href="#">ประเมินผล</a>
             <a href="#">รายงาน</a>
-            @if (Session::has('loginUser'))
-                @php
-                    $user = app('App\Http\Controllers\AuthController')->getUserAccount(request());
-                @endphp
-                <li class="nav-item d-flex align-items-center">
-                    <span style="margin-right: 10px;">{{ $user->Name_User }}</span>
-                    <a class="nav-link btn btn-danger btn-sm" href="{{ url('logout') }}" style="color: white; padding: 5px 10px; font-size: 14px; border-radius: 15px;">Logout</a>
-                </li>
-            @endif
         </div>
+        @if (Session::has('loginUser'))
+            @php
+                $user = app('App\Http\Controllers\AuthController')->getUserAccount(request());
+            @endphp
+            <div class="user-info">
+                <img src="{{ $user->Image_User }}" alt="Profile Image" onclick="toggleDropdown()">
+                <span onclick="toggleDropdown()">{{ $user->Name_User }}</span>
+                <div class="dropdown" id="userDropdown">
+                    <a href="{{url('profile-staff')}}">Profile</a>
+                    <a href="{{ url('login') }}">Logout</a>
+                </div>
+            </div>
+        @endif
     </div>
 
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <ul>
+            <li><a href="#">ข้อมูลส่วนตัว</a></li>
+            <li><a href="#">ทำแบบประเมิน</a></li>
+            <li><a href="#">ผลการประเมิน</a></li>
+            <li><a href="#">ข้อมูลผู้สูงอายุ</a></li>
+            <li><a href="#">รายงาน</a></li>
+        </ul>
+    </div>
 
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Your main content here -->
+    </div>
 
-    <script src="path/to/your/js/file.js"></script>
+    <script>
+        function toggleDropdown() {
+            var dropdown = document.getElementById("userDropdown");
+            if (dropdown.style.display === "block") {
+                dropdown.style.display = "none";
+            } else {
+                dropdown.style.display = "block";
+            }
+        }
+
+        // Close the dropdown if the user clicks outside of it
+        window.onclick = function(event) {
+            if (!event.target.matches('.user-info img') && !event.target.matches('.user-info span')) {
+                var dropdowns = document.getElementsByClassName("dropdown");
+                for (var i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                    if (openDropdown.style.display === "block") {
+                        openDropdown.style.display = "none";
+                    }
+                }
+            }
+        }
+    </script>
 </body>
 
 </html>

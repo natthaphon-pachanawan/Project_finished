@@ -60,7 +60,7 @@ class AuthController extends Controller
     {
         if(Session::has('loginUser')){
             Session::pull('loginUser');
-            return redirect('dashboard');
+            return redirect('login');
         }
     }
 /////////////////////////////////////////////////////////

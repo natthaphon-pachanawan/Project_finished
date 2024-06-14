@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PersonnelController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 
 /*
@@ -32,6 +33,14 @@ Route::controller(AuthController::class)->group(function(){
 
 });
 
+Route::controller(ProfileController::class)->group(function(){
+
+
+    Route::get('profile-staff','showProfile')->name('profile.show');
+Route::post('profile-staff', 'updateProfile')->name('profile.update');
+
+
+});
 
 Route::get('error', function () {
     return view('error.error');
