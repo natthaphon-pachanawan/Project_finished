@@ -81,74 +81,21 @@
             <a href="#">หน้าแรก</a>
             <a href="#">ประเมินผล</a>
             <a href="#">รายงาน</a>
-            <a href="#">ล็อกอิน</a>
+            @if (Session::has('loginUser'))
+                @php
+                    $user = app('App\Http\Controllers\AuthController')->getUserAccount(request());
+                @endphp
+                <li class="nav-item d-flex align-items-center">
+                    <span style="margin-right: 10px;">{{ $user->Name_User }}</span>
+                    <a class="nav-link btn btn-danger btn-sm" href="{{ url('logout') }}" style="color: white; padding: 5px 10px; font-size: 14px; border-radius: 15px;">Logout</a>
+                </li>
+            @endif
         </div>
     </div>
 
-    <!-- Sidebar -->
-    <div class="sidebar">
-        <ul>
-            <li><a href="#">ข้อมูลส่วนตัว</a></li>
-            <li><a href="#">ทำแบบประเมิน</a></li>
-            <li><a href="#">ผลการประเมิน</a></li>
-            <li><a href="#">ข้อมูลผู้สูงอายุ</a></li>
-            <li><a href="#">รายงาน</a></li>
-        </ul>
-    </div>
 
-    <!-- Main Content -->
-    <div class="main-content">
-        <!-- Personal Information Section -->
-        <div class="content-section">
-            <h2>ข้อมูลส่วนตัว</h2>
-            <form>
-                <!-- Form fields for personal information -->
-            </form>
-        </div>
-
-        <!-- Assessment Section -->
-        <div class="content-section">
-            <h2>ทำแบบประเมิน</h2>
-            <form>
-                <!-- Form fields for assessment -->
-            </form>
-        </div>
-
-        <!-- Results Section -->
-        <div class="content-section">
-            <h2>ผลการประเมิน</h2>
-            <table>
-                <!-- Table for displaying assessment results -->
-            </table>
-        </div>
-
-        <!-- Elderly Information Section -->
-        <div class="content-section">
-            <h2>ข้อมูลผู้สูงอายุ</h2>
-            <form>
-                <!-- Form fields for elderly information -->
-            </form>
-        </div>
-
-        <!-- Reports Section -->
-        <div class="content-section">
-            
-            <table>
-                <!-- Table for displaying reports -->
-            </table>
-        </div>
-    </div>
 
     <script src="path/to/your/js/file.js"></script>
 </body>
 
 </html>
-
-
-
-
-
-
-
-
-
