@@ -132,7 +132,7 @@
 
         <!-- Reports Section -->
         <div class="content-section">
-            <h2>รายงาน</h2>
+            
             <table>
                 <!-- Table for displaying reports -->
             </table>
