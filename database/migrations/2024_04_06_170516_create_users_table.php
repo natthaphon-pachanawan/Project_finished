@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('Name_User')->nullable();
             $table->string('Email')->unique()->nullable();
             $table->text('Address')->nullable();
-            $table->bigInteger('Phone')->nullable();
+            $table->text('Phone')->nullable();
             $table->string('Image_User')->nullable();
 
 

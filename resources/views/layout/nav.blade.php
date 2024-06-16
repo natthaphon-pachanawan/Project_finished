@@ -114,7 +114,7 @@
             <div class="user-info">
                 <a href="{{ url('profile-user') }}">
                     <img src="{{ asset($user->Image_User) }}" alt="Profile Image">
-                    <span>{{ $user->Email }}</span>
+                    <span>{{ $user->Name_User }}</span>
                 </a>
                 <i class="fas fa-cog" onclick="toggleDropdown()"></i>
                 <div class="dropdown" id="userDropdown">

@@ -10,7 +10,7 @@ class Elderly extends Model
     protected $table = 'elderlys';
     protected $primaryKey = 'ID_Elderly';
     protected $fillable = [
-        'Name_Elderly', 'Birthday', 'Address', 'ID_Address', 'Latitude_position',
+        'Name_Elderly', 'Birthday', 'Address', 'Latitude_position',
         'Longitude_position', 'Phone_Elderly'
     ];
     public $timestamps = false;

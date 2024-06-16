@@ -16,10 +16,9 @@ return new class extends Migration
             $table->string('Name_Elderly');
             $table->date('Birthday');
             $table->text('Address');
-            $table->unsignedBigInteger('ID_Address');
             $table->string('Latitude_position');
             $table->string('Longitude_position');
-            $table->bigInteger('Phone_Elderly');
+            $table->text('Phone_Elderly');
 
 
         });
