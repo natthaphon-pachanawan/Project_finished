@@ -10,58 +10,58 @@ use Illuminate\Support\Facades\Session;
 
 class AuthController extends Controller
 {
-//////////////////////////หน้าหลัก///////////////////////
-    public function Homepage()
-    {
-        return view('dashboard');
-    }
-/////////////////////////////////////////////////////////
+
     public function login()
     {
         return view('login.login');
     }
     public function loginUser(Request $request)
     {
+        // Validate the input fields
         $request->validate([
             'login' => 'required',
             'password' => 'required',
         ]);
 
+        // Determine if the login input is an email or username
         $fieldType = filter_var($request->login, FILTER_VALIDATE_EMAIL) ? 'Email' : 'Username';
         $user = User::where($fieldType, $request->login)->first();
 
-        if ($user && Hash::check($request->password, $user->Password)) {
-            $request->session()->put('loginUser', $user->ID_User);
 
+        // Check if user exists
+        if (!$user) {
+            return back()->with('fail', 'No account found with this email or username.');
+        }
 
+        // Verify password and login user
+        if (Hash::check($request->password, $user->Password)) {
+            Auth::login($user);
+
+            // Redirect the user based on their role
             switch ($user->Type_Personnel) {
                 case 'Admin':
-                    return redirect('admin-dashboard');
-                case 'Staff':
-                    return redirect('staff-dashboard');
+                    return redirect()->intended('admin-dashboard');
                 case 'Doctor':
-                    return redirect('doctor-dashboard');
+                    return redirect()->intended('doctor-dashboard');
+                default:
+                    return redirect()->intended('staff-dashboard');
             }
         }
 
-        return back()->with('fail', 'Email หรือ Username หรือ Password ไม่ถูกต้อง');
+        // If password is incorrect, return with error
+        return back()->with('fail', 'Incorrect password.');
     }
 
-/////////////////////เช็คว่าอยู่บัญชีไหน////////////////////////////////////
-    public function getUserAccount(Request $request)
-    {
-    $userId = $request->session()->get('loginUser');
-    $user = User::find($userId);
 
-    return $user;
-    }
-////////////////////////////ล็อกเอ้า/////////////////////////////
+    ////////////////////////////ล็อกเอ้า/////////////////////////////
     public function logout(Request $request)
-    {
-        if(Session::has('loginUser')){
-            Session::pull('loginUser');
-            return redirect('login');
-        }
-    }
-/////////////////////////////////////////////////////////
+{
+    Auth::logout();
+    $request->session()->invalidate();
+    $request->session()->regenerateToken();
+    return redirect('login')->with('success', 'You have been logged out successfully.');
+}
+
+
+    /////////////////////////////////////////////////////////
 }

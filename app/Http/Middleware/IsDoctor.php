@@ -18,18 +18,13 @@ class IsDoctor
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function handle(Request $request, Closure $next)
-    {
+{
+    $user = Auth::user(); 
 
-        if (Session::has('loginUser')) {
-            $user = User::find(Session::get('loginUser'));
-
-
-            if ($user && $user->Type_Personnel === 'Doctor') {
-                return $next($request);
-            }
-        }
-
-
-        return redirect('error')->with('fail', 'คุณไม่มีสิทธิ์เข้าถึงส่วนนี้');
+    if ($user && $user->Type_Personnel === 'Doctor') {
+        return $next($request);
     }
+
+    return redirect('error')->with('fail', 'คุณไม่มีสิทธิ์เข้าถึงส่วนนี้');
+}
 }

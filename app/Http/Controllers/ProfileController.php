@@ -10,36 +10,51 @@ class ProfileController extends Controller
 {
     public function showProfile()
     {
+        $user = Auth::user(); // Retrieve the logged-in user
+
+        if (!$user) {
+            return redirect('login')->with('error', 'กรุณาล็อกอินเพื่อเข้าถึงหน้านี้');
+        }
+        return view('layout.profile', compact('user'));
+    }
+
+    public function editProfile()
+    {
         $user = Auth::user();
-        return view('staff.profile-staff', compact('user'));
+        if (!$user) {
+            return redirect('login')->with('error', 'กรุณาล็อกอินเพื่อเข้าถึงหน้านี้');
+        }
+        return view('layout.edit-profile', compact('user'));
     }
 
     public function updateProfile(Request $request)
     {
         $user = Auth::user();
+        if (!$user) {
+            return redirect()->route('profile-user')->with('error', 'You can only edit your own profile.');
+        }
+
         $request->validate([
-            'Name_User' => 'required|string|max:255',
-            'Email' => 'required|string|email|max:255',
-            'Address' => 'nullable|string|max:255',
-            'Phone' => 'nullable|string|max:20',
+            'Name_User' => 'required|string',
+            'Email' => 'required|string|email',
+            'Address' => 'nullable|string',
+            'Phone' => 'nullable|string',
             'Image_User' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
         $user->Name_User = $request->Name_User;
         $user->Email = $request->Email;
-        $user->Address = $request->Address;
-        $user->Phone = $request->Phone;
+        $user->Address = $request->Address ?? '';
+        $user->Phone = $request->Phone ?? '';
 
         if ($request->hasFile('Image_User')) {
-            $imageName = time().'.'.$request->Image_User->extension();
+            $imageName = time() . '.' . $request->Image_User->extension();
             $request->Image_User->move(public_path('images'), $imageName);
-            $user->Image_User = '/images/'.$imageName;
+            $user->Image_User = 'images/' . $imageName;
         }
 
         $user->save();
 
-        return redirect()->route('profile.show')->with('success', 'Profile updated successfully');
+        return redirect()->route('profile-user')->with('success', 'Profile updated successfully');
     }
 }
-
-
