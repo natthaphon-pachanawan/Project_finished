@@ -29,7 +29,7 @@ return new class extends Migration
             $table->string('Rights');
             $table->integer('Caretaker');
             $table->integer('Related');
-            $table->bigInteger('Phone_Caretaker');
+            $table->text('Phone_Caretaker');
             $table->date('Date_CG');
             $table->integer('Consciousness');
             $table->integer('Vital_signs');
@@ -54,7 +54,7 @@ return new class extends Migration
             $table->foreign('ID_ADL')->references('ID_ADL')->on('barthel_adls')->onDelete('cascade');
             $table->foreign('ID_Elderly')->references('ID_Elderly')->on('elderlys')->onDelete('cascade');
             $table->foreign('ID_ACG')->references('ID_ACG')->on('activity_caregivers')->onDelete('cascade');
-           
+
         });
 
     }

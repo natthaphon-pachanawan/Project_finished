@@ -5,35 +5,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Staff Dashboard</title>
-    <link rel="stylesheet" href="path/to/your/css/file.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <style>
         body {
             display: flex;
             font-family: Arial, sans-serif;
-        }
-
-        .navbar {
-            width: 100%;
-            background-color: #333;
-            color: #fff;
-            padding: 15px;
-            position: fixed;
-            top: 0;
-            left: 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 1000;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
         }
 
         .sidebar {
             width: 200px;
-            background-color: #f4f4f4;
-            padding: 15px;
-            margin-top: 60px;
+            background-color: #2c3e50;
+            color: #ecf0f1;
+            height: 100vh;
             position: fixed;
-            top: 0;
-            bottom: 0;
+            top: 60px; /* Height of the navbar */
+            left: 0;
+            padding-top: 20px;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
         }
 
         .sidebar ul {
@@ -42,48 +33,52 @@
         }
 
         .sidebar ul li {
-            padding: 10px 0;
+            padding: 10px 20px;
         }
 
         .sidebar ul li a {
+            color: #ecf0f1;
             text-decoration: none;
-            color: #333;
             display: block;
         }
 
+        .sidebar ul li a:hover {
+            background-color: #34495e;
+        }
+
         .main-content {
-            margin-left: 220px;
+            margin-left: 220px; /* Width of the sidebar */
             padding: 20px;
-            margin-top: 60px;
-            flex-grow: 1;
+            padding-top: 80px; /* Height of the navbar */
+            background-color: #ecf0f1;
+            min-height: 100vh;
         }
 
         .content-section {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             margin-bottom: 20px;
         }
 
         .content-section h2 {
-            margin-bottom: 10px;
+            margin-top: 0;
         }
 
-        .content-section table,
-        .content-section form {
-            width: 100%;
+        .content-section ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .content-section ul li {
+            padding: 10px 0;
         }
     </style>
 </head>
 
 <body>
-    <!-- Navbar -->
-    <div class="navbar">
-        <div class="logo">ระบบประเมินฯ</div>
-        <div class="nav-links">
-            <a href="#">หน้าแรก</a>
-            <a href="#">ประเมินผล</a>
-            <a href="#">รายงาน</a>
-            <a href="#">ล็อกอิน</a>
-        </div>
-    </div>
+    @include('layout.nav')
 
     <!-- Sidebar -->
     <div class="sidebar">
@@ -98,57 +93,63 @@
 
     <!-- Main Content -->
     <div class="main-content">
-        <!-- Personal Information Section -->
         <div class="content-section">
-            <h2>ข้อมูลส่วนตัว</h2>
-            <form>
-                <!-- Form fields for personal information -->
-            </form>
+            <h2>ทำแบบประเมินความสามารถในการดำเนินชีวิตประจำวัน</h2>
+            <ul>
+                <li><a href="#">ดัชนีบาร์เธลเอดีแอล (Barthel ADL index)</a></li>
+            </ul>
         </div>
 
-        <!-- Assessment Section -->
         <div class="content-section">
-            <h2>ทำแบบประเมิน</h2>
-            <form>
-                <!-- Form fields for assessment -->
-            </form>
+            <h2>เช็คผลการประเมินความสามารถในการดำเนินชีวิตประจำวัน</h2>
+            <ul>
+                <li><a href="#">ดัชนีบาร์เธลเอดีแอล (Barthel ADL index)</a></li>
+            </ul>
         </div>
 
-        <!-- Results Section -->
         <div class="content-section">
-            <h2>ผลการประเมิน</h2>
-            <table>
-                <!-- Table for displaying assessment results -->
-            </table>
+            <h2>รายงานผลการปฏิบัติงานผู้ดูแลผู้สูงอายุ</h2>
+            <ul>
+                <li><a href="#">เพิ่มข้อมูล</a></li>
+                <li><a href="#">แก้ไขข้อมูล</a></li>
+                <li><a href="#">ลบข้อมูล</a></li>
+            </ul>
         </div>
 
-        <!-- Elderly Information Section -->
         <div class="content-section">
-            <h2>ข้อมูลผู้สูงอายุ</h2>
-            <form>
-                <!-- Form fields for elderly information -->
-            </form>
+            <h2>ข้อมูลประวัติส่วนตัวของผู้สูงอายุ</h2>
+            <ul>
+                <li><a href="#">เพิ่มข้อมูล</a></li>
+                <li><a href="#">แก้ไขข้อมูล</a></li>
+                <li><a href="#">ลบข้อมูล</a></li>
+            </ul>
         </div>
 
-        <!-- Reports Section -->
         <div class="content-section">
-            <h2>รายงาน</h2>
-            <table>
-                <!-- Table for displaying reports -->
-            </table>
+            <h2>ข้อมูลสุขภาพของผู้สูงอายุ</h2>
+            <ul>
+                <li><a href="#">เพิ่มข้อมูล</a></li>
+                <li><a href="#">แก้ไขข้อมูล</a></li>
+                <li><a href="#">ลบข้อมูล</a></li>
+            </ul>
+        </div>
+
+        <div class="content-section">
+            <h2>ค้นหาตำแหน่งพิกัดที่อยู่อาศัยของผู้สูงอายุ</h2>
+            <!-- Add content here -->
+        </div>
+
+        <div class="content-section">
+            <h2>ออกรายงานของระบบ</h2>
+            <ul>
+                <li><a href="#">ข้อมูลผลการประเมิน ADL</a></li>
+                <li><a href="#">ข้อมูลผลการปฏิบัติงานผู้ดูแลผู้สูงอายุในรอบรายเดือน รายวัน (care giver)</a></li>
+                <li><a href="#">ข้อมูลผู้สูงอายุ</a></li>
+                <li><a href="#">รายงานผู้สูงอายุรูปแบบแท่งกราฟ</a></li>
+            </ul>
         </div>
     </div>
 
-    <script src="path/to/your/js/file.js"></script>
 </body>
 
 </html>
-
-
-
-
-
-
-
-
-
