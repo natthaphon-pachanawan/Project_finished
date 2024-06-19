@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ADLController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ElderlyController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PersonnelController;
 use App\Http\Controllers\ProfileController;
@@ -26,24 +27,31 @@ Route::get('add-personnel-types', [PersonnelController::class, 'addPersonnelType
 Route::get('add-user', [UserController::class, 'addUser']);
 
 
-Route::controller(AuthController::class)->group(function(){
+Route::controller(AuthController::class)->group(function () {
 
-    Route::get('homepage','Homepage');
-    Route::get('login','login');
-    Route::post('/login','loginUser')->name('login.submit');
+    Route::get('homepage', 'Homepage');
+    Route::get('login', 'login');
+    Route::post('/login', 'loginUser')->name('login.submit');
 
-    Route::post('/logout','logout')->name('logout');
-
+    Route::post('/logout', 'logout')->name('logout');
 });
 
 
-Route::controller(ProfileController::class)->group(function(){
-
+Route::controller(ProfileController::class)->group(function () {
 });
 
-Route::controller(ADLController::class)->group(function(){
+Route::controller(ADLController::class)->group(function () {
 
-    Route::get('ADL','ADL');
+    Route::get('ADL', 'ADL');
+});
+
+Route::controller(ElderlyController::class)->group(function(){
+
+    Route::get('add-elderly', 'Addelderly');
+    Route::post('/store-elderly', 'Storeelderly')->name('store-elderly');
+    Route::get('edit-elderly/{id}', 'Editelderly')->name('edit-elderly');
+    Route::put('/update-elderly/{id}', 'Updateelderly')->name('update-elderly');
+    Route::delete('/delete-elderly/{id}', 'Deleteelderly')->name('delete-elderly');
 
 });
 
@@ -61,23 +69,19 @@ Route::middleware(['auth'])->group(function () {
 
 
 
-Route::middleware(['CheckLogin', 'IsAdmin','auth'])->group(function () {
+Route::middleware(['CheckLogin', 'IsAdmin', 'auth'])->group(function () {
     Route::get('admin-dashboard', function () {
         return view('admin.dashboard-admin');
     });
 });
 
-Route::middleware(['CheckLogin', 'IsStaff','auth'])->group(function () {
-    Route::get('staff-dashboard', function () {
-        return view('staff.dashboard-staff');
-    });
+Route::middleware(['CheckLogin', 'IsStaff', 'auth'])->group(function () {
+
+    Route::get('staff-dashboard', [ElderlyController::class, 'Showelderly'])->name('staff-dashboard');
 });
 
-Route::middleware(['CheckLogin', 'IsDoctor','auth'])->group(function () {
+Route::middleware(['CheckLogin', 'IsDoctor', 'auth'])->group(function () {
     Route::get('doctor-dashboard', function () {
         return view('doctor.dashboard-doctor');
     });
 });
-
-
-

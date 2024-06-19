@@ -73,6 +73,31 @@
 
         .content-section ul li {
             padding: 10px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .content-section ul li .actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .content-section ul li .actions form {
+            display: inline;
+        }
+
+        .content-section ul li .actions button {
+            background-color: #3498db;
+            color: #fff;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .content-section ul li .actions button.delete {
+            background-color: #e74c3c;
         }
     </style>
 </head>
@@ -119,9 +144,20 @@
         <div class="content-section">
             <h2>ข้อมูลประวัติส่วนตัวของผู้สูงอายุ</h2>
             <ul>
-                <li><a href="#">เพิ่มข้อมูล</a></li>
-                <li><a href="#">แก้ไขข้อมูล</a></li>
-                <li><a href="#">ลบข้อมูล</a></li>
+                <li><a href="add-elderly">เพิ่มข้อมูล</a></li>
+                @foreach($elderlies as $elderly)
+                <li>
+                    {{ $elderly->Name_Elderly }} - {{ $elderly->Birthday }} - {{ $elderly->Address }} - {{ $elderly->Phone_Elderly }}
+                    <div class="actions">
+                        <a href="{{ route('edit-elderly', ['id' => $elderly->ID_Elderly]) }}" class="button">Edit</a>
+                        <form action="{{ route('delete-elderly', ['id' => $elderly->ID_Elderly]) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this elderly?');">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="delete">Delete</button>
+                        </form>
+                    </div>
+                </li>
+                @endforeach
             </ul>
         </div>
 
@@ -133,23 +169,7 @@
                 <li><a href="#">ลบข้อมูล</a></li>
             </ul>
         </div>
-
-        <div class="content-section">
-            <h2>ค้นหาตำแหน่งพิกัดที่อยู่อาศัยของผู้สูงอายุ</h2>
-            <!-- Add content here -->
-        </div>
-
-        <div class="content-section">
-            <h2>ออกรายงานของระบบ</h2>
-            <ul>
-                <li><a href="#">ข้อมูลผลการประเมิน ADL</a></li>
-                <li><a href="#">ข้อมูลผลการปฏิบัติงานผู้ดูแลผู้สูงอายุในรอบรายเดือน รายวัน (care giver)</a></li>
-                <li><a href="#">ข้อมูลผู้สูงอายุ</a></li>
-                <li><a href="#">รายงานผู้สูงอายุรูปแบบแท่งกราฟ</a></li>
-            </ul>
-        </div>
     </div>
-
 </body>
 
 </html>

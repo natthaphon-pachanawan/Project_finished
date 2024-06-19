@@ -80,7 +80,7 @@
 
         .fa-cog {
             cursor: pointer;
-            margin-right: 30px; /* เพิ่มระยะห่างทางขวา */
+            margin-right: 30px;
             font-size: 1.5em;
             transition: transform 0.3s;
         }
