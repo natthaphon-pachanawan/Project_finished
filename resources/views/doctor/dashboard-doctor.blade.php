@@ -29,7 +29,7 @@
     
     <div class="sidebar">
         <ul>
-        <a href="#">ข้อมูลADL</a>
+        <a href="SumADL">ข้อมูลADL</a>
         <a href="#">ข้อมูลCG</a>
         <a href="#">แนะนำวิธีรักษา</a>
     </ul>

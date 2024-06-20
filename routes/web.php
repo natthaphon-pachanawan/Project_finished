@@ -44,6 +44,7 @@ Route::controller(ProfileController::class)->group(function(){
 Route::controller(ADLController::class)->group(function(){
 
     Route::get('ADL','ADL');
+    Route::get('SumADL','summaryADL');
 
 });
 
