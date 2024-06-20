@@ -42,17 +42,18 @@ Route::controller(ProfileController::class)->group(function () {
 
 Route::controller(ADLController::class)->group(function () {
 
-    Route::get('ADL', 'ADL');
+    Route::get('/adl-show/{id}', 'show')->name('adl-show');
+    Route::get('adl-elderly', 'create')->name('adl.create');
+    Route::post('/adl/submit', 'submitADL')->name('adl.submit');
 });
 
-Route::controller(ElderlyController::class)->group(function(){
+Route::controller(ElderlyController::class)->group(function () {
 
     Route::get('add-elderly', 'Addelderly');
     Route::post('/store-elderly', 'Storeelderly')->name('store-elderly');
     Route::get('edit-elderly/{id}', 'Editelderly')->name('edit-elderly');
     Route::put('/update-elderly/{id}', 'Updateelderly')->name('update-elderly');
     Route::delete('/delete-elderly/{id}', 'Deleteelderly')->name('delete-elderly');
-
 });
 
 Route::get('error', function () {

@@ -49,7 +49,6 @@
         .main-content {
             margin-left: 220px; /* Width of the sidebar */
             padding: 20px;
-            padding-top: 80px; /* Height of the navbar */
             background-color: #ecf0f1;
             min-height: 100vh;
         }
@@ -121,14 +120,7 @@
         <div class="content-section">
             <h2>ทำแบบประเมินความสามารถในการดำเนินชีวิตประจำวัน</h2>
             <ul>
-                <li><a href="#">ดัชนีบาร์เธลเอดีแอล (Barthel ADL index)</a></li>
-            </ul>
-        </div>
-
-        <div class="content-section">
-            <h2>เช็คผลการประเมินความสามารถในการดำเนินชีวิตประจำวัน</h2>
-            <ul>
-                <li><a href="#">ดัชนีบาร์เธลเอดีแอล (Barthel ADL index)</a></li>
+                <li><a href="/adl-elderly">ดัชนีบาร์เธลเอดีแอล (Barthel ADL index)</a></li>
             </ul>
         </div>
 
@@ -149,6 +141,8 @@
                 <li>
                     {{ $elderly->Name_Elderly }} - {{ $elderly->Birthday }} - {{ $elderly->Address }} - {{ $elderly->Phone_Elderly }}
                     <div class="actions">
+
+                        <a href="{{ route('adl-show', ['id' => $elderly->ID_Elderly]) }}" class="button">View ADL Results</a>
                         <a href="{{ route('edit-elderly', ['id' => $elderly->ID_Elderly]) }}" class="button">Edit</a>
                         <form action="{{ route('delete-elderly', ['id' => $elderly->ID_Elderly]) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this elderly?');">
                             @csrf
