@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PersonnelController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\CGController;
 
 /*
 |--------------------------------------------------------------------------
@@ -54,6 +55,12 @@ Route::controller(ElderlyController::class)->group(function () {
     Route::get('edit-elderly/{id}', 'Editelderly')->name('edit-elderly');
     Route::put('/update-elderly/{id}', 'Updateelderly')->name('update-elderly');
     Route::delete('/delete-elderly/{id}', 'Deleteelderly')->name('delete-elderly');
+});
+
+Route::controller(CGController::class)->group(function () {
+    Route::get('caregivers/create', 'create')->name('caregivers.create');
+    Route::post('caregivers/store', 'store')->name('caregivers.store');
+    Route::get('get-group-adl/{elderlyId}', 'getGroupADL');
 });
 
 Route::get('error', function () {

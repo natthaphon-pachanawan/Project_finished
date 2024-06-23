@@ -127,8 +127,9 @@
         <div class="content-section">
             <h2>รายงานผลการปฏิบัติงานผู้ดูแลผู้สูงอายุ</h2>
             <ul>
-                <li><a href="#">เพิ่มข้อมูล</a></li>
-                <li><a href="#">แก้ไขข้อมูล</a></li>
+                <li><a href="caregivers">Show</a></li>
+                <li><a href="caregivers/create">เพิ่มข้อมูล</a></li>
+                <li><a href="caregivers/{id}/edit">แก้ไขข้อมูล</a></li>
                 <li><a href="#">ลบข้อมูล</a></li>
             </ul>
         </div>
