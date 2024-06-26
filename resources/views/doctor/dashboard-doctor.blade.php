@@ -81,7 +81,7 @@
         <p>This is where the main content goes.</p>
     </div>
     <div class="footer">
-        <p><a href="#">Contact</a> |<a href="#">Address</a>  | <a href="#">LOGO</a></p>
+        <p><a href="#">Contact</a> |<a href="#">Address</a>  | <a href="#">about</a></p>
     </div>
 </body>
 </html>
