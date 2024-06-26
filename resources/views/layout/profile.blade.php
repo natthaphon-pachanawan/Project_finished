@@ -25,7 +25,7 @@
         }
         .profile-container {
             max-width: 800px;
-            margin: 40px auto;
+            margin: 20px auto;
             padding: 30px;
             background-color: #fff;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
