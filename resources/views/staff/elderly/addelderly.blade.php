@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Elderly</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -76,7 +77,40 @@
         .back-button:hover {
             background-color: #34495e;
         }
+
+        #map {
+            height: 400px;
+            width: 100%;
+            margin-bottom: 20px;
+        }
     </style>
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var initialPosition = [14.9930, 103.1029]; // Initial map position set to Buriram, Thailand
+
+            var map = L.map('map').setView(initialPosition, 13);
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+
+            var marker = L.marker(initialPosition, { draggable: true }).addTo(map);
+
+            map.on('click', function (e) {
+                var clickedLocation = e.latlng;
+                marker.setLatLng(clickedLocation);
+                document.getElementById('Latitude_position').value = clickedLocation.lat;
+                document.getElementById('Longitude_position').value = clickedLocation.lng;
+            });
+
+            marker.on('dragend', function (e) {
+                var draggedLocation = e.target.getLatLng();
+                document.getElementById('Latitude_position').value = draggedLocation.lat;
+                document.getElementById('Longitude_position').value = draggedLocation.lng;
+            });
+        });
+    </script>
 </head>
 
 <body>
@@ -109,6 +143,8 @@
                 <label for="Address">Address:</label>
                 <textarea id="Address" name="Address" required></textarea>
             </div>
+
+            <div id="map"></div>
 
             <div class="form-group">
                 <label for="Latitude_position">Latitude Position:</label>
