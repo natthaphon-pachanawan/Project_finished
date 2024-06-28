@@ -127,6 +127,7 @@
         <div class="content-section">
             <h2>รายงานผลการปฏิบัติงานผู้ดูแลผู้สูงอายุ</h2>
             <ul>
+                <li><a href="{{ route('activities.create') }}">เพิ่มกิจกรรมการช่วยเหลือของผู้ดูแลผู้สูงอายุ</a></li>
                 <li><a href="caregivers">Show</a></li>
                 <li><a href="caregivers/create">เพิ่มข้อมูล</a></li>
                 <li><a href="caregivers/{id}/edit">แก้ไขข้อมูล</a></li>

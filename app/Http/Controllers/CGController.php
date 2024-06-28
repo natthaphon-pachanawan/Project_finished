@@ -2,25 +2,28 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Elderly;
+use Illuminate\Http\Request;
 use App\Models\BarthelAdl;
+use App\Models\ActivityCaregiver;
 use App\Models\CareGiver;
+use Carbon\Carbon;
 
 class CGController extends Controller
 {
     public function create()
     {
-        $elderlies = Elderly::all();
-        return view('staff.CG.AddCG', compact('elderlies'));
+        $elderlys = BarthelAdl::with('elderly')->get();
+        return view('staff.CG.AddCG', compact('elderlys'));
     }
 
     public function store(Request $request)
     {
+        // Validate request
         $request->validate([
             'Name_CG' => 'required|string',
             'ID_Elderly' => 'required|exists:elderlys,ID_Elderly',
-            'Age' => 'required|integer',
+            'Name_Elderly' => 'required|string',
             'Address' => 'required|string',
             'Weight' => 'required|numeric',
             'Height' => 'required|numeric',
@@ -32,22 +35,180 @@ class CGController extends Controller
             'Caretaker' => 'required|string',
             'Related' => 'required|string',
             'Phone_Caretaker' => 'required|string',
+            'Date' => 'required|date',
+            'Consciousness' => 'required|string',
+            'Vital_signs' => 'required|string',
+            'Bedsores' => 'required|string',
+            'Bedsores_details' => 'nullable|string',
+            'Pain' => 'required|string',
+            'Pain_details' => 'nullable|string',
+            'Swelling' => 'required|string',
+            'Swelling_details' => 'nullable|string',
+            'Itchy_rash' => 'required|string',
+            'Itchy_rash_details' => 'nullable|string',
+            'Stiff_joints' => 'required|string',
+            'Stiff_joints_details' => 'nullable|string',
+            'Malnutrition' => 'required|string',
+            'Malnutrition_details' => 'nullable|string',
+            'Eating' => 'required|string',
+            'Swallowing' => 'required|string',
+            'Defecation' => 'required|string',
+            'Urinary_excretion' => 'required|string',
+            'Taking_medicine' => 'required|string',
+            'Emotional_state' => 'required|string',
+            'Economic_problems' => 'required|string',
+            'Economic_problems_details' => 'nullable|string',
+            'Social_problems' => 'required|string',
+            'Social_problems_details' => 'nullable|string',
+            'Doctor_FU' => 'required|string',
+            'Doctor_FU_details' => 'nullable|string',
+            'Other_problems' => 'nullable|string',
+            'Assistance' => 'nullable|string',
+            'Reporter' => 'required|string',
         ]);
 
+        // Gather caregiver data
+        $careGiverData = $request->only([
+            'Name_CG', 'ID_Elderly', 'Name_Elderly', 'Address', 'Weight', 'Height',
+            'Waist', 'Group_ADL', 'Disease', 'Disability', 'Rights', 'Caretaker',
+            'Related', 'Phone_Caretaker', 'Date', 'Consciousness', 'Vital_signs',
+            'Bedsores', 'Bedsores_details', 'Pain', 'Pain_details', 'Swelling',
+            'Swelling_details', 'Itchy_rash', 'Itchy_rash_details', 'Stiff_joints',
+            'Stiff_joints_details', 'Malnutrition', 'Malnutrition_details', 'Eating',
+            'Swallowing', 'Defecation', 'Urinary_excretion', 'Taking_medicine',
+            'Emotional_state', 'Economic_problems', 'Economic_problems_details',
+            'Social_problems', 'Social_problems_details', 'Doctor_FU', 'Doctor_FU_details',
+            'Other_problems', 'Assistance', 'Reporter'
+        ]);
+
+        $elderly = Elderly::find($request->ID_Elderly);
+
+        // Additional processing of combined fields
+        $careGiverData['Bedsores'] = $request->Bedsores . ($request->Bedsores_details ? '-' . $request->Bedsores_details : '');
+        $careGiverData['Pain'] = $request->Pain . ($request->Pain_details ? '-' . $request->Pain_details : '');
+        $careGiverData['Swelling'] = $request->Swelling . ($request->Swelling_details ? '-' . $request->Swelling_details : '');
+        $careGiverData['Itchy_rash'] = $request->Itchy_rash . ($request->Itchy_rash_details ? '-' . $request->Itchy_rash_details : '');
+        $careGiverData['Stiff_joints'] = $request->Stiff_joints . ($request->Stiff_joints_details ? '-' . $request->Stiff_joints_details : '');
+        $careGiverData['Malnutrition'] = $request->Malnutrition . ($request->Malnutrition_details ? '-' . $request->Malnutrition_details : '');
+        $careGiverData['Economic_problems'] = $request->Economic_problems . ($request->Economic_problems_details ? '-' . $request->Economic_problems_details : '');
+        $careGiverData['Social_problems'] = $request->Social_problems . ($request->Social_problems_details ? '-' . $request->Social_problems_details : '');
+        $careGiverData['Doctor_FU'] = $request->Doctor_FU . ($request->Doctor_FU_details ? '-' . $request->Doctor_FU_details : '');
+        $careGiverData['Date_CG'] = $request->Date;
+        $careGiverData['Birthday'] = $elderly->Birthday;
+
+        $adl = BarthelAdl::where('ID_Elderly', $request->ID_Elderly)->first();
+        if ($adl) {
+            $careGiverData['ID_ADL'] = $adl->ID_ADL;
+        } else {
+            return redirect()->back()->withErrors(['ID_ADL' => 'ไม่พบข้อมูล ADL สำหรับผู้สูงอายุที่เลือก']);
+        }
+
         $cg = new CareGiver();
-        $cg->fill($request->all());
+        $cg->fill($careGiverData);
         $cg->save();
 
         return redirect()->route('caregivers.create')->with('success', 'Care Giver added successfully!');
     }
 
-    public function getGroupADL($elderlyId)
+    public function createActivity()
     {
-        $adl = BarthelAdl::where('ID_Elderly', $elderlyId)->first();
-        if ($adl) {
-            return response()->json(['Group_ADL' => $adl->Group_ADL]);
-        } else {
-            return response()->json(['Group_ADL' => 'ไม่พบข้อมูล']);
+        $elderlys = BarthelAdl::with('elderly')->get();
+        return view('staff.ACG.AddACG', compact('elderlys'));
+    }
+
+    public function storeActivity(Request $request)
+    {
+        // Validate request
+        $request->validate([
+            'ID_Elderly' => 'required|exists:elderlys,ID_Elderly',
+            'activity_date' => 'required|date',
+            'evaluate' => 'nullable|string',
+            'dress_the_wound' => 'nullable|string',
+            'rehabilitate' => 'nullable|string',
+            'clean_body' => 'nullable|string',
+            'take_care_medicine' => 'nullable|string',
+            'take_care_feeding' => 'nullable|string',
+            'environmental' => 'nullable|string',
+            'take_exercise' => 'nullable|string',
+            'give_advice_consult' => 'nullable|string',
+            'take_to_see_a_doctor' => 'nullable|string',
+            'other_specified' => 'nullable|string',
+            'take_to_make_merit' => 'nullable|string',
+            'take_to_market' => 'nullable|string',
+            'take_to_meet_friends' => 'nullable|string',
+            'take_to_allowance' => 'nullable|string',
+            'talk_as_friends' => 'nullable|string',
+            'other_social_specified' => 'nullable|string',
+            'problems_found' => 'nullable|string',
+            'solutions' => 'nullable|string',
+        ]);
+
+        // Gather activity data
+        $careGiverId = $this->getLatestCareGiverId($request->ID_Elderly, $request->activity_date);
+
+        if (!$careGiverId) {
+            return redirect()->back()->withErrors(['ID_CG' => 'ไม่พบข้อมูล Care Giver สำหรับผู้สูงอายุที่เลือก']);
         }
+
+        $activityData = [
+            'ID_CG' => $careGiverId,
+            'Date_ACG' => $request->activity_date,
+            'Evaluate' => $request->evaluate,
+            'Dress_the_wound' => $request->dress_the_wound,
+            'Rehabilitate' => $request->rehabilitate,
+            'Clean_body' => $request->clean_body,
+            'Take_care_medicine' => $request->take_care_medicine,
+            'Take_care_feeding' => $request->take_care_feeding,
+            'Environmental' => $request->environmental,
+            'Take_exercise' => $request->take_exercise,
+            'Give_advice_consult' => $request->give_advice_consult,
+            'Take_to_see_a_doctor' => $request->take_to_see_a_doctor,
+            'Other' => $request->other_specified,
+            'Take_to_make_merit' => $request->take_to_make_merit,
+            'Take_to_market' => $request->take_to_market,
+            'Take_to_meet_friends' => $request->take_to_meet_friends,
+            'Take_to_allowance' => $request->take_to_allowance,
+            'Talk_as_friends' => $request->talk_as_friends,
+            'Other_specified' => $request->other_social_specified,
+            'Problem' => $request->problems_found,
+            'Troubleshoot' => $request->solutions,
+        ];
+
+        $activity = new ActivityCaregiver();
+        $activity->fill($activityData);
+        $activity->save();
+
+        return redirect()->route('activities.create')->with('success', 'Activity added successfully!');
+    }
+
+    private function getLatestCareGiverId($idElderly, $currentDate)
+    {
+        $latestCareGiver = CareGiver::where('ID_Elderly', $idElderly)
+            ->where('Date_CG', '<=', $currentDate)
+            ->orderBy('Date_CG', 'desc')
+            ->first();
+
+        return $latestCareGiver ? $latestCareGiver->ID_CG : null;
+    }
+
+    public function getElderlyDetails($elderlyId)
+    {
+        $adl = BarthelAdl::find($elderlyId);
+        if ($adl) {
+            $elderly = Elderly::find($adl->ID_Elderly);
+            if ($elderly) {
+                $age = Carbon::parse($elderly->Birthday)->age;
+                return response()->json([
+                    'Age' => $age,
+                    'Address' => $elderly->Address,
+                    'Group_ADL' => $adl->Group_ADL,
+                ]);
+            }
+        }
+        return response()->json([
+            'Age' => 'ไม่พบข้อมูล',
+            'Address' => 'ไม่พบข้อมูล',
+            'Group_ADL' => 'ไม่พบข้อมูล',
+        ]);
     }
 }

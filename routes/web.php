@@ -61,6 +61,12 @@ Route::controller(CGController::class)->group(function () {
     Route::get('caregivers/create', 'create')->name('caregivers.create');
     Route::post('caregivers/store', 'store')->name('caregivers.store');
     Route::get('get-group-adl/{elderlyId}', 'getGroupADL');
+    Route::get('get-elderly-details/{elderlyId}', 'getElderlyDetails');
+
+    Route::get('/activities/create', 'createActivity')->name('activities.create');
+    Route::post('activities/store', 'storeActivity')->name('activities.store');
+
+
 });
 
 Route::get('error', function () {
