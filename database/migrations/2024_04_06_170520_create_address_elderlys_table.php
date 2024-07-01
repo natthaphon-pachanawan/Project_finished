@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('Latitude_position');
             $table->string('Longitude_position');
             $table->foreign('ID_Elderly')->references('ID_Elderly')->on('elderlys')->onDelete('cascade');
-            
+
         });
 
     }

@@ -31,9 +31,7 @@ return new class extends Migration
             $table->integer('Bladder');
             $table->foreign('ID_Elderly')->references('ID_Elderly')->on('elderlys')->onDelete('cascade');
             $table->foreign('ID_User')->references('ID_User')->on('users')->onDelete('cascade');
-            
         });
-
     }
 
     /**

@@ -16,13 +16,10 @@ return new class extends Migration
             $table->string('Name_Elderly');
             $table->date('Birthday');
             $table->text('Address');
-            $table->string('Latitude_position');
-            $table->string('Longitude_position');
+            $table->string('Latitude_position')->nullable();
+            $table->string('Longitude_position')->nullable();
             $table->text('Phone_Elderly');
-
-
         });
-
     }
 
     /**
