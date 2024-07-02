@@ -43,9 +43,9 @@ Route::controller(ProfileController::class)->group(function () {
 
 Route::controller(ADLController::class)->group(function () {
 
-    Route::get('/adl-show/{id}', 'show')->name('adl-show');
     Route::get('adl-elderly', 'create')->name('adl.create');
     Route::post('/adl/submit', 'submitADL')->name('adl.submit');
+
 });
 
 Route::controller(ElderlyController::class)->group(function () {
@@ -92,6 +92,11 @@ Route::middleware(['CheckLogin', 'IsAdmin', 'auth'])->group(function () {
 Route::middleware(['CheckLogin', 'IsStaff', 'auth'])->group(function () {
 
     Route::get('staff-dashboard', [ElderlyController::class, 'Showelderly'])->name('staff-dashboard');
+    Route::get('adl-show', [ADLController::class, 'index'])->name('adl.index');
+    Route::get('adl-edit/{id}', [ADLController::class, 'edit'])->name('adl.edit');
+    Route::put('adl-update/{id}', [ADLController::class, 'update'])->name('adl.update');
+    Route::delete('adl-destroy/{id}', [ADLController::class, 'destroy'])->name('adl.destroy');
+
 });
 
 Route::middleware(['CheckLogin', 'IsDoctor', 'auth'])->group(function () {

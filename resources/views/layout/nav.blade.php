@@ -7,9 +7,10 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link href="./assets/css/argon-dashboard.css" rel="stylesheet"/>
-    <link href="./assets/css/nucleo-icons.css" rel="stylesheet"/>
-    <link href="./assets/css/nucleo-svg.css" rel="stylesheet"/>
+    <link href="{{ asset('assets/css/argon-dashboard.css') }}" rel="stylesheet"/>
+    <link href="{{ asset('assets/css/nucleo-icons.css') }}" rel="stylesheet"/>
+    <link href="{{ asset('assets/css/nucleo-svg.css') }}" rel="stylesheet"/>
+
     <style>
         body {
             font-family: 'Open Sans', sans-serif;
@@ -31,6 +32,16 @@
             align-items: center;
             z-index: 1000;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar .logo img {
+            height: 50px;
+            margin-right: 10px;
         }
 
         .navbar .nav-links a {
@@ -110,21 +121,26 @@
 
 <body>
     <div class="navbar">
-        <div class="logo">ระบบประเมินฯ</div>
+        <div class="logo">
+            <img src="path/to/logo.png" alt="Logo">
+            <span>การพัฒนาระบบประเมินความสามารถในการดำเนินกิจวัตรประจำวันของผู้สูงอายุที่มีภาวะพึ่งพิง</span>
+        </div>
         <div class="nav-links">
             @if (Auth::check())
                 @php
                     $user = Auth::user();
                 @endphp
-                @if ($user->Type_Personnel === 'Admin')
-                    <a href="{{ url('admin-dashboard') }}">หน้าแรก</a>
+
+
+            @if ($user->Type_Personnel === 'Admin')
+                    <a href="{{ url('admin-dashboard') }}">หน้าหลัก</a>
                 @elseif ($user->Type_Personnel === 'Doctor')
-                    <a href="{{ url('doctor-dashboard') }}">หน้าแรก</a>
+                    <a href="{{ url('doctor-dashboard') }}">หน้าหลัก</a>
                 @elseif ($user->Type_Personnel === 'Staff')
-                    <a href="{{ url('staff-dashboard') }}">หน้าแรก</a>
+                    <a href="{{ url('staff-dashboard') }}">หน้าหลัก</a>
                 @endif
-                <a href="#">ประเมินผล</a>
-                <a href="#">รายงาน</a>
+            <a href="/about">เกี่ยวกับ</a>
+            <a href="/contact">ติดต่อเรา</a>
             @endif
         </div>
         @if (Auth::check())
@@ -164,6 +180,7 @@
             }
         }
     </script>
+
 </body>
 
 </html>
