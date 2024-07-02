@@ -127,7 +127,7 @@
 
         <a href="{{ route('staff-dashboard') }}" class="back-button">Back to Dashboard</a>
 
-        <form action="{{ route('store-elderly') }}" method="POST">
+        <form action="{{ route('store-elderly') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="form-group">
                 <label for="Name_Elderly">Name:</label>
@@ -144,6 +144,16 @@
                 <textarea id="Address" name="Address" required></textarea>
             </div>
 
+            <div class="form-group">
+                <label for="Phone_Elderly">Phone Number:</label>
+                <input type="text" id="Phone_Elderly" name="Phone_Elderly" required>
+            </div>
+
+            <div class="form-group">
+                <label for="Image_Elderly">Image:</label>
+                <input type="file" id="Image_Elderly" name="Image_Elderly" accept="image/*">
+            </div>
+
             <div id="map"></div>
 
             <div class="form-group">
@@ -154,11 +164,6 @@
             <div class="form-group">
                 <label for="Longitude_position">Longitude Position:</label>
                 <input type="text" id="Longitude_position" name="Longitude_position">
-            </div>
-
-            <div class="form-group">
-                <label for="Phone_Elderly">Phone Number:</label>
-                <input type="text" id="Phone_Elderly" name="Phone_Elderly" required>
             </div>
 
             <div class="form-group">
