@@ -21,4 +21,14 @@ class Elderly extends Model
     ];
 
     public $timestamps = false;
+
+    public function barthel_adl()
+    {
+        return $this->hasOne(BarthelAdl::class, 'ID_Elderly', 'ID_Elderly');
+    }
+
+    public function care_giver()
+    {
+        return $this->hasOne(CareGiver::class, 'ID_Elderly', 'ID_Elderly');
+    }
 }
