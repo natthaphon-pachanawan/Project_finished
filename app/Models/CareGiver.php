@@ -29,4 +29,8 @@ class CareGiver extends Model
     {
         return $this->hasMany(ActivityCaregiver::class, 'ID_CG', 'ID_CG');
     }
+    public function elderly()
+    {
+        return $this->belongsTo(Elderly::class, 'ID_Elderly', 'ID_Elderly');
+    }
 }

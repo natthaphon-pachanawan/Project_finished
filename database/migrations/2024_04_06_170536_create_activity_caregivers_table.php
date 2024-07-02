@@ -32,7 +32,6 @@ return new class extends Migration
             $table->string('Problem')->nullable();
             $table->string('Troubleshoot')->nullable();
             $table->foreign('ID_CG')->references('ID_CG')->on('care_givers')->onDelete('cascade');
-            $table->timestamps();
         });
     }
 

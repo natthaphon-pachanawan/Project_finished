@@ -45,7 +45,7 @@ class ElderlyController extends Controller {
     }
 
     public function Showelderly() {
-        $elderlies = Elderly::all();
+        $elderlies = Elderly::with(['barthel_adl', 'care_giver'])->get();
         return view('staff.dashboard-staff', compact('elderlies'));
     }
 
