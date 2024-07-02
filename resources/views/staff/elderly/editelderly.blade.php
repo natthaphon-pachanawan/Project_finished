@@ -85,9 +85,74 @@
         }
     </style>
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+</head>
+
+<body>
+    @include('layout.nav')
+
+    <div class="container">
+        <h2>Edit Elderly Information</h2>
+
+        @if(session('success'))
+            <div class="success">
+                {{ session('success') }}
+            </div>
+        @endif
+
+        <a href="{{ route('staff-dashboard') }}" class="back-button">Back to Dashboard</a>
+
+        <form action="{{ route('update-elderly', ['id' => $elderly->ID_Elderly]) }}" method="POST" enctype="multipart/form-data">
+            @csrf
+            @method('PUT')
+            <div class="form-group">
+                <label for="Name_Elderly">Name:</label>
+                <input type="text" id="Name_Elderly" name="Name_Elderly" value="{{ $elderly->Name_Elderly }}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="Birthday">Birthday:</label>
+                <input type="date" id="Birthday" name="Birthday" value="{{ $elderly->Birthday }}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="Address">Address:</label>
+                <textarea id="Address" name="Address" required>{{ $elderly->Address }}</textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="Phone_Elderly">Phone Number:</label>
+                <input type="text" id="Phone_Elderly" name="Phone_Elderly" value="{{ $elderly->Phone_Elderly }}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="Image_Elderly">Image:</label>
+                <input type="file" id="Image_Elderly" name="Image_Elderly" accept="image/*">
+                @if($elderly->Image_Elderly)
+                    <img src="{{ asset('storage/'.$elderly->Image_Elderly) }}" alt="Elderly Image" width="100">
+                @endif
+            </div>
+
+            <div id="map"></div>
+
+            <div class="form-group">
+                <label for="Latitude_position">Latitude Position:</label>
+                <input type="text" id="Latitude_position" name="Latitude_position" value="{{ $addressElderly->Latitude_position }}">
+            </div>
+
+            <div class="form-group">
+                <label for="Longitude_position">Longitude Position:</label>
+                <input type="text" id="Longitude_position" name="Longitude_position" value="{{ $addressElderly->Longitude_position }}">
+            </div>
+
+            <div class="form-group">
+                <button type="submit">Update</button>
+            </div>
+        </form>
+    </div>
+
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            var initialPosition = [14.9930, 103.1029]; // Initial map position set to Buriram, Thailand
+            var initialPosition = [{{ $addressElderly->Latitude_position ?? 14.9930 }}, {{ $addressElderly->Longitude_position ?? 103.1029 }}]; // Initial map position set to the elderly's current location or default to Buriram, Thailand
 
             var map = L.map('map').setView(initialPosition, 13);
 
@@ -111,62 +176,6 @@
             });
         });
     </script>
-</head>
-
-<body>
-    @include('layout.nav')
-
-    <div class="container">
-        <h2>Edit Elderly Information</h2>
-
-        @if(session('success'))
-            <div class="success">
-                {{ session('success') }}
-            </div>
-        @endif
-
-        <a href="{{ route('staff-dashboard') }}" class="back-button">Back to Dashboard</a>
-
-        <form action="{{ route('update-elderly', ['id' => $elderly->ID_Elderly]) }}" method="POST">
-            @csrf
-            @method('PUT')
-            <div class="form-group">
-                <label for="Name_Elderly">Name:</label>
-                <input type="text" id="Name_Elderly" name="Name_Elderly" value="{{ $elderly->Name_Elderly }}" required>
-            </div>
-
-            <div class="form-group">
-                <label for="Birthday">Birthday:</label>
-                <input type="date" id="Birthday" name="Birthday" value="{{ $elderly->Birthday }}" required>
-            </div>
-
-            <div class="form-group">
-                <label for="Address">Address:</label>
-                <textarea id="Address" name="Address" required>{{ $elderly->Address }}</textarea>
-            </div>
-
-            <div id="map"></div>
-
-            <div class="form-group">
-                <label for="Latitude_position">Latitude Position:</label>
-                <input type="text" id="Latitude_position" name="Latitude_position" value="{{ $elderly->Latitude_position }}">
-            </div>
-
-            <div class="form-group">
-                <label for="Longitude_position">Longitude Position:</label>
-                <input type="text" id="Longitude_position" name="Longitude_position" value="{{ $elderly->Longitude_position }}">
-            </div>
-
-            <div class="form-group">
-                <label for="Phone_Elderly">Phone Number:</label>
-                <input type="text" id="Phone_Elderly" name="Phone_Elderly" value="{{ $elderly->Phone_Elderly }}" required>
-            </div>
-
-            <div class="form-group">
-                <button type="submit">Update</button>
-            </div>
-        </form>
-    </div>
 </body>
 
 </html>

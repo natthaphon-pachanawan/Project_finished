@@ -1,14 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="./assets/css/argon-dashboard.css" rel="stylesheet"/>
+    <link href="./assets/css/nucleo-icons.css" rel="stylesheet"/>
+    <link href="./assets/css/nucleo-svg.css" rel="stylesheet"/>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Open Sans', sans-serif;
             margin: 0;
             padding: 0;
             padding-top: 70px; /* Adjust this value based on the height of your navbar */
@@ -26,12 +30,18 @@
             justify-content: space-between;
             align-items: center;
             z-index: 1000;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
         .navbar .nav-links a {
             color: #fff;
             text-decoration: none;
             margin-left: 20px;
+            transition: color 0.3s ease;
+        }
+
+        .navbar .nav-links a:hover {
+            color: #f0ad4e;
         }
 
         .navbar .user-info {
@@ -64,6 +74,7 @@
             background-color: #fff;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             z-index: 1001;
+            border-radius: 8px;
         }
 
         .navbar .user-info .dropdown a {
@@ -71,6 +82,12 @@
             padding: 10px 20px;
             color: #333;
             text-decoration: none;
+            border-bottom: 1px solid #f4f4f4;
+            transition: background-color 0.3s ease;
+        }
+
+        .navbar .user-info .dropdown a:last-child {
+            border-bottom: none;
         }
 
         .navbar .user-info .dropdown a:hover {
@@ -79,13 +96,14 @@
 
         .fa-cog {
             cursor: pointer;
-            margin-right: 30px;
+            margin-right: 10px;
             font-size: 1.5em;
-            transition: transform 0.3s;
+            transition: transform 0.3s ease;
         }
 
         .fa-cog:hover {
             transform: rotate(90deg);
+            color: #f0ad4e;
         }
     </style>
 </head>

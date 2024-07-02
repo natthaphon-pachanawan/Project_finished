@@ -7,17 +7,18 @@ use Illuminate\Database\Eloquent\Model;
 
 class Elderly extends Model
 {
+    use HasFactory;
+
     protected $table = 'elderlys';
     protected $primaryKey = 'ID_Elderly';
+
     protected $fillable = [
-        'Name_Elderly', 'Birthday', 'Address', 'Latitude_position',
-        'Longitude_position', 'Phone_Elderly'
+        'Name_Elderly',
+        'Birthday',
+        'Address',
+        'Phone_Elderly',
+        'Image_Elderly'
     ];
+
     public $timestamps = false;
-
-
-
-
-
 }
-

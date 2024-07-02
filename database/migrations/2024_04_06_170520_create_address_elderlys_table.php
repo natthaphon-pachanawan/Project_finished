@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id('ID_Address');
             $table->unsignedBigInteger('ID_Elderly');
             $table->string('Name_Elderly');
-            $table->string('Latitude_position');
-            $table->string('Longitude_position');
+            $table->string('Latitude_position')->nullable();
+            $table->string('Longitude_position')->nullable();
             $table->foreign('ID_Elderly')->references('ID_Elderly')->on('elderlys')->onDelete('cascade');
 
         });
