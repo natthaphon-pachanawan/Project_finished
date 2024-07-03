@@ -211,7 +211,7 @@
 
             <button type="submit">Submit</button>
         </form>
-        <a href="{{ url('/staff-dashboard') }}" class="back-button">Back to Dashboard</a>
+        <a href="{{ route('adl.index') }}" class="back-button">Back to ADL List</a>
     </div>
 </body>
 </html>

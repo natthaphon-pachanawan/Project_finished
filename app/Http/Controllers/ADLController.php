@@ -9,10 +9,16 @@ use Illuminate\Support\Facades\Auth;
 
 class ADLController extends Controller
 {
-    public function show($id)
+    public function index(Request $request)
     {
-        $assessments = BarthelAdl::where('ID_Elderly', $id)->get();
-        return view('staff.ADL.ShowADL', compact('assessments'));
+        $search = $request->get('search');
+
+        $adls = BarthelAdl::with('elderly')
+            ->when($search, function ($query, $search) {
+                return $query->where('Name_Elderly', 'LIKE', "%$search%");
+            })->paginate(10);
+
+        return view('staff.ADL.ShowADL', compact('adls'));
     }
 
 
@@ -77,4 +83,68 @@ class ADLController extends Controller
 
         return redirect()->back()->with('success', 'ADL Assessment submitted successfully!');
     }
+
+    public function edit($id)
+{
+    $adl = BarthelAdl::findOrFail($id);
+    $elderlies = Elderly::all();
+    return view('staff.ADL.EditADL', compact('adl', 'elderlies'));
+}
+
+public function update(Request $request, $id)
+{
+    $adl = BarthelAdl::findOrFail($id);
+
+    $request->validate([
+        'elderly_id' => 'required|integer',
+        'feeding' => 'required|integer',
+        'grooming' => 'required|integer',
+        'transfer' => 'required|integer',
+        'toilet_use' => 'required|integer',
+        'mobility' => 'required|integer',
+        'dressing' => 'required|integer',
+        'stairs' => 'required|integer',
+        'bathing' => 'required|integer',
+        'bowels' => 'required|integer',
+        'bladder' => 'required|integer',
+    ]);
+
+    $totalScore = $request->feeding + $request->grooming + $request->transfer + $request->toilet_use + $request->mobility + $request->dressing + $request->stairs + $request->bathing + $request->bowels + $request->bladder;
+
+    if ($totalScore >= 0 && $totalScore <= 4) {
+        $group = 'กลุ่มติดสังคม';
+    } elseif ($totalScore >= 5 && $totalScore <= 11) {
+        $group = 'กลุ่มติดบ้าน';
+    } else {
+        $group = 'กลุ่มติดเตียง';
+    }
+
+    $adl->update([
+        'ID_Elderly' => $request->elderly_id,
+        'Name_Elderly' => Elderly::find($request->elderly_id)->Name_Elderly,
+        'Score_ADL' => $totalScore,
+        'Group_ADL' => $group,
+        'Feeding' => $request->feeding,
+        'Grooming' => $request->grooming,
+        'Transfer' => $request->transfer,
+        'Toilet_use' => $request->toilet_use,
+        'Mobility' => $request->mobility,
+        'Dressing' => $request->dressing,
+        'Stairs' => $request->stairs,
+        'Bathing' => $request->bathing,
+        'Bowels' => $request->bowels,
+        'Bladder' => $request->bladder,
+    ]);
+
+    return redirect()->route('adl.index')->with('success', 'ADL Assessment updated successfully!');
+}
+
+public function destroy($id)
+{
+    $adl = BarthelAdl::findOrFail($id);
+    $adl->delete();
+
+    return redirect()->route('adl.index')->with('success', 'ADL Assessment deleted successfully!');
+}
+
 }

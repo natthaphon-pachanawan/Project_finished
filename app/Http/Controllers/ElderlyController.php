@@ -44,10 +44,16 @@ class ElderlyController extends Controller {
         return redirect()->back()->with('success', 'Elderly information added successfully.');
     }
 
-    public function Showelderly() {
-        $elderlies = Elderly::with(['barthel_adl', 'care_giver'])->get();
+    public function Showelderly(Request $request) {
+        $search = $request->get('search');
+
+        $elderlies = Elderly::when($search, function($query, $search) {
+            return $query->where('Name_Elderly', 'LIKE', "%$search%");
+        })->paginate(10);
+
         return view('staff.dashboard-staff', compact('elderlies'));
     }
+
 
     public function Editelderly($id) {
         $elderly = Elderly::findOrFail($id);

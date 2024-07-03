@@ -191,7 +191,7 @@
         </form>
 
         <!-- Assessment Form -->
-        <form id="assessment-form" class="hidden" action="{{ route('caregivers.store') }}" method="POST">
+        <form id="assessment-form" class="hidden" action="{{ route('cg.store') }}" method="POST">
             @csrf
             <!-- Hidden fields to pass caregiver form data -->
             <input type="hidden" id="Name_CG_hidden" name="Name_CG">
