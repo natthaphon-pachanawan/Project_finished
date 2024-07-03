@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CG Information</title>
+    <title>ACG Information</title>
     <!-- Argon Dashboard CSS -->
     <link href="{{ asset('assets/css/argon-dashboard.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/css/nucleo-icons.css') }}" rel="stylesheet">
@@ -26,8 +26,8 @@
                         <div class="card-header pb-0 d-flex justify-content-between align-items-center">
                         </div>
                         <div class="card-body px-0 pt-0 pb-2">
-                            <form action="{{ route('cg.index') }}" method="GET" class="d-flex p-3">
-                                <input type="text" name="search" class="form-control" placeholder="ค้นหาชื่อผู้สูงอายุหรือผู้ดูแล" value="{{ request()->get('search') }}">
+                            <form action="{{ route('acg.index') }}" method="GET" class="d-flex p-3">
+                                <input type="text" name="search" class="form-control" placeholder="ค้นหาชื่อผู้สูงอายุ" value="{{ request()->get('search') }}">
                                 <button type="submit" class="btn btn-primary ml-2">ค้นหา</button>
                             </form>
                         </div>
@@ -35,14 +35,14 @@
                 </div>
             </div>
 
-            <!-- CG Information Card -->
+            <!-- ACG Information Card -->
             <div class="row">
                 <div class="col-12">
                     <div class="card mb-4">
                         <div class="card-header pb-0 d-flex justify-content-between align-items-center">
-                            <h6>CG Information</h6>
-                            <a href="{{ route('cg.create') }}" class="btn btn-primary">
-                                <i class="fas fa-plus"></i> Add CG
+                            <h6>ACG Information</h6>
+                            <a href="{{ route('activities.create') }}" class="btn btn-primary">
+                                <i class="fas fa-plus"></i> Add Activity
                             </a>
                         </div>
                         <div class="card-body px-0 pt-0 pb-2">
@@ -50,23 +50,21 @@
                                 <table class="table align-items-center mb-0">
                                     <thead>
                                         <tr>
-                                            <th class="text-center">Date CG</th>
+                                            <th class="text-center">Date ACG</th>
                                             <th class="text-center">Elderly Name</th>
                                             <th class="text-center">Caregiver Name</th>
-                                            <th class="text-center">ADL Group</th>
                                             <th class="text-center">Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach($careGivers as $cg)
+                                        @foreach($activities as $activity)
                                             <tr>
-                                                <td class="text-center">{{ $cg->Date_CG }}</td>
-                                                <td class="text-center">{{ $cg->Name_Elderly }}</td>
-                                                <td class="text-center">{{ $cg->Name_CG }}</td>
-                                                <td class="text-center">{{ $cg->Group_ADL }}</td>
+                                                <td class="text-center">{{ $activity->Date_ACG }}</td>
+                                                <td class="text-center">{{ $activity->caregiver->Name_Elderly }}</td>
+                                                <td class="text-center">{{ $activity->caregiver->Name_CG }}</td>
                                                 <td class="text-center">
-                                                    <a href="{{ route('cg.edit', ['id' => $cg->ID_CG]) }}" class="btn btn-warning btn-sm">Edit</a>
-                                                    <form action="{{ route('cg.destroy', ['id' => $cg->ID_CG]) }}" method="POST" style="display:inline-block;" onsubmit="return confirm('Are you sure you want to delete this CG?');">
+                                                    <a href="{{ route('acg.edit', ['id' => $activity->ID_ACG]) }}" class="btn btn-warning btn-sm">Edit</a>
+                                                    <form action="{{ route('acg.destroy', ['id' => $activity->ID_ACG]) }}" method="POST" style="display:inline-block;" onsubmit="return confirm('Are you sure you want to delete this activity?');">
                                                         @csrf
                                                         @method('DELETE')
                                                         <button type="submit" class="btn btn-danger btn-sm">Delete</button>
@@ -77,7 +75,7 @@
                                     </tbody>
                                 </table>
                             </div>
-                            {{ $careGivers->links() }} <!-- For pagination links -->
+                            {{ $activities->links() }} <!-- For pagination links -->
                         </div>
                     </div>
                 </div>

@@ -26,19 +26,19 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-white {{ Request::is('results') ? 'active bg-gradient-primary' : '' }}" href="#">
+                <a class="nav-link text-white {{ Request::is('cg-show') ? 'active bg-gradient-primary' : '' }}" href="cg-show">
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="material-icons opacity-10">assignment</i>
                     </div>
-                    <span class="nav-link-text ms-1">ผลการประเมิน</span>
+                    <span class="nav-link-text ms-1">การปฏิบัติงานผู้ดูแลผู้สูงอายุ (CG)</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-white {{ Request::is('elderly-info') ? 'active bg-gradient-primary' : '' }}" href="#">
+                <a class="nav-link text-white {{ Request::is('acg-show') ? 'active bg-gradient-primary' : '' }}" href="acg-show">
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="material-icons opacity-10">elderly</i>
                     </div>
-                    <span class="nav-link-text ms-1">ข้อมูลผู้สูงอายุ</span>
+                    <span class="nav-link-text ms-1">การช่วยเหลือของผู้ดูแลผู้สูงอายุ (ACG)</span>
                 </a>
             </li>
             <li class="nav-item">

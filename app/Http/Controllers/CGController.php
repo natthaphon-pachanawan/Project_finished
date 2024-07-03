@@ -11,6 +11,18 @@ use Carbon\Carbon;
 
 class CGController extends Controller
 {
+    public function index(Request $request)
+    {
+        $query = CareGiver::query();
+
+        if ($request->has('search')) {
+            $query->where('Name_Elderly', 'like', '%' . $request->search . '%')
+                ->orWhere('Name_CG', 'like', '%' . $request->search . '%');
+        }
+
+        $careGivers = $query->paginate(10);
+        return view('staff.CG.ShowCG', compact('careGivers'));
+    }
     public function create()
     {
         $elderlys = BarthelAdl::with('elderly')->get();
@@ -107,8 +119,168 @@ class CGController extends Controller
         $cg->fill($careGiverData);
         $cg->save();
 
-        return redirect()->route('caregivers.create')->with('success', 'Care Giver added successfully!');
+        return redirect()->route('cg.create')->with('success', 'Care Giver added successfully!');
     }
+
+    public function edit($id)
+    {
+        $caregiver = CareGiver::findOrFail($id);
+        $elderlys = Elderly::all();
+        return view('staff.CG.EditCG', compact('caregiver', 'elderlys'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        // Validate the input
+        $request->validate([
+            'Name_CG' => 'required|string',
+            'ID_Elderly' => 'required|exists:elderlies,ID_Elderly',
+            'Name_Elderly' => 'required|string',
+            'Address' => 'required|string',
+            'Weight' => 'required|numeric',
+            'Height' => 'required|numeric',
+            'Waist' => 'required|numeric',
+            'Group_ADL' => 'required|string',
+            'Disease' => 'nullable|string',
+            'Disability' => 'nullable|string',
+            'Rights' => 'nullable|string',
+            'Caretaker' => 'required|string',
+            'Related' => 'required|string',
+            'Phone_Caretaker' => 'required|string',
+            'Date' => 'required|date',
+            'Consciousness' => 'required|string',
+            'Vital_signs' => 'required|string',
+            'Bedsores' => 'required|string',
+            'Pain' => 'required|string',
+            'Swelling' => 'required|string',
+            'Itchy_rash' => 'required|string',
+            'Stiff_joints' => 'required|string',
+            'Malnutrition' => 'required|string',
+            'Eating' => 'required|string',
+            'Swallowing' => 'required|string',
+            'Defecation' => 'required|string',
+            'Urinary_excretion' => 'required|string',
+            'Taking_medicine' => 'required|string',
+            'Emotional_state' => 'required|string',
+            'Economic_problems' => 'required|string',
+            'Social_problems' => 'required|string',
+            'Doctor_FU' => 'required|string',
+            'Other_problems' => 'nullable|string',
+            'Assistance' => 'nullable|string',
+            'Reporter' => 'required|string',
+        ]);
+
+        // Gather caregiver data
+        $careGiverData = $request->only([
+            'Name_CG', 'ID_Elderly', 'Name_Elderly', 'Address', 'Weight', 'Height',
+            'Waist', 'Group_ADL', 'Disease', 'Disability', 'Rights', 'Caretaker',
+            'Related', 'Phone_Caretaker', 'Date', 'Consciousness', 'Vital_signs',
+            'Bedsores', 'Pain', 'Swelling', 'Itchy_rash', 'Stiff_joints',
+            'Malnutrition', 'Eating', 'Swallowing', 'Defecation', 'Urinary_excretion',
+            'Taking_medicine', 'Emotional_state', 'Economic_problems', 'Social_problems',
+            'Doctor_FU', 'Other_problems', 'Assistance', 'Reporter'
+        ]);
+
+        // Update the CG record
+        $careGiver = CareGiver::findOrFail($id);
+        $careGiver->update($careGiverData);
+
+        return redirect()->route('cg.index')->with('success', 'Care Giver information updated successfully!');
+    }
+
+    public function destroy($id)
+    {
+        $careGiver = CareGiver::findOrFail($id);
+        $careGiver->delete();
+
+        return redirect()->route('cg.index')->with('success', 'Care Giver deleted successfully!');
+    }
+
+    public function showACG(Request $request)
+    {
+        $query = ActivityCaregiver::query();
+
+        if ($request->has('search')) {
+            $query->whereHas('caregiver', function ($q) use ($request) {
+                $q->where('Name_Elderly', 'like', '%' . $request->search . '%');
+            });
+        }
+
+        $activities = $query->paginate(10);
+        return view('staff.ACG.ShowACG', compact('activities'));
+    }
+
+    public function editActivity($id)
+{
+    $activity = ActivityCaregiver::findOrFail($id);
+    return view('staff.ACG.EditACG', compact('activity'));
+}
+
+public function updateActivity(Request $request, $id)
+{
+    // Validate request
+    $request->validate([
+        'activity_date' => 'required|date',
+        'evaluate' => 'nullable|string',
+        'dress_the_wound' => 'nullable|string',
+        'rehabilitate' => 'nullable|string',
+        'clean_body' => 'nullable|string',
+        'take_care_medicine' => 'nullable|string',
+        'take_care_feeding' => 'nullable|string',
+        'environmental' => 'nullable|string',
+        'take_exercise' => 'nullable|string',
+        'give_advice_consult' => 'nullable|string',
+        'take_to_see_a_doctor' => 'nullable|string',
+        'other_specified' => 'nullable|string',
+        'take_to_make_merit' => 'nullable|string',
+        'take_to_market' => 'nullable|string',
+        'take_to_meet_friends' => 'nullable|string',
+        'take_to_allowance' => 'nullable|string',
+        'talk_as_friends' => 'nullable|string',
+        'other_social_specified' => 'nullable|string',
+        'problems_found' => 'nullable|string',
+        'solutions' => 'nullable|string',
+    ]);
+
+    // Gather activity data
+    $activityData = [
+        'Date_ACG' => $request->activity_date,
+        'Evaluate' => $request->evaluate,
+        'Dress_the_wound' => $request->dress_the_wound,
+        'Rehabilitate' => $request->rehabilitate,
+        'Clean_body' => $request->clean_body,
+        'Take_care_medicine' => $request->take_care_medicine,
+        'Take_care_feeding' => $request->take_care_feeding,
+        'Environmental' => $request->environmental,
+        'Take_exercise' => $request->take_exercise,
+        'Give_advice_consult' => $request->give_advice_consult,
+        'Take_to_see_a_doctor' => $request->take_to_see_a_doctor,
+        'Other' => $request->other_specified,
+        'Take_to_make_merit' => $request->take_to_make_merit,
+        'Take_to_market' => $request->take_to_market,
+        'Take_to_meet_friends' => $request->take_to_meet_friends,
+        'Take_to_allowance' => $request->take_to_allowance,
+        'Talk_as_friends' => $request->talk_as_friends,
+        'Other_specified' => $request->other_social_specified,
+        'Problem' => $request->problems_found,
+        'Troubleshoot' => $request->solutions,
+    ];
+
+    // Update the activity
+    $activity = ActivityCaregiver::findOrFail($id);
+    $activity->update($activityData);
+
+    return redirect()->route('acg.index')->with('success', 'Activity updated successfully!');
+}
+
+public function destroyActivity($id)
+{
+    $activity = ActivityCaregiver::findOrFail($id);
+    $activity->delete();
+
+    return redirect()->route('acg.index')->with('success', 'Activity deleted successfully!');
+}
+
 
     public function createActivity()
     {

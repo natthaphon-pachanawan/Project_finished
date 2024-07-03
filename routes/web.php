@@ -42,10 +42,6 @@ Route::controller(ProfileController::class)->group(function () {
 });
 
 Route::controller(ADLController::class)->group(function () {
-
-    Route::get('adl-elderly', 'create')->name('adl.create');
-    Route::post('/adl/submit', 'submitADL')->name('adl.submit');
-
 });
 
 Route::controller(ElderlyController::class)->group(function () {
@@ -58,15 +54,12 @@ Route::controller(ElderlyController::class)->group(function () {
 });
 
 Route::controller(CGController::class)->group(function () {
-    Route::get('caregivers/create', 'create')->name('caregivers.create');
-    Route::post('caregivers/store', 'store')->name('caregivers.store');
+
     Route::get('get-group-adl/{elderlyId}', 'getGroupADL');
     Route::get('get-elderly-details/{elderlyId}', 'getElderlyDetails');
 
     Route::get('/activities/create', 'createActivity')->name('activities.create');
     Route::post('activities/store', 'storeActivity')->name('activities.store');
-
-
 });
 
 Route::get('error', function () {
@@ -96,8 +89,23 @@ Route::middleware(['CheckLogin', 'IsStaff', 'auth'])->group(function () {
     Route::get('adl-edit/{id}', [ADLController::class, 'edit'])->name('adl.edit');
     Route::put('adl-update/{id}', [ADLController::class, 'update'])->name('adl.update');
     Route::delete('adl-destroy/{id}', [ADLController::class, 'destroy'])->name('adl.destroy');
+    Route::get('adl-elderly', [ADLController::class, 'create'])->name('adl.create');
+    Route::post('/adl/submit', [ADLController::class,  'submitADL'])->name('adl.submit');
+
+    Route::get('cg-show', [CGController::class, 'index'])->name('cg.index');
+    Route::get('cg-edit/{id}', [CGController::class, 'edit'])->name('cg.edit');
+    Route::put('cg-update/{id}', [CGController::class, 'update'])->name('cg.update');
+    Route::delete('cg-destroy/{id}', [CGController::class, 'destroy'])->name('cg.destroy');
+    Route::get('cg-create', [CGController::class, 'create'])->name('cg.create');
+    Route::post('cg-store', [CGController::class, 'store'])->name('cg.store');
+
+    Route::get('acg-show', [CGController::class, 'showACG'])->name('acg.index');
+    Route::get('acg-edit/{id}', [CGController::class, 'editActivity'])->name('acg.edit');
+    Route::put('acg-update/{id}', [CGController::class, 'updateActivity'])->name('acg.update');
+    Route::delete('acg-destroy/{id}', [CGController::class, 'destroyActivity'])->name('acg.destroy');
 
 });
+
 
 Route::middleware(['CheckLogin', 'IsDoctor', 'auth'])->group(function () {
     Route::get('doctor-dashboard', function () {

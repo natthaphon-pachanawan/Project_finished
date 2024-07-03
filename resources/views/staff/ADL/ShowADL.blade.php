@@ -39,28 +39,31 @@
             <div class="row">
                 <div class="col-12">
                     <div class="card mb-4">
-                        <div class="card-header pb-0">
+                        <div class="card-header pb-0 d-flex justify-content-between align-items-center">
                             <h6>ADL Information</h6>
+                            <a href="adl-elderly" class="btn btn-primary">
+                                <i class="fas fa-plus"></i> Add ADL
+                            </a>
                         </div>
                         <div class="card-body px-0 pt-0 pb-2">
                             <div class="table-responsive p-0">
                                 <table class="table align-items-center mb-0">
                                     <thead>
                                         <tr>
-                                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Elderly Name</th>
-                                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">User Name</th>
-                                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">ADL Score</th>
-                                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">ADL Group</th>
-                                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Actions</th>
+                                            <th class="text-center">Elderly Name</th>
+                                            <th class="text-center">User Name</th>
+                                            <th class="text-center">ADL Score</th>
+                                            <th class="text-center">ADL Group</th>
+                                            <th class="text-center">Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach($adls as $adl)
                                             <tr>
-                                                <td>{{ $adl->Name_Elderly }}</td>
-                                                <td>{{ $adl->Name_User }}</td>
-                                                <td>{{ $adl->Score_ADL }}</td>
-                                                <td>{{ $adl->Group_ADL }}</td>
+                                                <td class="text-center">{{ $adl->Name_Elderly }}</td>
+                                                <td class="text-center">{{ $adl->Name_User }}</td>
+                                                <td class="text-center">{{ $adl->Score_ADL }}</td>
+                                                <td class="text-center">{{ $adl->Group_ADL }}</td>
                                                 <td class="text-center">
                                                     <button onclick="toggleDetails({{ $adl->ID_ADL }})" class="btn btn-info btn-sm">View</button>
                                                     <a href="{{ route('adl.edit', ['id' => $adl->ID_ADL]) }}" class="btn btn-warning btn-sm">Edit</a>
@@ -74,34 +77,34 @@
                                             <tr id="details-{{ $adl->ID_ADL }}" style="display:none;">
                                                 <td colspan="5">
                                                     <div>
-                                                        <strong>Feeding:</strong> {{ \App\Models\BarthelAdl::getAdlDescription('feeding', $adl->Feeding) }}
+                                                        <strong>Feeding (การรับประทานอาหาร):</strong> {{ \App\Models\BarthelAdl::getAdlDescription('feeding', $adl->Feeding) }}
                                                     </div>
                                                     <div>
-                                                        <strong>Grooming:</strong> {{ \App\Models\BarthelAdl::getAdlDescription('grooming', $adl->Grooming) }}
+                                                        <strong>Grooming (การดูแลร่างกาย):</strong> {{ \App\Models\BarthelAdl::getAdlDescription('grooming', $adl->Grooming) }}
                                                     </div>
                                                     <div>
-                                                        <strong>Transfer:</strong> {{ \App\Models\BarthelAdl::getAdlDescription('transfer', $adl->Transfer) }}
+                                                        <strong>Transfer (การย้ายตัว):</strong> {{ \App\Models\BarthelAdl::getAdlDescription('transfer', $adl->Transfer) }}
                                                     </div>
                                                     <div>
-                                                        <strong>Toilet Use:</strong> {{ \App\Models\BarthelAdl::getAdlDescription('toilet_use', $adl->Toilet_use) }}
+                                                        <strong>Toilet Use (การใช้ห้องน้ำ):</strong> {{ \App\Models\BarthelAdl::getAdlDescription('toilet_use', $adl->Toilet_use) }}
                                                     </div>
                                                     <div>
-                                                        <strong>Mobility:</strong> {{ \App\Models\BarthelAdl::getAdlDescription('mobility', $adl->Mobility) }}
+                                                        <strong>Mobility (การเคลื่อนที่ภายในห้องหรือบ้าน):</strong> {{ \App\Models\BarthelAdl::getAdlDescription('mobility', $adl->Mobility) }}
                                                     </div>
                                                     <div>
-                                                        <strong>Dressing:</strong> {{ \App\Models\BarthelAdl::getAdlDescription('dressing', $adl->Dressing) }}
+                                                        <strong>Dressing (การสวมใส่เสื้อผ้า):</strong> {{ \App\Models\BarthelAdl::getAdlDescription('dressing', $adl->Dressing) }}
                                                     </div>
                                                     <div>
-                                                        <strong>Stairs:</strong> {{ \App\Models\BarthelAdl::getAdlDescription('stairs', $adl->Stairs) }}
+                                                        <strong>Stairs (การขึ้นลงบันได 1 ชั้น):</strong> {{ \App\Models\BarthelAdl::getAdlDescription('stairs', $adl->Stairs) }}
                                                     </div>
                                                     <div>
-                                                        <strong>Bathing:</strong> {{ \App\Models\BarthelAdl::getAdlDescription('bathing', $adl->Bathing) }}
+                                                        <strong>Bathing (การอาบน้ำ):</strong> {{ \App\Models\BarthelAdl::getAdlDescription('bathing', $adl->Bathing) }}
                                                     </div>
                                                     <div>
-                                                        <strong>Bowels:</strong> {{ \App\Models\BarthelAdl::getAdlDescription('bowels', $adl->Bowels) }}
+                                                        <strong>Bowels (การกลั้นการถ่ายอุจจาระในระยะ 1 สัปดาห์ที่ผ่านมา):</strong> {{ \App\Models\BarthelAdl::getAdlDescription('bowels', $adl->Bowels) }}
                                                     </div>
                                                     <div>
-                                                        <strong>Bladder:</strong> {{ \App\Models\BarthelAdl::getAdlDescription('bladder', $adl->Bladder) }}
+                                                        <strong>Bladder (การกลั้นปัสสาวะในระยะ 1 สัปดาห์ที่ผ่านมา):</strong> {{ \App\Models\BarthelAdl::getAdlDescription('bladder', $adl->Bladder) }}
                                                     </div>
                                                 </td>
                                             </tr>
