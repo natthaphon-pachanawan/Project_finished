@@ -5,7 +5,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Staff Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .chart-container {
+            position: relative;
+            height: 300px; /* Adjust the height as needed */
+            width: 100%;
+        }
 
+        .chart-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .chart-column {
+            flex: 1;
+            min-width: 300px;
+        }
+    </style>
 </head>
 
 <body class="g-sidenav-show bg-gray-100">
@@ -17,6 +35,7 @@
     <main class="main-content position-relative h-100 border-radius-lg">
         <div class="container-fluid py-4">
 
+            <!-- Search Form -->
             <div class="row">
                 <div class="col-12">
                     <div class="card mb-4">
@@ -31,6 +50,8 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Elderly Information -->
             <div class="row">
                 <div class="col-12">
                     <div class="card mb-4">
@@ -39,6 +60,9 @@
                             <a href="add-elderly" class="btn btn-primary">
                                 <i class="fas fa-plus"></i> เพิ่มผู้สูงอายุ
                             </a>
+                            <a href="#" class="btn btn-success ml-2">
+                                    <i class="fas fa-file-pdf"></i> ออกรายงาน
+                                </a>
                         </div>
                         <div class="card-body px-0 pt-0 pb-2">
                             <div class="table-responsive p-0">
@@ -84,6 +108,7 @@
                                                 @endif
                                             </td>
                                             <td class="text-center">
+                                                <a href="{{ route('search-location', ['id' => $elderly->ID_Elderly]) }}" target="_blank" class="btn btn-info">ค้นหาที่ตั้ง</a>
                                                 <a href="{{ route('edit-elderly', ['id' => $elderly->ID_Elderly]) }}" class="btn btn-warning">แก้ไข</a>
                                                 <form action="{{ route('delete-elderly', ['id' => $elderly->ID_Elderly]) }}" method="POST" style="display:inline-block;" onsubmit="return confirm('คุณแน่ใจหรือไม่ว่าต้องการลบ ?');">
                                                     @csrf
@@ -96,10 +121,37 @@
                                     </tbody>
                                 </table>
                             </div>
+                            {{ $elderlies->links() }} <!-- For pagination links -->
                         </div>
                     </div>
                 </div>
             </div>
+
+            <!-- Combined Graphs -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="card mb-4">
+                        <div class="card-header pb-0">
+                            <h6>จำนวนและสัดส่วนผู้สูงอายุตามช่วงอายุ</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="chart-row">
+                                <div class="chart-column">
+                                    <div class="chart-container">
+                                        <canvas id="ageBarChart"></canvas>
+                                    </div>
+                                </div>
+                                <div class="chart-column">
+                                    <div class="chart-container">
+                                        <canvas id="agePieChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </main>
 
@@ -112,6 +164,66 @@
     <script src="./assets/js/Chart.extension.js"></script>
     <script src="./assets/js/perfect-scrollbar.min.js"></script>
     <script src="./assets/js/smooth-scrollbar.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var ageGroups = @json($ageGroups);
+
+            var ageBarChartCtx = document.getElementById('ageBarChart').getContext('2d');
+            new Chart(ageBarChartCtx, {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(ageGroups),
+                    datasets: [{
+                        label: 'จำนวนผู้สูงอายุ',
+                        data: Object.values(ageGroups),
+                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+            var agePieChartCtx = document.getElementById('agePieChart').getContext('2d');
+            new Chart(agePieChartCtx, {
+                type: 'pie',
+                data: {
+                    labels: Object.keys(ageGroups),
+                    datasets: [{
+                        label: 'สัดส่วนผู้สูงอายุ',
+                        data: Object.values(ageGroups),
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                    }
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>

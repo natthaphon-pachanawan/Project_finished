@@ -8,6 +8,7 @@ use App\Http\Controllers\PersonnelController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CGController;
+use App\Http\Controllers\ReportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -51,6 +52,8 @@ Route::controller(ElderlyController::class)->group(function () {
     Route::get('edit-elderly/{id}', 'Editelderly')->name('edit-elderly');
     Route::put('/update-elderly/{id}', 'Updateelderly')->name('update-elderly');
     Route::delete('/delete-elderly/{id}', 'Deleteelderly')->name('delete-elderly');
+
+    Route::get('/generate-pdf', 'generatePDF')->name('generate-pdf');
 });
 
 Route::controller(CGController::class)->group(function () {
@@ -58,9 +61,12 @@ Route::controller(CGController::class)->group(function () {
     Route::get('get-group-adl/{elderlyId}', 'getGroupADL');
     Route::get('get-elderly-details/{elderlyId}', 'getElderlyDetails');
 
-    Route::get('/activities/create', 'createActivity')->name('activities.create');
-    Route::post('activities/store', 'storeActivity')->name('activities.store');
+    Route::get('activities/create', 'createActivity')->name('activities.create');
+    Route::post('/activities/store', 'storeActivity')->name('activities.store');
 });
+
+
+
 
 Route::get('error', function () {
     return view('error.error');
@@ -103,6 +109,9 @@ Route::middleware(['CheckLogin', 'IsStaff', 'auth'])->group(function () {
     Route::get('acg-edit/{id}', [CGController::class, 'editActivity'])->name('acg.edit');
     Route::put('acg-update/{id}', [CGController::class, 'updateActivity'])->name('acg.update');
     Route::delete('acg-destroy/{id}', [CGController::class, 'destroyActivity'])->name('acg.destroy');
+
+    Route::get('search-location/{id}', [ElderlyController::class, 'searchLocation'])->name('search-location');
+
 
 });
 
