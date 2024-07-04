@@ -117,7 +117,7 @@
     @include('layout.nav')
 
     <div class="container">
-        <h1>Edit Care Giver</h1>
+        <h1>แก้ไขแบบฟอร์มรายงานผลการปฏิบัติงานผู้ดูแลผู้สูงอายุ (CG)</h1>
         @if (session('success'))
             <div style="color: green; margin-bottom: 20px;">{{ session('success') }}</div>
         @endif
@@ -188,7 +188,9 @@
             </div>
             <input type="hidden" id="ID_ADL" name="ID_ADL" value="{{ $caregiver->ID_ADL }}">
             <input type="hidden" id="Name_Elderly_hidden" name="Name_Elderly" value="{{ $caregiver->Name_Elderly }}">
+
             <button type="button" onclick="transferValues(); showAssessmentForm();">ถัดไป</button>
+            <a href="{{ route('cg.index') }}" class="back-button">กลับไปหน้าหลัก</a>
         </form>
 
         <!-- Assessment Form -->

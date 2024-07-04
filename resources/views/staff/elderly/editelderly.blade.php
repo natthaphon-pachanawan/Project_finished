@@ -91,7 +91,7 @@
     @include('layout.nav')
 
     <div class="container">
-        <h2>Edit Elderly Information</h2>
+        <h2>แก้ไขข้อมูลผู้สูงอายุ</h2>
 
         @if(session('success'))
             <div class="success">
@@ -99,33 +99,31 @@
             </div>
         @endif
 
-        <a href="{{ route('staff-dashboard') }}" class="back-button">Back to Dashboard</a>
-
         <form action="{{ route('update-elderly', ['id' => $elderly->ID_Elderly]) }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
             <div class="form-group">
-                <label for="Name_Elderly">Name:</label>
+                <label for="Name_Elderly">ชื่อ-สกุล:</label>
                 <input type="text" id="Name_Elderly" name="Name_Elderly" value="{{ $elderly->Name_Elderly }}" required>
             </div>
 
             <div class="form-group">
-                <label for="Birthday">Birthday:</label>
+                <label for="Birthday">วัน/เดือน/ปีเกิด:</label>
                 <input type="date" id="Birthday" name="Birthday" value="{{ $elderly->Birthday }}" required>
             </div>
 
             <div class="form-group">
-                <label for="Address">Address:</label>
+                <label for="Address">ที่อยู่:</label>
                 <textarea id="Address" name="Address" required>{{ $elderly->Address }}</textarea>
             </div>
 
             <div class="form-group">
-                <label for="Phone_Elderly">Phone Number:</label>
+                <label for="Phone_Elderly">เบอร์โทร:</label>
                 <input type="text" id="Phone_Elderly" name="Phone_Elderly" value="{{ $elderly->Phone_Elderly }}" required>
             </div>
 
             <div class="form-group">
-                <label for="Image_Elderly">Image:</label>
+                <label for="Image_Elderly">รูปภาพ:</label>
                 <input type="file" id="Image_Elderly" name="Image_Elderly" accept="image/*">
                 @if($elderly->Image_Elderly)
                     <img src="{{ asset('storage/'.$elderly->Image_Elderly) }}" alt="Elderly Image" width="100">
@@ -145,7 +143,8 @@
             </div>
 
             <div class="form-group">
-                <button type="submit">Update</button>
+                <button type="submit">อัพเดต</button>
+                <a href="{{ route('staff-dashboard') }}" class="back-button">กลับไปหน้าหลัก</a>
             </div>
         </form>
     </div>

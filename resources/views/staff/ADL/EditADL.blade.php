@@ -107,7 +107,7 @@
     @include('layout.nav')
 
     <div class="content">
-        <h1>Edit ADL Assessment</h1>
+        <h1>แก้ไขแบบฟอร์มประเมินความสามารถในการดำเนินชีวิตประจำวัน (ADL)</h1>
 
         <form method="POST" action="{{ route('adl.update', ['id' => $adl->ID_ADL]) }}">
             @csrf
@@ -115,7 +115,7 @@
 
             <!-- Select Elderly Name -->
             <div>
-                <label for="elderly_id">Select Elderly:</label>
+                <label for="elderly_id">เลือกผู้สูงอายุ:</label>
                 <select name="elderly_id" id="elderly_id" required>
                     @foreach($elderlies as $elderly)
                         <option value="{{ $elderly->ID_Elderly }}" {{ $adl->ID_Elderly == $elderly->ID_Elderly ? 'selected' : '' }}>
@@ -127,7 +127,7 @@
 
             <!-- Display Name of User performing the assessment -->
             <div>
-                <label>User performing the assessment:</label>
+                <label>เจ้าหน้าที่ผู้รับผิดชอบในการทำแบบฟอร์ม:</label>
                 <span>{{ $adl->Name_User }}</span>
             </div>
 
@@ -205,18 +205,18 @@
             <!-- Total Score and Group -->
             <div class="total-group">
                 <div>
-                    <label>Total Score:</label>
+                    <label>คะแนนรวม:</label>
                     <span id="total_score">0</span>
                 </div>
                 <div>
-                    <label>Group:</label>
+                    <label>ประเภทกลุ่ม:</label>
                     <span id="group">N/A</span>
                 </div>
             </div>
 
-            <button type="submit">Update</button>
+            <button type="submit">อัพเดต</button>
+            <a href="{{ route('adl.index') }}" class="back-button">กลับไปหน้า ADL</a>
         </form>
-        <a href="{{ route('adl.index') }}" class="back-button">Back to ADL List</a>
     </div>
 </body>
 </html>

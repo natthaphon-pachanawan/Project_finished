@@ -86,7 +86,7 @@
     @include('layout.nav')
 
     <div class="container">
-        <h1>Add Activity</h1>
+        <h1>แบบฟอร์มกิจกรรมการดูแลผู้สงอายุ (ACG)</h1>
         @if (session('success'))
             <div style="color: green; margin-bottom: 20px;">{{ session('success') }}</div>
         @endif
@@ -100,14 +100,14 @@
             <div>
                 <label for="ID_Elderly">ชื่อ-สกุลผู้สูงอายุ</label>
                 <select id="ID_Elderly" name="ID_Elderly" onchange="fetchElderlyDetails()" required>
-                    <option value="">Select Elderly</option>
+                    <option value="">เลือกผู้สูงอายุ</option>
                     @foreach ($elderlys as $elderly)
                         <option value="{{ $elderly->ID_ADL }}">{{ $elderly->elderly->Name_Elderly }}</option>
                     @endforeach
                 </select>
             </div>
             <div>
-                <label for="activity_date">กิจกรรมการดูแลผู้สูงอายุ</label>
+                <label for="activity_date">ลงเวลากิจกรรมการดูแลผู้สูงอายุ</label>
                 <input type="date" id="activity_date" name="activity_date" required>
             </div>
 
@@ -213,6 +213,7 @@
                 <textarea id="solutions" name="solutions" rows="5"></textarea>
             </div>
             <button type="submit">บันทึก</button>
+            <a href="{{ route('acg.index') }}" class="back-button">กลับไปหน้า ACG</a>
         </form>
     </div>
 </body>

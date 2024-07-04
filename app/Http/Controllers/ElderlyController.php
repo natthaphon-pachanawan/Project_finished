@@ -7,12 +7,15 @@ use App\Models\AddressElderly;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
-class ElderlyController extends Controller {
-    public function Addelderly() {
+class ElderlyController extends Controller
+{
+    public function Addelderly()
+    {
         return view('staff.elderly.addelderly');
     }
 
-    public function Storeelderly(Request $request) {
+    public function Storeelderly(Request $request)
+    {
         $request->validate([
             'Name_Elderly' => 'required|string|max:255',
             'Birthday' => 'required|date',
@@ -22,10 +25,7 @@ class ElderlyController extends Controller {
         ]);
 
         $elderly = new Elderly();
-        $elderly->Name_Elderly = $request->input('Name_Elderly');
-        $elderly->Birthday = $request->input('Birthday');
-        $elderly->Address = $request->input('Address');
-        $elderly->Phone_Elderly = $request->input('Phone_Elderly');
+        $elderly->fill($request->only(['Name_Elderly', 'Birthday', 'Address', 'Phone_Elderly']));
 
         if ($request->hasFile('Image_Elderly')) {
             $imagePath = $request->file('Image_Elderly')->store('elderly_images', 'public');
@@ -44,24 +44,26 @@ class ElderlyController extends Controller {
         return redirect()->back()->with('success', 'Elderly information added successfully.');
     }
 
-    public function Showelderly(Request $request) {
+    public function Showelderly(Request $request)
+    {
         $search = $request->get('search');
 
-        $elderlies = Elderly::when($search, function($query, $search) {
+        $elderlies = Elderly::when($search, function ($query, $search) {
             return $query->where('Name_Elderly', 'LIKE', "%$search%");
         })->paginate(10);
 
         return view('staff.dashboard-staff', compact('elderlies'));
     }
 
-
-    public function Editelderly($id) {
+    public function Editelderly($id)
+    {
         $elderly = Elderly::findOrFail($id);
         $addressElderly = AddressElderly::where('ID_Elderly', $id)->first();
         return view('staff.elderly.editelderly', compact('elderly', 'addressElderly'));
     }
 
-    public function Updateelderly(Request $request, $id) {
+    public function Updateelderly(Request $request, $id)
+    {
         $elderly = Elderly::findOrFail($id);
 
         $request->validate([
@@ -72,10 +74,7 @@ class ElderlyController extends Controller {
             'Image_Elderly' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
         ]);
 
-        $elderly->Name_Elderly = $request->input('Name_Elderly');
-        $elderly->Birthday = $request->input('Birthday');
-        $elderly->Address = $request->input('Address');
-        $elderly->Phone_Elderly = $request->input('Phone_Elderly');
+        $elderly->fill($request->only(['Name_Elderly', 'Birthday', 'Address', 'Phone_Elderly']));
 
         if ($request->hasFile('Image_Elderly')) {
             // Delete old image
@@ -90,6 +89,10 @@ class ElderlyController extends Controller {
         $elderly->save();
 
         $addressElderly = AddressElderly::where('ID_Elderly', $id)->first();
+        if (!$addressElderly) {
+            $addressElderly = new AddressElderly();
+            $addressElderly->ID_Elderly = $id;
+        }
         $addressElderly->Latitude_position = $request->input('Latitude_position');
         $addressElderly->Longitude_position = $request->input('Longitude_position');
         $addressElderly->save();
@@ -97,7 +100,8 @@ class ElderlyController extends Controller {
         return redirect()->route('staff-dashboard')->with('success', 'Elderly information updated successfully.');
     }
 
-    public function Deleteelderly($id) {
+    public function Deleteelderly($id)
+    {
         $elderly = Elderly::findOrFail($id);
 
         // Delete image

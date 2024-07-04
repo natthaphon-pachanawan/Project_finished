@@ -134,7 +134,7 @@ class CGController extends Controller
         // Validate the input
         $request->validate([
             'Name_CG' => 'required|string',
-            'ID_Elderly' => 'required|exists:elderlies,ID_Elderly',
+            'ID_Elderly' => 'required|exists:elderlys,ID_Elderly',
             'Name_Elderly' => 'required|string',
             'Address' => 'required|string',
             'Weight' => 'required|numeric',

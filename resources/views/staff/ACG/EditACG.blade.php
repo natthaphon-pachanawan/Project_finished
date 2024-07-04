@@ -86,7 +86,7 @@
     @include('layout.nav')
 
     <div class="container">
-        <h1>Edit Activity</h1>
+        <h1>แก้ไขแบบฟอร์มกิจกรรมการดูแลผู้สงอายุ (ACG)</h1>
         @if (session('success'))
             <div style="color: green; margin-bottom: 20px;">{{ session('success') }}</div>
         @endif
@@ -209,6 +209,7 @@
                 <textarea id="solutions" name="solutions" rows="5">{{ $activity->Troubleshoot }}</textarea>
             </div>
             <button type="submit">บันทึก</button>
+            <a href="{{ route('acg.index') }}" class="back-button">กลับไปหน้า ACG</a>
         </form>
     </div>
 </body>

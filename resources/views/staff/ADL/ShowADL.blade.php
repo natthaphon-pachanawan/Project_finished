@@ -40,9 +40,9 @@
                 <div class="col-12">
                     <div class="card mb-4">
                         <div class="card-header pb-0 d-flex justify-content-between align-items-center">
-                            <h6>ADL Information</h6>
+                            <h6>ประเมินความสามารถในการดำเนินชีวิตประจำวัน (ADL)</h6>
                             <a href="adl-elderly" class="btn btn-primary">
-                                <i class="fas fa-plus"></i> Add ADL
+                                <i class="fas fa-plus"></i> เพิ่ม ADL
                             </a>
                         </div>
                         <div class="card-body px-0 pt-0 pb-2">
@@ -50,10 +50,10 @@
                                 <table class="table align-items-center mb-0">
                                     <thead>
                                         <tr>
-                                            <th class="text-center">Elderly Name</th>
-                                            <th class="text-center">User Name</th>
-                                            <th class="text-center">ADL Score</th>
-                                            <th class="text-center">ADL Group</th>
+                                            <th class="text-center">ชื่อผู้สูงอายุ</th>
+                                            <th class="text-center">ชื่อเจ้าหน้าที่</th>
+                                            <th class="text-center">คะแนน ADL</th>
+                                            <th class="text-center">กลุ่ม ADL</th>
                                             <th class="text-center">Actions</th>
                                         </tr>
                                     </thead>
@@ -65,12 +65,12 @@
                                                 <td class="text-center">{{ $adl->Score_ADL }}</td>
                                                 <td class="text-center">{{ $adl->Group_ADL }}</td>
                                                 <td class="text-center">
-                                                    <button onclick="toggleDetails({{ $adl->ID_ADL }})" class="btn btn-info btn-sm">View</button>
-                                                    <a href="{{ route('adl.edit', ['id' => $adl->ID_ADL]) }}" class="btn btn-warning btn-sm">Edit</a>
-                                                    <form action="{{ route('adl.destroy', ['id' => $adl->ID_ADL]) }}" method="POST" style="display:inline-block;" onsubmit="return confirm('Are you sure you want to delete this ADL?');">
+                                                    <button onclick="toggleDetails({{ $adl->ID_ADL }})" class="btn btn-info btn-sm">ดูข้อมูล</button>
+                                                    <a href="{{ route('adl.edit', ['id' => $adl->ID_ADL]) }}" class="btn btn-warning btn-sm">แก้ไข</a>
+                                                    <form action="{{ route('adl.destroy', ['id' => $adl->ID_ADL]) }}" method="POST" style="display:inline-block;" onsubmit="return confirm('คุณแน่ใจหรือไม่ว่าต้องการลบ ?');">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                                        <button type="submit" class="btn btn-danger btn-sm">ลบ</button>
                                                     </form>
                                                 </td>
                                             </tr>
