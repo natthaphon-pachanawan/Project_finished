@@ -146,5 +146,9 @@ public function destroy($id)
 
     return redirect()->route('adl.index')->with('success', 'ADL Assessment deleted successfully!');
 }
-
+public function SumADL()
+{
+    $adls = BarthelAdl::all();
+    return view('doctor.SmADL.SummaryADL', ['adls' => $adls]);
+}
 }

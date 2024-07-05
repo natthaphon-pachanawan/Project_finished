@@ -42,6 +42,7 @@ Route::controller(ProfileController::class)->group(function () {
 });
 
 Route::controller(ADLController::class)->group(function () {
+    Route::get('SumADL','SumADL');
 });
 
 Route::controller(ElderlyController::class)->group(function () {

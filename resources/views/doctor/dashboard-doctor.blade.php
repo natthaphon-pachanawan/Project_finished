@@ -8,5 +8,6 @@
 </head>
 <body>
     @include('layout.nav')
+    @include('doctor.LayoutD.sidebar')
 </body>
 </html>
