@@ -34,7 +34,7 @@ class CGController extends Controller
     {
         $request->validate([
             'Name_CG' => 'required|string',
-            'ID_Elderly' => 'required|string',
+            'ID_Elderly' => 'required|exists:elderlys,ID_Elderly',
             'Name_Elderly' => 'required|string',
             'Address' => 'required|string',
             'Weight' => 'required|numeric',
@@ -80,7 +80,7 @@ class CGController extends Controller
         ]);
 
         $careGiverData = $request->only([
-            'Name_CG', 'ID_Elderly', 'Name_Elderly', 'Address', 'Weight', 'Height',
+            'Name_CG', 'Name_Elderly', 'Address', 'Weight', 'Height',
             'Waist', 'Group_ADL', 'Disease', 'Disability', 'Rights', 'Caretaker',
             'Related', 'Phone_Caretaker', 'Date', 'Consciousness', 'Vital_signs',
             'Bedsores', 'Bedsores_details', 'Pain', 'Pain_details', 'Swelling',
@@ -92,7 +92,8 @@ class CGController extends Controller
             'Other_problems', 'Assistance', 'Reporter'
         ]);
 
-        $elderly = Elderly::find($request->ID_Elderly);
+        $id_elderly = BarthelAdl::findOrFail($request->ID_Elderly);
+        $elderly = Elderly::findOrFail($request->ID_Elderly);
 
         $careGiverData['Bedsores'] = $request->Bedsores . ($request->Bedsores_details ? '-' . $request->Bedsores_details : '');
         $careGiverData['Pain'] = $request->Pain . ($request->Pain_details ? '-' . $request->Pain_details : '');
@@ -105,9 +106,9 @@ class CGController extends Controller
         $careGiverData['Doctor_FU'] = $request->Doctor_FU . ($request->Doctor_FU_details ? '-' . $request->Doctor_FU_details : '');
         $careGiverData['Date_CG'] = $request->Date;
         $careGiverData['Birthday'] = $elderly->Birthday;
-        $careGiverData['ID_Elderly'] = $elderly->ID_Elderly;
+        $careGiverData['ID_Elderly'] = $id_elderly->ID_Elderly;
 
-        $adl = BarthelAdl::find($request->ID_Elderly);
+        $adl = BarthelAdl::where('ID_Elderly', $id_elderly->ID_Elderly)->first();
         if ($adl) {
             $careGiverData['ID_ADL'] = $adl->ID_ADL;
         } else {
