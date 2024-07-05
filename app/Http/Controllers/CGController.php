@@ -23,6 +23,7 @@ class CGController extends Controller
         $careGivers = $query->paginate(10);
         return view('staff.CG.ShowCG', compact('careGivers'));
     }
+
     public function create()
     {
         $elderlys = BarthelAdl::with('elderly')->get();
@@ -31,10 +32,9 @@ class CGController extends Controller
 
     public function store(Request $request)
     {
-        // Validate request
         $request->validate([
             'Name_CG' => 'required|string',
-            'ID_Elderly' => 'required|exists:elderlys,ID_Elderly',
+            'ID_Elderly' => 'required|string',
             'Name_Elderly' => 'required|string',
             'Address' => 'required|string',
             'Weight' => 'required|numeric',
@@ -79,7 +79,6 @@ class CGController extends Controller
             'Reporter' => 'required|string',
         ]);
 
-        // Gather caregiver data
         $careGiverData = $request->only([
             'Name_CG', 'ID_Elderly', 'Name_Elderly', 'Address', 'Weight', 'Height',
             'Waist', 'Group_ADL', 'Disease', 'Disability', 'Rights', 'Caretaker',
@@ -95,7 +94,6 @@ class CGController extends Controller
 
         $elderly = Elderly::find($request->ID_Elderly);
 
-        // Additional processing of combined fields
         $careGiverData['Bedsores'] = $request->Bedsores . ($request->Bedsores_details ? '-' . $request->Bedsores_details : '');
         $careGiverData['Pain'] = $request->Pain . ($request->Pain_details ? '-' . $request->Pain_details : '');
         $careGiverData['Swelling'] = $request->Swelling . ($request->Swelling_details ? '-' . $request->Swelling_details : '');
@@ -107,8 +105,9 @@ class CGController extends Controller
         $careGiverData['Doctor_FU'] = $request->Doctor_FU . ($request->Doctor_FU_details ? '-' . $request->Doctor_FU_details : '');
         $careGiverData['Date_CG'] = $request->Date;
         $careGiverData['Birthday'] = $elderly->Birthday;
+        $careGiverData['ID_Elderly'] = $elderly->ID_Elderly;
 
-        $adl = BarthelAdl::where('ID_Elderly', $request->ID_Elderly)->first();
+        $adl = BarthelAdl::find($request->ID_Elderly);
         if ($adl) {
             $careGiverData['ID_ADL'] = $adl->ID_ADL;
         } else {
@@ -131,10 +130,9 @@ class CGController extends Controller
 
     public function update(Request $request, $id)
     {
-        // Validate the input
         $request->validate([
             'Name_CG' => 'required|string',
-            'ID_Elderly' => 'required|exists:elderlys,ID_Elderly',
+            'ID_Elderly' => 'required|string',
             'Name_Elderly' => 'required|string',
             'Address' => 'required|string',
             'Weight' => 'required|numeric',
@@ -170,7 +168,6 @@ class CGController extends Controller
             'Reporter' => 'required|string',
         ]);
 
-        // Gather caregiver data
         $careGiverData = $request->only([
             'Name_CG', 'ID_Elderly', 'Name_Elderly', 'Address', 'Weight', 'Height',
             'Waist', 'Group_ADL', 'Disease', 'Disability', 'Rights', 'Caretaker',
@@ -181,7 +178,6 @@ class CGController extends Controller
             'Doctor_FU', 'Other_problems', 'Assistance', 'Reporter'
         ]);
 
-        // Update the CG record
         $careGiver = CareGiver::findOrFail($id);
         $careGiver->update($careGiverData);
 
@@ -211,76 +207,72 @@ class CGController extends Controller
     }
 
     public function editActivity($id)
-{
-    $activity = ActivityCaregiver::findOrFail($id);
-    return view('staff.ACG.EditACG', compact('activity'));
-}
+    {
+        $activity = ActivityCaregiver::findOrFail($id);
+        return view('staff.ACG.EditACG', compact('activity'));
+    }
 
-public function updateActivity(Request $request, $id)
-{
-    // Validate request
-    $request->validate([
-        'activity_date' => 'required|date',
-        'evaluate' => 'nullable|string',
-        'dress_the_wound' => 'nullable|string',
-        'rehabilitate' => 'nullable|string',
-        'clean_body' => 'nullable|string',
-        'take_care_medicine' => 'nullable|string',
-        'take_care_feeding' => 'nullable|string',
-        'environmental' => 'nullable|string',
-        'take_exercise' => 'nullable|string',
-        'give_advice_consult' => 'nullable|string',
-        'take_to_see_a_doctor' => 'nullable|string',
-        'other_specified' => 'nullable|string',
-        'take_to_make_merit' => 'nullable|string',
-        'take_to_market' => 'nullable|string',
-        'take_to_meet_friends' => 'nullable|string',
-        'take_to_allowance' => 'nullable|string',
-        'talk_as_friends' => 'nullable|string',
-        'other_social_specified' => 'nullable|string',
-        'problems_found' => 'nullable|string',
-        'solutions' => 'nullable|string',
-    ]);
+    public function updateActivity(Request $request, $id)
+    {
+        $request->validate([
+            'activity_date' => 'required|date',
+            'evaluate' => 'nullable|string',
+            'dress_the_wound' => 'nullable|string',
+            'rehabilitate' => 'nullable|string',
+            'clean_body' => 'nullable|string',
+            'take_care_medicine' => 'nullable|string',
+            'take_care_feeding' => 'nullable|string',
+            'environmental' => 'nullable|string',
+            'take_exercise' => 'nullable|string',
+            'give_advice_consult' => 'nullable|string',
+            'take_to_see_a_doctor' => 'nullable|string',
+            'other_specified' => 'nullable|string',
+            'take_to_make_merit' => 'nullable|string',
+            'take_to_market' => 'nullable|string',
+            'take_to_meet_friends' => 'nullable|string',
+            'take_to_allowance' => 'nullable|string',
+            'talk_as_friends' => 'nullable|string',
+            'other_social_specified' => 'nullable|string',
+            'problems_found' => 'nullable|string',
+            'solutions' => 'nullable|string',
+        ]);
 
-    // Gather activity data
-    $activityData = [
-        'Date_ACG' => $request->activity_date,
-        'Evaluate' => $request->evaluate,
-        'Dress_the_wound' => $request->dress_the_wound,
-        'Rehabilitate' => $request->rehabilitate,
-        'Clean_body' => $request->clean_body,
-        'Take_care_medicine' => $request->take_care_medicine,
-        'Take_care_feeding' => $request->take_care_feeding,
-        'Environmental' => $request->environmental,
-        'Take_exercise' => $request->take_exercise,
-        'Give_advice_consult' => $request->give_advice_consult,
-        'Take_to_see_a_doctor' => $request->take_to_see_a_doctor,
-        'Other' => $request->other_specified,
-        'Take_to_make_merit' => $request->take_to_make_merit,
-        'Take_to_market' => $request->take_to_market,
-        'Take_to_meet_friends' => $request->take_to_meet_friends,
-        'Take_to_allowance' => $request->take_to_allowance,
-        'Talk_as_friends' => $request->talk_as_friends,
-        'Other_specified' => $request->other_social_specified,
-        'Problem' => $request->problems_found,
-        'Troubleshoot' => $request->solutions,
-    ];
+        $activityData = [
+            'Date_ACG' => $request->activity_date,
+            'Evaluate' => $request->evaluate,
+            'Dress_the_wound' => $request->dress_the_wound,
+            'Rehabilitate' => $request->rehabilitate,
+            'Clean_body' => $request->clean_body,
+            'Take_care_medicine' => $request->take_care_medicine,
+            'Take_care_feeding' => $request->take_care_feeding,
+            'Environmental' => $request->environmental,
+            'Take_exercise' => $request->take_exercise,
+            'Give_advice_consult' => $request->give_advice_consult,
+            'Take_to_see_a_doctor' => $request->take_to_see_a_doctor,
+            'Other' => $request->other_specified,
+            'Take_to_make_merit' => $request->take_to_make_merit,
+            'Take_to_market' => $request->take_to_market,
+            'Take_to_meet_friends' => $request->take_to_meet_friends,
+            'Take_to_allowance' => $request->take_to_allowance,
+            'Talk_as_friends' => $request->talk_as_friends,
+            'Other_specified' => $request->other_social_specified,
+            'Problem' => $request->problems_found,
+            'Troubleshoot' => $request->solutions,
+        ];
 
-    // Update the activity
-    $activity = ActivityCaregiver::findOrFail($id);
-    $activity->update($activityData);
+        $activity = ActivityCaregiver::findOrFail($id);
+        $activity->update($activityData);
 
-    return redirect()->route('acg.index')->with('success', 'Activity updated successfully!');
-}
+        return redirect()->route('acg.index')->with('success', 'Activity updated successfully!');
+    }
 
-public function destroyActivity($id)
-{
-    $activity = ActivityCaregiver::findOrFail($id);
-    $activity->delete();
+    public function destroyActivity($id)
+    {
+        $activity = ActivityCaregiver::findOrFail($id);
+        $activity->delete();
 
-    return redirect()->route('acg.index')->with('success', 'Activity deleted successfully!');
-}
-
+        return redirect()->route('acg.index')->with('success', 'Activity deleted successfully!');
+    }
 
     public function createActivity()
     {
@@ -290,7 +282,6 @@ public function destroyActivity($id)
 
     public function storeActivity(Request $request)
     {
-        // Validate request
         $request->validate([
             'ID_Elderly' => 'required|exists:elderlys,ID_Elderly',
             'activity_date' => 'required|date',
@@ -315,7 +306,6 @@ public function destroyActivity($id)
             'solutions' => 'nullable|string',
         ]);
 
-        // Gather activity data
         $careGiverId = $this->getLatestCareGiverId($request->ID_Elderly, $request->activity_date);
 
         if (!$careGiverId) {
