@@ -33,8 +33,8 @@ Route::controller(AuthController::class)->group(function () {
     Route::get('homepage', 'Homepage');
     Route::get('login', 'login');
     Route::post('/login', 'loginUser')->name('login.submit');
-
     Route::post('/logout', 'logout')->name('logout');
+    Route::get('dashboard-Doctor','Dashboard_Dcotor');
 });
 
 

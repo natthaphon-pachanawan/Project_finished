@@ -54,7 +54,6 @@
     <div class="side-bar">
         <h2>Doctor</h2>
         <ul>
-            <li><a href="#">ข้อมูลผู้สูงอายุ</a></li>
             <li><a href="SumADL">ข้อมูล(ADL)</a></li>
             <li><a href="#">ข้อมูล(CG)</a></li>
             <li><a href="#">แนะนำการดูแลรักษา</a></li>
