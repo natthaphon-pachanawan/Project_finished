@@ -6,7 +6,6 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>ผลการทำแบบสอบถาม (ADL)</title>
     <style>
-       <style>
         /* General styling */
         body {
             font-family: Arial, sans-serif;
@@ -51,6 +50,20 @@
         .search-form {
             margin-bottom: 20px;
         }
+
+        .btn {
+            background-color: #e65907;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
     </style>
 </head>
 <body>
@@ -58,12 +71,11 @@
     @include('doctor.LayoutD.sidebar')
     <div class="container">
         <h2>ข้อมูล (ADL)</h2>
-        <form class="search-form" onsubmit="event.preventDefault(); searchTable()">
-            <input class="form-control me-2" type="search" id="searchInput" placeholder="ค้นหา" aria-label="ค้นหา">
-            <button class="btn btn-outline-success" type="submit">ค้นหา</button>
-            <button class="btn btn-outline-secondary" onclick="clearSearch()">ล้าง</button>
+        <form class="search-form">
+            <input type="text" id="searchInput" placeholder="ค้นหาตามชื่อ...">
+            <button type="button" class="btn" onclick="clearSearch()">ล้าง</button>
         </form>
-        <table id="adlTable" class="table table-bordered">
+        <table id="ADL" class="table table-bordered">
             <thead>
                 <tr>
                     <th class="text-center">No.</th>
@@ -78,17 +90,17 @@
                 @foreach($adls as $adl)
                 <tr>
                     <td class="text-center">{{ $loop->iteration }}</td>
-                    <td class="text-center">{{ $adl->Name_Elderly }}</td>
+                    <td class="text-center name">{{ $adl->Name_Elderly }}</td>
                     <td class="text-center">{{ $adl->Score_ADL }}</td>
                     <td class="text-center">{{ $adl->Group_ADL }}</td>
-                    <td><button onclick="toggleDetails(this)">ข้อมูลเพิ่มเติม</button></td>
+                    <td><button class="btn" onclick="toggleDetails(this)">ข้อมูลเพิ่มเติม</button></td>
                 </tr>
                 <tr class="details">
                     <td colspan="5">
                         <div>
-                            <table  >
-                                <tr class="text-center">
-                                    <td >การรับประทานอาหาร:</td>
+                            <table>
+                                <tr>
+                                    <td>การรับประทานอาหาร:</td>
                                     <td>
                                         @if($adl->Feeding == 2)
                                             ไม่สามารถตักอาหารเข้าปากได้ต้องมีคนป้อนให้
@@ -99,7 +111,7 @@
                                         @endif
                                         <td>{{ $adl->Feeding }} คะแนน</td>
                                     </td>
-                                </tr>                              
+                                </tr>
                                 <tr>
                                     <td>การดูแลร่างกาย:</td>
                                     <td>
@@ -109,22 +121,22 @@
                                         ทำเองได้ (รวมทั้งที่ทำได้เองถ้าเตรียมอุปกรณ์ไว้ให้)
                                         @endif
                                         <td>{{ $adl->Grooming }} คะแนน</td>
-                                    </td>    
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>การย้ายตัว:</td>
                                     <td>
-                                    @if($adl->Transfer==3)
-                                    ไม่สามารถนั่งได้ (นั่งแล้วจะล้มเสมอ) หรือต้องใช้คนสองคนช่วยกันยกขึ้น
-                                    @elseif($adl->Transfer==2)
-                                    ต้องการความช่วยเหลืออย่างมากจึงจะนั่งได้ เช่น ต้องใช้คนที่แข็งแรงหรือมีทักษะ 1 คน <br>หรือใช้คนทั่วไป 2 คนพยุงหรือดันขึ้นมาจึงจะนั่งอยู่ได้
-                                    @elseif($adl->Transfer==1)
-                                    ต้องการความช่วยเหลือบ้าง เช่น บอกให้ทำตาม หรือช่วยพยุงเล็กน้อย หรือต้องมีคนดูแลเพื่อความปลอดภัย
-                                    @elseif($adl->Transfer==0)
-                                    ทำได้เอง
-                                    @endif
-                                    <td>{{ $adl->Transfer }} คะแนน</td>
-                                </td>
+                                        @if($adl->Transfer==3)
+                                        ไม่สามารถนั่งได้ (นั่งแล้วจะล้มเสมอ) หรือต้องใช้คนสองคนช่วยกันยกขึ้น
+                                        @elseif($adl->Transfer==2)
+                                        ต้องการความช่วยเหลืออย่างมากจึงจะนั่งได้ เช่น ต้องใช้คนที่แข็งแรงหรือมีทักษะ 1 คน <br>หรือใช้คนทั่วไป 2 คนพยุงหรือดันขึ้นมาจึงจะนั่งอยู่ได้
+                                        @elseif($adl->Transfer==1)
+                                        ต้องการความช่วยเหลือบ้าง เช่น บอกให้ทำตาม หรือช่วยพยุงเล็กน้อย หรือต้องมีคนดูแลเพื่อความปลอดภัย
+                                        @elseif($adl->Transfer==0)
+                                        ทำได้เอง
+                                        @endif
+                                        <td>{{ $adl->Transfer }} คะแนน</td>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>การใช้ห้องน้ำ :</td>
@@ -136,8 +148,8 @@
                                     @elseif($adl->Toilet_use==0)
                                     ทำเองได้ดี (ขึ้นนั่งและลงจากโถส้วมเองได้ ทำความสะอาดได้เรียบร้อยหลังจากเสร็จธุระ ถอดใส่เสื้อผ้าได้เรียบร้อย)
                                     @endif
-                                    <td>{{ $adl->Toilet_use }} คะแนน</td>
-                                </td>
+                                        <td>{{ $adl->Toilet_use }} คะแนน</td>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>การเคลื่อนที่ภายในห้องหรือบ้าน:</td>
@@ -151,7 +163,6 @@
                                     @elseif($adl->Mobility==0)
                                     เดินหรือเคลื่อนที่ได้เอง
                                     @endif
-                                    </td>
                                     <td>{{ $adl->Mobility }} คะแนน</td>
                                 </tr>
                                 <tr>
@@ -164,7 +175,6 @@
                                     @elseif($adl->Dressing==0)
                                     ช่วยตัวเองได้ดี (รวมทั้งการติดกระดุม รูดซิบ หรือใช้เสื้อผ้าที่ดัดแปลงให้เหมาะสมก็ได้)
                                     @endif
-                                    </td>
                                     <td>{{ $adl->Dressing }} คะแนน</td>
                                 </tr>
                                 <tr>
@@ -177,7 +187,6 @@
                                     @elseif($adl->Stairs==0)
                                     ขึ้นลงได้เอง (ถ้าต้องใช้เครื่องช่วยเดิน เช่น walker จะต้องเอาขึ้นลงได้ด้วย)
                                     @endif
-                                    </td>
                                     <td>{{ $adl->Stairs }} คะแนน</td>
                                 </tr>
                                 <tr>
@@ -201,7 +210,6 @@
                                     @elseif($adl->Bowels==0)
                                     กลั้นได้เป็นปกติ
                                     @endif
-                                    </td>
                                     <td>{{ $adl->Bowels }}คะแนน</td>
                                 </tr>
                                 <tr>
@@ -214,7 +222,6 @@
                                     @elseif($adl->Bladder==0)
                                     กลั้นได้เป็นปกติ
                                     @endif
-                                    </td>
                                     <td>{{ $adl->Bladder }}คะแนน</td>
                                 </tr>
                                 <tr>
@@ -228,40 +235,49 @@
             </tbody>
         </table>
     </div>
+    
     <script>
-        // Function for toggling details
         function toggleDetails(button) {
             var detailsRow = button.closest('tr').nextElementSibling;
-            if (detailsRow && detailsRow.tagName.toLowerCase() === 'tr') {
-                detailsRow.classList.toggle('details');
-            }
+            detailsRow.style.display = detailsRow.style.display === 'none' ? 'table-row' : 'none';
+            button.textContent = detailsRow.style.display === 'none' ? 'ข้อมูลเพิ่มเติม' : 'ซ่อนรายละเอียด';
         }
-    
-        // Function for searching the table
-        function searchTable() {
-            var input, filter, table, tr, td, i, txtValue;
-            input = document.getElementById('searchInput');
-            filter = input.value.toUpperCase();
-            table = document.getElementById('adlTable');
-            tr = table.getElementsByTagName('tr');
-    
-            for (i = 0; i < tr.length; i++) {
-                td = tr[i].getElementsByTagName('td')[1]; // Index 1 corresponds to the 'Name' column
-                if (td) {
-                    txtValue = td.textContent || td.innerText;
-                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                        tr[i].style.display = ''; // Show row if matches search
+
+        // Function to perform search
+        function performSearch() {
+            var input = document.getElementById('searchInput').value.toUpperCase();
+            var table = document.getElementById('ADL');
+            var rows = table.getElementsByTagName('tr');
+
+            // Loop through all table rows, and hide those who don't match the search query
+            for (var i = 0; i < rows.length; i++) {
+                var nameColumn = rows[i].getElementsByClassName('name')[0];
+                if (nameColumn) {
+                    var txtValue = nameColumn.textContent || nameColumn.innerText;
+                    if (txtValue.toUpperCase().indexOf(input) > -1) {
+                        rows[i].style.display = '';
                     } else {
-                        tr[i].style.display = 'none'; // Hide row if does not match search
-                        var detailsRow = tr[i].nextElementSibling;
-                        if (detailsRow && detailsRow.tagName.toLowerCase() === 'tr') {
-                            detailsRow.style.display = 'none'; // Hide details row if exists
-                        }
+                        rows[i].style.display = 'none';
                     }
                 }
             }
         }
+
+        // Function to clear search
+        function clearSearch() {
+            document.getElementById('searchInput').value = '';
+            // Show all rows again
+            var table = document.getElementById('ADL');
+            var rows = table.getElementsByTagName('tr');
+            for (var i = 0; i < rows.length; i++) {
+                rows[i].style.display = '';
+            }
+        }
+
+        // Event listener for search input
+        document.getElementById('searchInput').addEventListener('keyup', function() {
+            performSearch();
+        });
     </script>
-    
 </body>
 </html>
