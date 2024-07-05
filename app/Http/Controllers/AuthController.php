@@ -61,7 +61,10 @@ class AuthController extends Controller
     $request->session()->regenerateToken();
     return redirect('login')->with('success', 'You have been logged out successfully.');
 }
-
-
-    /////////////////////////////////////////////////////////
+  public function Dashboard_Dcotor ()
+  {
+    return view('doctor.dashboard-doctor');
+  }
+  
+  /////////////////////////////////////////////////////////
 }
