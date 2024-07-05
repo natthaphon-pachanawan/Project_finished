@@ -53,8 +53,6 @@ class ElderlyController extends Controller {
 
         return view('staff.dashboard-staff', compact('elderlies'));
     }
-
-
     public function Editelderly($id) {
         $elderly = Elderly::findOrFail($id);
         $addressElderly = AddressElderly::where('ID_Elderly', $id)->first();
@@ -108,5 +106,6 @@ class ElderlyController extends Controller {
         $elderly->delete();
 
         return redirect()->route('staff-dashboard')->with('success', 'Elderly information deleted successfully.');
-    }
+    } 
+    
 }

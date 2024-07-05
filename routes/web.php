@@ -33,8 +33,8 @@ Route::controller(AuthController::class)->group(function () {
     Route::get('homepage', 'Homepage');
     Route::get('login', 'login');
     Route::post('/login', 'loginUser')->name('login.submit');
-
     Route::post('/logout', 'logout')->name('logout');
+    Route::get('dashboard-Doctor','Dashboard_Dcotor');
 });
 
 
@@ -42,6 +42,7 @@ Route::controller(ProfileController::class)->group(function () {
 });
 
 Route::controller(ADLController::class)->group(function () {
+    Route::get('SumADL','SumADL');
 });
 
 Route::controller(ElderlyController::class)->group(function () {
