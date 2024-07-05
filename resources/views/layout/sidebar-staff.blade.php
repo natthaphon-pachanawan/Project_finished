@@ -38,17 +38,10 @@
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="material-icons opacity-10">elderly</i>
                     </div>
-                    <span class="nav-link-text ms-1">การช่วยเหลือของผู้ดูแลผู้สูงอายุ (ACG)</span>
+                    <span class="nav-link-text ms-1">กิจกรรมการดูแลผู้สงอายุ (ACG)</span>
                 </a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link text-white {{ Request::is('reports') ? 'active bg-gradient-primary' : '' }}" href="#">
-                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="material-icons opacity-10">report</i>
-                    </div>
-                    <span class="nav-link-text ms-1">รายงาน</span>
-                </a>
-            </li>
+            
         </ul>
     </div>
 </aside>

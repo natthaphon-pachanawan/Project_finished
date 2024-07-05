@@ -40,9 +40,9 @@
                 <div class="col-12">
                     <div class="card mb-4">
                         <div class="card-header pb-0 d-flex justify-content-between align-items-center">
-                            <h6>CG Information</h6>
+                            <h6>แบบฟอร์มรายงานผลการปฏิบัติงานผู้ดูแลผู้สูงอายุ (CG)</h6>
                             <a href="{{ route('cg.create') }}" class="btn btn-primary">
-                                <i class="fas fa-plus"></i> Add CG
+                                <i class="fas fa-plus"></i> เพิ่ม CG
                             </a>
                         </div>
                         <div class="card-body px-0 pt-0 pb-2">
@@ -50,10 +50,10 @@
                                 <table class="table align-items-center mb-0">
                                     <thead>
                                         <tr>
-                                            <th class="text-center">Date CG</th>
-                                            <th class="text-center">Elderly Name</th>
-                                            <th class="text-center">Caregiver Name</th>
-                                            <th class="text-center">ADL Group</th>
+                                            <th class="text-center">วันที่</th>
+                                            <th class="text-center">ชื่อผู้สูงอายุ</th>
+                                            <th class="text-center">ชื่อผู้ดูแลผู้สูงอายุ</th>
+                                            <th class="text-center">คะแนน ADL</th>
                                             <th class="text-center">Actions</th>
                                         </tr>
                                     </thead>
@@ -65,11 +65,11 @@
                                                 <td class="text-center">{{ $cg->Name_CG }}</td>
                                                 <td class="text-center">{{ $cg->Group_ADL }}</td>
                                                 <td class="text-center">
-                                                    <a href="{{ route('cg.edit', ['id' => $cg->ID_CG]) }}" class="btn btn-warning btn-sm">Edit</a>
-                                                    <form action="{{ route('cg.destroy', ['id' => $cg->ID_CG]) }}" method="POST" style="display:inline-block;" onsubmit="return confirm('Are you sure you want to delete this CG?');">
+                                                    <a href="{{ route('cg.edit', ['id' => $cg->ID_CG]) }}" class="btn btn-warning btn-sm">แก้ไข</a>
+                                                    <form action="{{ route('cg.destroy', ['id' => $cg->ID_CG]) }}" method="POST" style="display:inline-block;" onsubmit="return confirm('คุณแน่ใจหรือไม่ว่าต้องการลบ ?');">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                                        <button type="submit" class="btn btn-danger btn-sm">ลบ</button>
                                                     </form>
                                                 </td>
                                             </tr>
