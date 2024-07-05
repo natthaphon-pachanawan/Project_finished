@@ -106,11 +106,6 @@ class ElderlyController extends Controller {
         $elderly->delete();
 
         return redirect()->route('staff-dashboard')->with('success', 'Elderly information deleted successfully.');
-<<<<<<< feature/staff
     }
 
-=======
-    } 
-    
->>>>>>> main
 }
