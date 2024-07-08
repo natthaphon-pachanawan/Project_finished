@@ -30,20 +30,30 @@
                 </div>
             </div>
 
-            <div class="card-body px-0 pt-0 pb-2">
-                <div class="table-responsive p-0">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th class="text-center">รูป</th>
-                                <th class="text-center">Username</th>
-                                <th class="text-center">ประเภทของผู้ใช้</th>
-                                <th class="text-center">อีเมลล์</th>
-                                <th class="text-center">ที่อยู่</th>
-                                <th class="text-center">เบอร์โทร</th>
-                            </tr>
-                        </thead>
-                    </table>
+            <div class="row">
+                <div class="col-12">
+                    <div class="card mb-4">
+                        <div class="header pb-0 d-flex justify-content-between align-items-center">
+                            <h6>จัดการข้อมูลผู้ใช้</h6>
+                            
+                        </div>
+                        <div class="card-body px-0 pt-0 pb-2">
+                            <div class="table-responsive p-0">
+                                <table class="table align-items-center mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center">รูป</th>
+                                            <th class="text-center">Username</th>
+                                            <th class="text-center">ประเภทของผู้ใช้</th>
+                                            <th class="text-center">อีเมลล์</th>
+                                            <th class="text-center">ที่อยู่</th>
+                                            <th class="text-center">เบอร์โทร</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
