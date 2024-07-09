@@ -44,12 +44,28 @@ class AdminController extends Controller
         $user->Email = '';
         $user->Address = '';
         $user->Phone = '';
-        $user->Image_User = '';
+
+        // Set default profile image based on user type
+        switch ($user->Type_Personnel) {
+            case 'Admin':
+                $user->Image_User = 'images-user/Admin.jpg';
+                break;
+            case 'Staff':
+                $user->Image_User = 'images-user/Staff.png';
+                break;
+            case 'Doctor':
+                $user->Image_User = 'images-user/Doctor.png';
+                break;
+            default:
+                $user->Image_User = '';
+                break;
+        }
 
         $user->save();
 
         return redirect()->route('user.register')->with('success', 'User registered successfully!');
     }
+
 
 
     public function deleteUser($id)

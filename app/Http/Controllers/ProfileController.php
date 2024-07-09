@@ -51,6 +51,24 @@ class ProfileController extends Controller
             $imageName = time() . '.' . $request->Image_User->extension();
             $request->Image_User->move(public_path('images'), $imageName);
             $user->Image_User = 'images/' . $imageName;
+        } else {
+            // Set default profile image if none is provided
+            if (!$user->Image_User) {
+                switch ($user->Type_Personnel) {
+                    case 'Admin':
+                        $user->Image_User = 'images-user/Admin.jpg';
+                        break;
+                    case 'Staff':
+                        $user->Image_User = 'images-user/Staff.png';
+                        break;
+                    case 'Doctor':
+                        $user->Image_User = 'images-user/Doctor.png';
+                        break;
+                    default:
+                        $user->Image_User = '';
+                        break;
+                }
+            }
         }
 
         $user->save();
