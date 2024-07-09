@@ -77,7 +77,7 @@
                                     </tbody>
                                 </table>
                             </div>
-                            {{ $careGivers->links() }} <!-- For pagination links -->
+                            {{ $careGivers->links() }}
                         </div>
                     </div>
                 </div>

@@ -16,17 +16,20 @@ class UserController extends Controller
             'Admin' => [
                 'Username' => 'admin',
                 'Email' => 'admin@gmail.com',
-                'Password' => 'admin'
+                'Password' => 'admin',
+                'Image' => 'images-user/Admin.jpg'
             ],
             'Staff' => [
                 'Username' => 'staff',
                 'Email' => 'staff@gmail.com',
-                'Password' => 'staff'
+                'Password' => 'staff',
+                'Image' => 'images-user/Staff.png'
             ],
             'Doctor' => [
                 'Username' => 'doctor',
                 'Email' => 'doctor@gmail.com',
-                'Password' => 'doctor'
+                'Password' => 'doctor',
+                'Image' => 'images-user/Doctor.png'
             ]
         ];
 
@@ -43,6 +46,7 @@ class UserController extends Controller
             $user->Password = Hash::make($userData['Password']);
             $user->ID_Personnel = $personnel->ID_Personnel;
             $user->Type_Personnel = $type;
+            $user->Image_User = $userData['Image'];
             $user->save();
         }
 
