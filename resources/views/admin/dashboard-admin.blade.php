@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Admin</title>
+    <title>Manage User</title>
 </head>
 <body class="g-sidenav-show bg-gray-100">
 
@@ -19,23 +19,10 @@
                 <div class="col-12">
                     <div class="card mb-4">
                         <div class="card-header pb-0 d-flex justify-content-between align-items-center">
-                        </div>
-                        <div class="card-body px-0 pt-0 pb-2">
-                            <form action="{{ route('cg.index') }}" method="GET" class="d-flex p-3">
-                                <input type="text" name="search" class="form-control" placeholder="ค้นหาชื่อผู้ใช้หรือประเภทผู้ใช้" value="{{ request()->get('search') }}">
-                                <button type="submit" class="btn btn-primary ml-2">ค้นหา</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-12">
-                    <div class="card mb-4">
-                        <div class="header pb-0 d-flex justify-content-between align-items-center">
                             <h6>จัดการข้อมูลผู้ใช้</h6>
-                            
+                            <a href="{{ route('user.register') }}" class="btn btn-primary">
+                                <i class="fas fa-plus"></i> สร้างบัญชี
+                            </a>
                         </div>
                         <div class="card-body px-0 pt-0 pb-2">
                             <div class="table-responsive p-0">
@@ -48,14 +35,39 @@
                                             <th class="text-center">อีเมลล์</th>
                                             <th class="text-center">ที่อยู่</th>
                                             <th class="text-center">เบอร์โทร</th>
+                                            <th class="text-center">Action</th>
                                         </tr>
                                     </thead>
+                                    <tbody>
+                                        @foreach ($users as $user)
+                                            <tr>
+                                                <td class="text-center">
+                                                    <img src="{{ asset($user->Image_User) }}" alt="User Image" class="img-fluid" style="max-width: 50px;">
+                                                </td>
+                                                <td class="text-center">{{ $user->Username }}</td>
+                                                <td class="text-center">{{ $user->Type_Personnel }}</td>
+                                                <td class="text-center">{{ $user->Email }}</td>
+                                                <td class="text-center">{{ $user->Address }}</td>
+                                                <td class="text-center">{{ $user->Phone }}</td>
+                                                <td class="text-center">
+                                                    @if ($user->Type_Personnel !== 'Admin')
+                                                        <form action="{{ route('user.delete', $user->ID_User) }}" method="POST" onsubmit="return confirm('คุณแน่ใจหรือไม่ว่าต้องการลบบัญชีนี้?');">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit" class="btn btn-danger btn-sm">ลบ</button>
+                                                        </form>
+                                                    @endif
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
                                 </table>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
         </div>
     </main>
 </body>

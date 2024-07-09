@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ADLController;
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ElderlyController;
 use Illuminate\Support\Facades\Route;
@@ -83,13 +84,15 @@ Route::middleware(['auth'])->group(function () {
 
 
 
-Route::middleware(['CheckLogin', 'IsAdmin', 'auth'])->group(function () {
-    Route::get('admin-dashboard', function () {
-        return view('admin.dashboard-admin');
-    });
+Route::middleware(['CheckLogin', 'IsAdmin'])->group(function () {
+
+    Route::get('admin-dashboard', [AdminController::class, 'showAdmin'])->name('admin.dashboard');
+    Route::get('register-user', [AdminController::class, 'registerUser'])->name('user.register');
+    Route::post('register-submit', [AdminController::class, 'submitUser'])->name('register.submit');
+    Route::delete('user-delete/{id}', [AdminController::class, 'deleteUser'])->name('user.delete');
 });
 
-Route::middleware(['CheckLogin', 'IsStaff', 'auth'])->group(function () {
+Route::middleware(['CheckLogin', 'IsStaff'])->group(function () {
 
     Route::get('staff-dashboard', [ElderlyController::class, 'Showelderly'])->name('staff-dashboard');
     Route::get('adl-show', [ADLController::class, 'index'])->name('adl.index');
@@ -117,7 +120,7 @@ Route::middleware(['CheckLogin', 'IsStaff', 'auth'])->group(function () {
 });
 
 
-Route::middleware(['CheckLogin', 'IsDoctor', 'auth'])->group(function () {
+Route::middleware(['CheckLogin', 'IsDoctor'])->group(function () {
     Route::get('doctor-dashboard', function () {
         return view('doctor.dashboard-doctor');
     });
