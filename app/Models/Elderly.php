@@ -31,4 +31,9 @@ class Elderly extends Model
     {
         return $this->hasOne(CareGiver::class, 'ID_Elderly', 'ID_Elderly');
     }
+
+    public function addressElderly()
+    {
+        return $this->hasOne(AddressElderly::class, 'ID_Elderly', 'ID_Elderly');
+    }
 }

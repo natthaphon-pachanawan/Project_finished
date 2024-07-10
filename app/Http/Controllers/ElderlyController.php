@@ -49,10 +49,10 @@ class ElderlyController extends Controller
     {
         $search = $request->get('search');
 
-        $elderlies = Elderly::when($search, function ($query, $search) {
-            return $query->where('Name_Elderly', 'LIKE', "%$search%");
-        })->paginate(10);
-
+        $elderlies = Elderly::with('addressElderly')
+            ->when($search, function ($query, $search) {
+                return $query->where('Name_Elderly', 'LIKE', "%$search%");
+            })->paginate(10);
 
         $ageGroups = [
             '60-69' => 0,
@@ -144,6 +144,4 @@ class ElderlyController extends Controller
 
         return redirect()->away("https://www.google.com/maps/search/?api=1&query=$latitude,$longitude");
     }
-
-
 }
