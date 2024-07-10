@@ -149,6 +149,6 @@ public function destroy($id)
 public function SumADL()
 {
     $adls = BarthelAdl::all();
-    return view('doctor.SmADL.SummaryADL', ['adls' => $adls]);
+    return view('doctor.Sm.SummaryADL', ['adls' => $adls]);
 }
 }

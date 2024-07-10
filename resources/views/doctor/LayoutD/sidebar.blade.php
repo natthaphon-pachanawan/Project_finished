@@ -55,7 +55,7 @@
         <h2>Doctor</h2>
         <ul>
             <li><a href="SumADL">ข้อมูล(ADL)</a></li>
-            <li><a href="#">ข้อมูล(CG)</a></li>
+            <li><a href="Sum_CG">ข้อมูล(CG)</a></li>
             <li><a href="#">แนะนำการดูแลรักษา</a></li>
         </ul>
     </div>

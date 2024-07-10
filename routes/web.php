@@ -10,6 +10,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CGController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\SumCGcontroller;
 
 /*
 |--------------------------------------------------------------------------
@@ -125,3 +126,6 @@ Route::middleware(['CheckLogin', 'IsDoctor'])->group(function () {
         return view('doctor.dashboard-doctor');
     });
 });
+ Route::controller(SumCGcontroller::class)->group(function(){
+    Route::get('Sum_CG','Showelderly');
+ });
