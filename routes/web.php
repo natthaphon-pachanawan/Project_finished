@@ -126,3 +126,6 @@ Route::middleware(['CheckLogin', 'IsDoctor', 'auth'])->group(function () {
  Route::controller(SumCGcontroller::class)->group(function(){
     Route::get('Sum_CG','Showelderly');
  });
+ Route::controller(ReportController::class)->group(function(){
+    Route::get('Showreport','Dashboard_Report');
+});

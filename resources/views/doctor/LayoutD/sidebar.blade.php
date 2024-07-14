@@ -56,7 +56,7 @@
         <ul>
             <li><a href="SumADL">ข้อมูล(ADL)</a></li>
             <li><a href="Sum_CG">ข้อมูล(CG)</a></li>
-            <li><a href="#">แนะนำการดูแลรักษา</a></li>
+            <li><a href="Showreport">แนะนำการดูแลรักษา</a></li>
         </ul>
     </div>
 </body>
