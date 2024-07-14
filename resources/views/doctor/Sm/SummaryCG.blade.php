@@ -6,8 +6,64 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
     <style>
+         <style>
+        /* General styling */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #090909;
+            margin: 20px;
+            color: #fff;
+        }
+
+        .container {
+            padding: 20px;
+            border: 1px solid #131212;
+            border-radius: 5px;
+            background-color: #fff;
+            color: #000;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 10px;
+            border: 1px solid #0c0c0c;
+            text-align: center;
+        }
+
+        thead {
+            background-color: #e65907;
+            color: #fff;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
         .details {
             display: none;
+            background-color: #737070;
+            color: #fff;
+        }
+
+        .search-form {
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            background-color: #e65907;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 5px;
         }
     </style>
 </head>
@@ -222,25 +278,26 @@
     
     <script>
         function searchTable() {
-            const input = document.getElementById("searchInput");
-            const filter = input.value.toLowerCase();
-            const table = document.getElementById("CG");
-            const tr = table.getElementsByTagName("tr");
+    const input = document.getElementById("searchInput");
+    const filter = input.value.toLowerCase();
+    const table = document.getElementById("CG");
+    const rows = table.getElementsByTagName("tr");
 
-            for (let i = 1; i < tr.length; i += 2) {
-                const nameCell = tr[i].getElementsByClassName("name")[0];
-                if (nameCell) {
-                    const txtValue = nameCell.textContent || nameCell.innerText;
-                    if (txtValue.toLowerCase().indexOf(filter) > -1) {
-                        tr[i].style.display = "";
-                        tr[i + 1].style.display = ""; // Show the details row
-                    } else {
-                        tr[i].style.display = "none";
-                        tr[i + 1].style.display = "none"; // Hide the details row
-                    }
-                }
+    for (let i = 0; i < rows.length; i++) {
+        const nameCell = rows[i].querySelector(".name");
+        if (nameCell) {
+            const txtValue = nameCell.textContent || nameCell.innerText;
+            const detailsRow = rows[i + 1]; // Assuming details row follows main row
+            if (txtValue.toLowerCase().indexOf(filter) > -1) {
+                rows[i].style.display = "";
+                if (detailsRow) detailsRow.style.display = ""; // Show details row if exists
+            } else {
+                rows[i].style.display = "none";
+                if (detailsRow) detailsRow.style.display = "none"; // Hide details row if exists
             }
         }
+    }
+}
 
         function clearSearch() {
             document.getElementById("searchInput").value = "";
