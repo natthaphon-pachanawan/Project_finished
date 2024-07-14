@@ -128,5 +128,4 @@ Route::middleware(['CheckLogin', 'IsDoctor', 'auth'])->group(function () {
  });
  Route::controller(ReportController::class)->group(function(){
     Route::get('Showreport','Dashboard_Report');
-    Route::post('/save-pdf','savePDF')->name('save-pdf');
 });
