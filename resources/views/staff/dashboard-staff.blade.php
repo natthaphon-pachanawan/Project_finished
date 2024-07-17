@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Staff Dashboard</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         .chart-container {
@@ -61,8 +63,8 @@
                                 <i class="fas fa-plus"></i> เพิ่มผู้สูงอายุ
                             </a>
                             <a href="#" class="btn btn-success ml-2">
-                                    <i class="fas fa-file-pdf"></i> ออกรายงาน
-                                </a>
+                                <i class="fas fa-file-pdf"></i> ออกรายงาน
+                            </a>
                         </div>
                         <div class="card-body px-0 pt-0 pb-2">
                             <div class="table-responsive p-0">
@@ -152,6 +154,20 @@
                 </div>
             </div>
 
+            <!-- Map -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="card mb-4">
+                        <div class="card-header pb-0">
+                            <h6>แผนที่แสดงที่ตั้งผู้สูงอายุ</h6>
+                        </div>
+                        <div class="card-body">
+                            <div id="map" style="height: 500px;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </main>
 
@@ -221,6 +237,29 @@
                         },
                     }
                 }
+            });
+
+            // ข้อมูลตำแหน่งของผู้สูงอายุ
+            var elderlyLocations = @json($elderlies->map(function($elderly) {
+                return [
+                    $elderly->addressElderly->Latitude_position,
+                    $elderly->addressElderly->Longitude_position,
+                    $elderly->Name_Elderly
+                ];
+            }));
+
+            // สร้างแผนที่
+            var map = L.map('map').setView([14.9930, 103.1029], 15); // Set initial position to Buriram
+
+            // เพิ่ม TileLayer
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+
+            // เพิ่ม Marker สำหรับผู้สูงอายุแต่ละคน
+            elderlyLocations.forEach(function(location) {
+                var marker = L.marker([location[0], location[1]]).addTo(map);
+                marker.bindPopup("<b>" + location[2] + "</b>").openPopup();
             });
         });
     </script>

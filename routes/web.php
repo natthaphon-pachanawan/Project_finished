@@ -57,6 +57,7 @@ Route::controller(ElderlyController::class)->group(function () {
     Route::delete('/delete-elderly/{id}', 'Deleteelderly')->name('delete-elderly');
 
     Route::get('/generate-pdf', 'generatePDF')->name('generate-pdf');
+    Route::get('/search-location/{id}', 'searchLocation')->name('search-location');
 });
 
 Route::controller(CGController::class)->group(function () {
