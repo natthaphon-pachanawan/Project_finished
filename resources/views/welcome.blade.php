@@ -7,6 +7,8 @@
     <link href="{{ asset('assets/css/argon-dashboard.css') }}" rel="stylesheet"/>
     <link href="{{ asset('assets/css/nucleo-icons.css') }}" rel="stylesheet"/>
     <link href="{{ asset('assets/css/nucleo-svg.css') }}" rel="stylesheet"/>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+
     <style>
         body {
             font-family: 'Open Sans', sans-serif;
@@ -135,6 +137,40 @@
         footer ul li a:hover {
             text-decoration: underline;
         }
+
+        .slider {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            height: 400px;
+        }
+        .slides {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+        .slides img {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+        .prev, .next {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0, 0, 0, 0.5);
+            color: #fff;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            z-index: 1;
+        }
+        .prev {
+            left: 10px;
+        }
+        .next {
+            right: 10px;
+        }
     </style>
 </head>
 <body>
@@ -155,16 +191,40 @@
         <h1>ยินดีต้อนรับสู่ระบบประเมินความสามารถในการดำเนินกิจวัตรประจำวันของผู้สูงอายุ</h1>
     </section>
 
-    <!-- ข่าวสารประชาสัมพันธ์ -->
-    <section class="news">
-        <h2>ข่าวสารประชาสัมพันธ์</h2>
-        <!-- Loop through news articles -->
-        <div class="news-item">
-            <h3>หัวข้อข่าวสาร</h3>
-            <p>รายละเอียดสั้นๆ ของข่าวสาร...</p>
-            <a href="#">อ่านเพิ่มเติม</a>
+    <!-- Slider -->
+    <section class="slider">
+        <div class="slides">
+            @foreach($sliders as $slider)
+                <img src="{{ asset('storage/' . $slider->image) }}" alt="Slider Image">
+            @endforeach
         </div>
+        <button class="prev" onclick="plusSlides(-1)">&#10094;</button>
+        <button class="next" onclick="plusSlides(1)">&#10095;</button>
     </section>
+
+    <!-- Content Sections -->
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-4">
+                <!-- Left section if needed -->
+            </div>
+            <div class="col-sm-4">
+                <!-- ข่าวสารประชาสัมพันธ์ -->
+                <section class="news">
+                    <h2>ข่าวสารประชาสัมพันธ์</h2>
+                    @foreach($news as $newsItem)
+                        <div class="news-item">
+                            <h3>{{ $newsItem->title }}</h3>
+                            <p>{{ Str::limit($newsItem->content, 100) }}</p>
+                        </div>
+                    @endforeach
+                </section>
+            </div>
+            <div class="col-sm-4">
+                <!-- Right section if needed -->
+            </div>
+        </div>
+    </div>
 
     <!-- ข้อมูลสถิติ -->
     <section class="statistics">
@@ -172,11 +232,11 @@
         <div class="stats">
             <div class="stat-item">
                 <h3>จำนวนผู้เข้าชมเว็บไซต์</h3>
-                <p>12345</p>
+                <p>{{ $visitorCount }}</p>
             </div>
             <div class="stat-item">
                 <h3>จำนวนการประเมิน</h3>
-                <p>6789</p>
+                <p>{{ $assessmentCount }}</p>
             </div>
         </div>
     </section>
@@ -211,6 +271,31 @@
         </ul>
     </footer>
 
-    <script src="path/to/your/js/file.js"></script>
+    <script>
+        let slideIndex = 0;
+        const slides = document.querySelector('.slides');
+
+        function showSlides() {
+            const totalSlides = slides.children.length;
+            slideIndex++;
+            if (slideIndex >= totalSlides) {
+                slideIndex = 0;
+            }
+            slides.style.transform = `translateX(${-slideIndex * 100}%)`;
+        }
+
+        function plusSlides(n) {
+            slideIndex += n;
+            const totalSlides = slides.children.length;
+            if (slideIndex < 0) {
+                slideIndex = totalSlides - 1;
+            } else if (slideIndex >= totalSlides) {
+                slideIndex = 0;
+            }
+            slides.style.transform = `translateX(${-slideIndex * 100}%)`;
+        }
+
+        setInterval(showSlides, 3000);
+    </script>
 </body>
 </html>

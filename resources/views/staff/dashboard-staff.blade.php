@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -62,7 +61,7 @@
                             <a href="add-elderly" class="btn btn-primary">
                                 <i class="fas fa-plus"></i> เพิ่มผู้สูงอายุ
                             </a>
-                            <a href="#" class="btn btn-success ml-2">
+                            <a href="{{ route('elderly-report') }}" class="btn btn-success ml-2">
                                 <i class="fas fa-file-pdf"></i> ออกรายงาน
                             </a>
                         </div>
@@ -148,6 +147,16 @@
                                         <canvas id="agePieChart"></canvas>
                                     </div>
                                 </div>
+                                <div class="chart-column">
+                                    <div class="chart-container">
+                                        <canvas id="ageLineChart"></canvas>
+                                    </div>
+                                </div>
+                                <div class="chart-column">
+                                    <div class="chart-container">
+                                        <canvas id="ageDoughnutChart"></canvas>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -172,14 +181,15 @@
     </main>
 
     <!-- Argon Dashboard JS -->
-    <script src="./assets/js/argon-dashboard.js"></script>
-    <script src="./assets/js/bootstrap.bundle.min.js"></script>
-    <script src="./assets/js/popper.min.js"></script>
-    <script src="./assets/js/bootstrap-notify.js"></script>
-    <script src="./assets/js/chartjs.min.js"></script>
-    <script src="./assets/js/Chart.extension.js"></script>
-    <script src="./assets/js/perfect-scrollbar.min.js"></script>
-    <script src="./assets/js/smooth-scrollbar.min.js"></script>
+    <script src="{{ asset('assets/js/argon-dashboard.js') }}"></script>
+    <script src="{{ asset('assets/js/core/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ asset('assets/js/core/popper.min.js') }}"></script>
+    <script src="{{ asset('assets/js/core/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('assets/js/plugins/bootstrap-notify.js') }}"></script>
+    {{--  <script src="{{ asset('assets/js/plugins/chartjs.min.js') }}"></script>  --}}
+    {{--  <script src="{{ asset('assets/js/plugins/Chart.extension.js') }}"></script>  --}}
+    <script src="{{ asset('assets/js/plugins/perfect-scrollbar.min.js') }}"></script>
+    <script src="{{ asset('assets/js/plugins/smooth-scrollbar.min.js') }}"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             var ageGroups = @json($ageGroups);
@@ -225,6 +235,61 @@
                             'rgba(54, 162, 235, 1)',
                             'rgba(255, 206, 86, 1)',
                             'rgba(75, 192, 192, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                    }
+                }
+            });
+
+            var ageLineChartCtx = document.getElementById('ageLineChart').getContext('2d');
+            new Chart(ageLineChartCtx, {
+                type: 'line',
+                data: {
+                    labels: Object.keys(ageGroups),
+                    datasets: [{
+                        label: 'แนวโน้มจำนวนผู้สูงอายุ',
+                        data: Object.values(ageGroups),
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+            var ageDoughnutChartCtx = document.getElementById('ageDoughnutChart').getContext('2d');
+            new Chart(ageDoughnutChartCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: Object.keys(ageGroups),
+                    datasets: [{
+                        label: 'สัดส่วนผู้สูงอายุ (Doughnut)',
+                        data: Object.values(ageGroups),
+                        backgroundColor: [
+                            'rgba(153, 102, 255, 0.2)',
+                            'rgba(255, 159, 64, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 99, 132, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgba(153, 102, 255, 1)',
+                            'rgba(255, 159, 64, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 99, 132, 1)'
                         ],
                         borderWidth: 1
                     }]

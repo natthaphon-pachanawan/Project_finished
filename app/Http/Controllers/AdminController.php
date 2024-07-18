@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\News;
+use App\Models\Slider;
+use App\Models\Personnel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use App\Models\Personnel;
+use Illuminate\Support\Facades\Storage;
 
 class AdminController extends Controller
 {
@@ -66,8 +69,6 @@ class AdminController extends Controller
         return redirect()->route('user.register')->with('success', 'User registered successfully!');
     }
 
-
-
     public function deleteUser($id)
     {
         $user = User::find($id);
@@ -77,5 +78,150 @@ class AdminController extends Controller
         } else {
             return redirect()->route('admin.dashboard')->with('error', 'Admin accounts cannot be deleted.');
         }
+    }
+
+    // News Management
+    public function indexNews()
+    {
+        $news = News::all();
+        return view('admin.news-index', compact('news'));
+    }
+
+    public function createNews()
+    {
+        return view('admin.news-create');
+    }
+
+    public function storeNews(Request $request)
+    {
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'content' => 'required|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+        ]);
+
+        $news = new News($request->only(['title', 'content']));
+
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('news_images', 'public');
+            $news->image = $path;
+        }
+
+        $news->save();
+
+        return redirect()->route('admin.news.index')->with('success', 'News created successfully.');
+    }
+
+    public function editNews($id)
+    {
+        $newsItem = News::findOrFail($id);
+        return view('admin.news-edit', compact('newsItem'));
+    }
+
+    public function updateNews(Request $request, $id)
+    {
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'content' => 'required|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+        ]);
+
+        $news = News::findOrFail($id);
+        $news->fill($request->only(['title', 'content']));
+
+        if ($request->hasFile('image')) {
+            if ($news->image) {
+                Storage::disk('public')->delete($news->image);
+            }
+            $path = $request->file('image')->store('news_images', 'public');
+            $news->image = $path;
+        }
+
+        $news->save();
+
+        return redirect()->route('admin.news.index')->with('success', 'News updated successfully.');
+    }
+
+    public function destroyNews($id)
+    {
+        $news = News::findOrFail($id);
+        if ($news->image) {
+            Storage::disk('public')->delete($news->image);
+        }
+        $news->delete();
+        return redirect()->route('admin.news.index')->with('success', 'News deleted successfully.');
+    }
+
+    // Slider Management
+    public function indexSlider()
+    {
+        $sliders = Slider::all();
+        return view('admin.sliders-index', compact('sliders'));
+    }
+
+    public function createSlider()
+    {
+        return view('admin.sliders-create');
+    }
+
+    public function storeSlider(Request $request)
+    {
+        $request->validate([
+            'image' => 'required|image'
+        ]);
+
+        $slider = new Slider();
+        $slider->fill($request->only(['image']));
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('slider_images', 'public');
+            $slider->image = $path;
+        }
+
+        $slider->save();
+
+        return redirect()->route('admin.sliders.index')->with('success', 'Slider image added successfully.');
+    }
+
+
+    public function editSlider($id)
+    {
+        $slider = Slider::findOrFail($id);
+        return view('admin.sliders-edit', compact('slider'));
+    }
+
+    public function updateSlider(Request $request, $id)
+    {
+        $request->validate([
+            'image' => 'nullable|image'
+        ]);
+
+        $slider = Slider::findOrFail($id);
+
+        if ($request->hasFile('image')) {
+            // Delete old image
+            if ($slider->image) {
+                Storage::disk('public')->delete($slider->image);
+            }
+            $path = $request->file('image')->store('slider_images', 'public');
+            $slider->image = $path;
+        }
+
+        $slider->save();
+
+        return redirect()->route('admin.sliders.index')->with('success', 'Slider image updated successfully.');
+    }
+
+    public function destroySlider($id)
+    {
+        $slider = Slider::findOrFail($id);
+
+        // Delete image
+        if ($slider->image) {
+            Storage::disk('public')->delete($slider->image);
+        }
+
+        $slider->delete();
+
+        return redirect()->route('admin.sliders.index')->with('success', 'Slider image deleted successfully.');
     }
 }
