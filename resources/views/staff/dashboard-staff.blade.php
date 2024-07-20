@@ -30,7 +30,6 @@
 <body class="g-sidenav-show bg-gray-100">
 
     @include('layout.nav')
-    @include('layout.sidebar-staff')
 
     <!-- Main Content -->
     <main class="main-content position-relative h-100 border-radius-lg">

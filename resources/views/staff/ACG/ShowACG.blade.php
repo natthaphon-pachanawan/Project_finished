@@ -14,7 +14,6 @@
 <body class="g-sidenav-show bg-gray-100">
 
     @include('layout.nav')
-    @include('layout.sidebar-staff')
 
     <main class="main-content position-relative h-100 border-radius-lg">
         <div class="container-fluid py-4">

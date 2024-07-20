@@ -103,4 +103,5 @@
         <a href="{{ route('edit-profile') }}" class="edit-button">Edit Profile</a>
     </div>
 </body>
+
 </html>

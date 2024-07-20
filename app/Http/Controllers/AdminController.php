@@ -80,24 +80,23 @@ class AdminController extends Controller
         }
     }
 
-    // News Management
-    public function indexNews()
+    public function ShowlayoutAdmin()
     {
+        $sliders = Slider::all();
         $news = News::all();
-        return view('admin.news-index', compact('news'));
+        $visitorCount = 12344865; // ตัวอย่างข้อมูล
+        $adlAssessmentCount = 6789; // ตัวอย่างข้อมูล
+        $cgAssessmentCount = 6548;
+        return view('admin.layout-admin', compact('sliders', 'news', 'visitorCount', 'adlAssessmentCount', 'cgAssessmentCount'));
     }
 
-    public function createNews()
-    {
-        return view('admin.news-create');
-    }
-
+    // News Management
     public function storeNews(Request $request)
     {
         $request->validate([
             'title' => 'required|string|max:255',
             'content' => 'required|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+            'image' => 'nullable|image'
         ]);
 
         $news = new News($request->only(['title', 'content']));
@@ -109,14 +108,15 @@ class AdminController extends Controller
 
         $news->save();
 
-        return redirect()->route('admin.news.index')->with('success', 'News created successfully.');
+        return redirect()->route('admin.layout-admin')->with('success', 'News created successfully.');
     }
 
     public function editNews($id)
-    {
-        $newsItem = News::findOrFail($id);
+{
+    $newsItem = News::findOrFail($id);
         return view('admin.news-edit', compact('newsItem'));
-    }
+}
+
 
     public function updateNews(Request $request, $id)
     {
@@ -139,7 +139,7 @@ class AdminController extends Controller
 
         $news->save();
 
-        return redirect()->route('admin.news.index')->with('success', 'News updated successfully.');
+        return redirect()->route('admin.layout-admin')->with('success', 'News updated successfully.');
     }
 
     public function destroyNews($id)
@@ -149,21 +149,10 @@ class AdminController extends Controller
             Storage::disk('public')->delete($news->image);
         }
         $news->delete();
-        return redirect()->route('admin.news.index')->with('success', 'News deleted successfully.');
+        return redirect()->route('admin.layout-admin')->with('success', 'News deleted successfully.');
     }
 
     // Slider Management
-    public function indexSlider()
-    {
-        $sliders = Slider::all();
-        return view('admin.sliders-index', compact('sliders'));
-    }
-
-    public function createSlider()
-    {
-        return view('admin.sliders-create');
-    }
-
     public function storeSlider(Request $request)
     {
         $request->validate([
@@ -179,14 +168,7 @@ class AdminController extends Controller
 
         $slider->save();
 
-        return redirect()->route('admin.sliders.index')->with('success', 'Slider image added successfully.');
-    }
-
-
-    public function editSlider($id)
-    {
-        $slider = Slider::findOrFail($id);
-        return view('admin.sliders-edit', compact('slider'));
+        return redirect()->route('admin.layout-admin')->with('success', 'Slider image added successfully.');
     }
 
     public function updateSlider(Request $request, $id)
@@ -208,7 +190,7 @@ class AdminController extends Controller
 
         $slider->save();
 
-        return redirect()->route('admin.sliders.index')->with('success', 'Slider image updated successfully.');
+        return redirect()->route('admin.layout-admin')->with('success', 'Slider image updated successfully.');
     }
 
     public function destroySlider($id)
@@ -222,6 +204,6 @@ class AdminController extends Controller
 
         $slider->delete();
 
-        return redirect()->route('admin.sliders.index')->with('success', 'Slider image deleted successfully.');
+        return redirect()->route('admin.layout-admin')->with('success', 'Slider image deleted successfully.');
     }
 }

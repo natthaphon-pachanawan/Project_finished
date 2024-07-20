@@ -27,8 +27,9 @@ Route::get('/', function () {
     $sliders = App\Models\Slider::all();
     $news = App\Models\News::all();
     $visitorCount = 12344865; // ตัวอย่างข้อมูล
-    $assessmentCount = 6789; // ตัวอย่างข้อมูล
-    return view('welcome', compact('sliders', 'news', 'visitorCount', 'assessmentCount'));
+    $adlAssessmentCount = 6789; // ตัวอย่างข้อมูล
+    $cgAssessmentCount = 6548;
+    return view('welcome', compact('sliders', 'news', 'visitorCount', 'adlAssessmentCount', 'cgAssessmentCount'));
 })->name('welcome');
 
 Route::get('add-personnel-types', [PersonnelController::class, 'addPersonnelTypes']);
@@ -97,25 +98,18 @@ Route::middleware(['CheckLogin', 'IsAdmin'])->group(function () {
     Route::post('register-submit', [AdminController::class, 'submitUser'])->name('register.submit');
     Route::delete('user-delete/{id}', [AdminController::class, 'deleteUser'])->name('user.delete');
 
-    Route::get('layout-admin', function () {
-        return view('admin.layout-admin');
-    });
+    Route::get('layout-admin', [AdminController::class, 'ShowlayoutAdmin'])->name('admin.layout-admin');
 
 
     // News routes
-    Route::get('news', [AdminController::class, 'indexNews'])->name('admin.news.index');
-    Route::get('news/create', [AdminController::class, 'createNews'])->name('admin.news.create');
     Route::post('news/store', [AdminController::class, 'storeNews'])->name('admin.news.store');
-    Route::get('news/{id}/edit', [AdminController::class, 'editNews'])->name('admin.news.edit'); // Add this line
+    Route::get('news/{id}/edit', [AdminController::class, 'editNews']);
     Route::put('news/{id}', [AdminController::class, 'updateNews'])->name('admin.news.update'); // Add this line
     Route::delete('news/{id}', [AdminController::class, 'destroyNews'])->name('admin.news.destroy');
 
 
     // Slider routes
-    Route::get('sliders', [AdminController::class, 'indexSlider'])->name('admin.sliders.index');
-    Route::get('sliders/create', [AdminController::class, 'createSlider'])->name('admin.sliders.create');
     Route::post('sliders/store', [AdminController::class, 'storeSlider'])->name('admin.sliders.store');
-    Route::get('sliders/{id}/edit', [AdminController::class, 'editSlider'])->name('admin.sliders.edit');
     Route::put('sliders/{id}', [AdminController::class, 'updateSlider'])->name('admin.sliders.update');
     Route::delete('sliders/{id}', [AdminController::class, 'destroySlider'])->name('admin.sliders.destroy');
 });
