@@ -155,20 +155,14 @@
             <span>การพัฒนาระบบประเมินความสามารถในการดำเนินกิจวัตรประจำวันของผู้สูงอายุที่มีภาวะพึ่งพิง</span>
         </div>
         <div class="nav-links">
-            @if (Auth::check())
-                @php
-                    $user = Auth::user();
-                @endphp
-
-                <a href="{{ url('/') }}">หน้าหลัก</a>
-                <a href="/contact">ติดต่อเรา</a>
-            @endif
+            <a href="{{ url('/') }}">หน้าหลัก</a>
+            <a href="/contact">ติดต่อเรา</a>
         </div>
         @if (Auth::check())
             <div class="user-info">
                 <a href="{{ url('profile-user') }}">
-                    <img src="{{ asset($user->Image_User) }}" alt="Profile Image">
-                    <span>{{ $user->Name_User }}</span>
+                    <img src="{{ asset(Auth::user()->Image_User) }}" alt="Profile Image">
+                    <span>{{ Auth::user()->Name_User }}</span>
                 </a>
                 <i class="fas fa-cog" onclick="toggleDropdown()"></i>
                 <div class="dropdown" id="userDropdown">
@@ -180,17 +174,15 @@
                     </form>
                 </div>
             </div>
+        @else
+            <a href="{{ url('login') }}" class="btn btn-primary">Login</a>
         @endif
     </div>
 
     @if (Auth::check())
-        @php
-            $user = Auth::user();
-        @endphp
-
-        @if ($user->Type_Personnel === 'Admin')
+        @if (Auth::user()->Type_Personnel === 'Admin')
             @include('layout.sidebar-admin')
-        @elseif ($user->Type_Personnel === 'Staff')
+        @elseif (Auth::user()->Type_Personnel === 'Staff')
             @include('layout.sidebar-staff')
         @endif
     @endif
