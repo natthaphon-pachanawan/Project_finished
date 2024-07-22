@@ -149,5 +149,6 @@ Route::controller(SumCGcontroller::class)->group(function () {
     Route::get('Sum_CG', 'Showelderly');
 });
 Route::controller(ReportController::class)->group(function () {
-    Route::get('Showreport', 'Dashboard_Report');
+    Route::get('Report', 'Dashboard_Report');
+    Route::get('showreport','Sum_report');
 });
