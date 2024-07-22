@@ -144,4 +144,31 @@ class ElderlyController extends Controller
 
         return redirect()->away("https://www.google.com/maps/search/?api=1&query=$latitude,$longitude");
     }
+
+    public function showReport()
+    {
+        $elderlies = Elderly::all();
+
+        $ageGroups = [
+            '60-69' => 0,
+            '70-79' => 0,
+            '80-89' => 0,
+            '90+' => 0,
+        ];
+
+        foreach ($elderlies as $elderly) {
+            $age = \Carbon\Carbon::parse($elderly->Birthday)->age;
+            if ($age >= 60 && $age <= 69) {
+                $ageGroups['60-69']++;
+            } elseif ($age >= 70 && $age <= 79) {
+                $ageGroups['70-79']++;
+            } elseif ($age >= 80 && $age <= 89) {
+                $ageGroups['80-89']++;
+            } elseif ($age >= 90) {
+                $ageGroups['90+']++;
+            }
+        }
+
+        return view('staff.elderly.elderly-report', compact('elderlies', 'ageGroups'));
+    }
 }

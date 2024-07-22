@@ -116,6 +116,35 @@
             transform: rotate(90deg);
             color: #f0ad4e;
         }
+
+        .sidebar {
+            position: fixed;
+            top: 70px; /* Adjust based on the navbar height */
+            left: 0;
+            width: 250px;
+            height: 100%;
+            background-color: #f8f9fa;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+            padding-top: 20px;
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar .toggle-btn {
+            position: absolute;
+            top: 20px;
+            right: -30px;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 0 5px 5px 0;
+        }
+
+        .sidebar.collapsed {
+            transform: translateX(-260px);
+        }
+
     </style>
 </head>
 
@@ -131,16 +160,8 @@
                     $user = Auth::user();
                 @endphp
 
-
-            @if ($user->Type_Personnel === 'Admin')
-                    <a href="{{ url('admin-dashboard') }}">หน้าหลัก</a>
-                @elseif ($user->Type_Personnel === 'Doctor')
-                    <a href="{{ url('doctor-dashboard') }}">หน้าหลัก</a>
-                @elseif ($user->Type_Personnel === 'Staff')
-                    <a href="{{ url('staff-dashboard') }}">หน้าหลัก</a>
-                @endif
-            <a href="/about">เกี่ยวกับ</a>
-            <a href="/contact">ติดต่อเรา</a>
+                <a href="{{ url('/') }}">หน้าหลัก</a>
+                <a href="/contact">ติดต่อเรา</a>
             @endif
         </div>
         @if (Auth::check())
@@ -162,6 +183,18 @@
         @endif
     </div>
 
+    @if (Auth::check())
+        @php
+            $user = Auth::user();
+        @endphp
+
+        @if ($user->Type_Personnel === 'Admin')
+            @include('layout.sidebar-admin')
+        @elseif ($user->Type_Personnel === 'Staff')
+            @include('layout.sidebar-staff')
+        @endif
+    @endif
+
     <script>
         function toggleDropdown() {
             var dropdown = document.getElementById("userDropdown");
@@ -178,6 +211,15 @@
                     }
                 }
             }
+        }
+
+        function toggleSidebar() {
+            var sidebar = document.querySelector('.sidebar');
+            sidebar.classList.toggle('collapsed');
+        }
+        function toggleSidebar() {
+            var sidebar = document.querySelector('.sidenav');
+            sidebar.classList.toggle('collapsed');
         }
     </script>
 

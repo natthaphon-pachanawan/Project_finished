@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\News;
+use App\Models\Slider;
+use App\Models\Personnel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use App\Models\Personnel;
+use Illuminate\Support\Facades\Storage;
 
 class AdminController extends Controller
 {
@@ -66,8 +69,6 @@ class AdminController extends Controller
         return redirect()->route('user.register')->with('success', 'User registered successfully!');
     }
 
-
-
     public function deleteUser($id)
     {
         $user = User::find($id);
@@ -77,5 +78,132 @@ class AdminController extends Controller
         } else {
             return redirect()->route('admin.dashboard')->with('error', 'Admin accounts cannot be deleted.');
         }
+    }
+
+    public function ShowlayoutAdmin()
+    {
+        $sliders = Slider::all();
+        $news = News::all();
+        $visitorCount = 12344865; // ตัวอย่างข้อมูล
+        $adlAssessmentCount = 6789; // ตัวอย่างข้อมูล
+        $cgAssessmentCount = 6548;
+        return view('admin.layout-admin', compact('sliders', 'news', 'visitorCount', 'adlAssessmentCount', 'cgAssessmentCount'));
+    }
+
+    // News Management
+    public function storeNews(Request $request)
+    {
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'content' => 'required|string',
+            'image' => 'nullable|image'
+        ]);
+
+        $news = new News($request->only(['title', 'content']));
+
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('news_images', 'public');
+            $news->image = $path;
+        }
+
+        $news->save();
+
+        return redirect()->route('admin.layout-admin')->with('success', 'News created successfully.');
+    }
+
+    public function editNews($id)
+{
+    $newsItem = News::findOrFail($id);
+        return view('admin.news-edit', compact('newsItem'));
+}
+
+
+    public function updateNews(Request $request, $id)
+    {
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'content' => 'required|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+        ]);
+
+        $news = News::findOrFail($id);
+        $news->fill($request->only(['title', 'content']));
+
+        if ($request->hasFile('image')) {
+            if ($news->image) {
+                Storage::disk('public')->delete($news->image);
+            }
+            $path = $request->file('image')->store('news_images', 'public');
+            $news->image = $path;
+        }
+
+        $news->save();
+
+        return redirect()->route('admin.layout-admin')->with('success', 'News updated successfully.');
+    }
+
+    public function destroyNews($id)
+    {
+        $news = News::findOrFail($id);
+        if ($news->image) {
+            Storage::disk('public')->delete($news->image);
+        }
+        $news->delete();
+        return redirect()->route('admin.layout-admin')->with('success', 'News deleted successfully.');
+    }
+
+    // Slider Management
+    public function storeSlider(Request $request)
+    {
+        $request->validate([
+            'image' => 'required|image'
+        ]);
+
+        $slider = new Slider();
+        $slider->fill($request->only(['image']));
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('slider_images', 'public');
+            $slider->image = $path;
+        }
+
+        $slider->save();
+
+        return redirect()->route('admin.layout-admin')->with('success', 'Slider image added successfully.');
+    }
+
+    public function updateSlider(Request $request, $id)
+    {
+        $request->validate([
+            'image' => 'nullable|image'
+        ]);
+
+        $slider = Slider::findOrFail($id);
+
+        if ($request->hasFile('image')) {
+            // Delete old image
+            if ($slider->image) {
+                Storage::disk('public')->delete($slider->image);
+            }
+            $path = $request->file('image')->store('slider_images', 'public');
+            $slider->image = $path;
+        }
+
+        $slider->save();
+
+        return redirect()->route('admin.layout-admin')->with('success', 'Slider image updated successfully.');
+    }
+
+    public function destroySlider($id)
+    {
+        $slider = Slider::findOrFail($id);
+
+        // Delete image
+        if ($slider->image) {
+            Storage::disk('public')->delete($slider->image);
+        }
+
+        $slider->delete();
+
+        return redirect()->route('admin.layout-admin')->with('success', 'Slider image deleted successfully.');
     }
 }
