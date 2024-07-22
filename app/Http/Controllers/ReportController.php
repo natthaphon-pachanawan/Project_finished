@@ -12,4 +12,8 @@ class ReportController extends Controller
         $reports = CareGiver::all();
         return view('doctor.report.Dashboard', ['reports' =>$reports ]);
     }
+    public function Sum_report() 
+    {
+        return view('doctor.report.reportsm');
+    }
 }
