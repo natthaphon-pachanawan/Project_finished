@@ -48,6 +48,30 @@
                     <span class="nav-link-text ms-1">กิจกรรมการดูแลผู้สูงอายุ (ACG)</span>
                 </a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link text-white {{ Request::is('report-all-adl') ? 'active bg-gradient-primary' : '' }}" href="/report-all-adl">
+                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="material-icons opacity-10">description</i>
+                    </div>
+                    <span class="nav-link-text ms-1">ออกรายงาน ADL</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white {{ Request::is('report-all-cg') ? 'active bg-gradient-primary' : '' }}" href="/report-all-cg">
+                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="material-icons opacity-10">description</i>
+                    </div>
+                    <span class="nav-link-text ms-1">ออกรายงาน CG</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white {{ Request::is('report-all-acg') ? 'active bg-gradient-primary' : '' }}" href="/report-all-acg">
+                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="material-icons opacity-10">description</i>
+                    </div>
+                    <span class="nav-link-text ms-1">ออกรายงาน ACG</span>
+                </a>
+            </li>
         </ul>
     </div>
 </aside>
@@ -91,5 +115,10 @@
 
     .sidenav.collapsed ~ .sidebar-toggle-btn {
         left: 0px; /* เมื่อพับเก็บแล้ว, ปุ่มจะเลื่อนไปทางซ้าย */
+    }
+
+    /* Adjust icon size for better visual balance */
+    .material-icons {
+        font-size: 20px;
     }
 </style>

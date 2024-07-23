@@ -169,6 +169,6 @@ class ElderlyController extends Controller
             }
         }
 
-        return view('staff.elderly.elderly-report', compact('elderlies', 'ageGroups'));
+        return view('staff.Report.report-elderly', compact('elderlies', 'ageGroups'));
     }
 }

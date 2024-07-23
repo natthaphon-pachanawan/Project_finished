@@ -45,10 +45,6 @@ Route::controller(AuthController::class)->group(function () {
     Route::get('dashboard-Doctor', 'Dashboard_Dcotor');
 });
 
-
-Route::controller(ProfileController::class)->group(function () {
-});
-
 Route::controller(ADLController::class)->group(function () {
     Route::get('SumADL', 'SumADL');
 });
@@ -67,7 +63,7 @@ Route::controller(ElderlyController::class)->group(function () {
 
 Route::controller(CGController::class)->group(function () {
 
-    Route::get('get-group-adl/{elderlyId}', 'getGroupADL');
+
     Route::get('get-elderly-details/{elderlyId}', 'getElderlyDetails');
 
     Route::get('activities/create', 'createActivity')->name('activities.create');
@@ -97,8 +93,10 @@ Route::middleware(['CheckLogin', 'IsAdmin'])->group(function () {
     Route::get('register-user', [AdminController::class, 'registerUser'])->name('user.register');
     Route::post('register-submit', [AdminController::class, 'submitUser'])->name('register.submit');
     Route::delete('user-delete/{id}', [AdminController::class, 'deleteUser'])->name('user.delete');
+    Route::get('report-user', [AdminController::class, 'ReportUser'])->name('admin.report-user');
 
     Route::get('layout-admin', [AdminController::class, 'ShowlayoutAdmin'])->name('admin.layout-admin');
+
 
 
     // News routes
@@ -123,6 +121,8 @@ Route::middleware(['CheckLogin', 'IsStaff'])->group(function () {
     Route::delete('adl-destroy/{id}', [ADLController::class, 'destroy'])->name('adl.destroy');
     Route::get('adl-elderly', [ADLController::class, 'create'])->name('adl.create');
     Route::post('/adl/submit', [ADLController::class,  'submitADL'])->name('adl.submit');
+    Route::get('report-all-adl', [ADLController::class, 'ReportADLAll'])->name('report.all.adl');
+    Route::get('report-adl/{id}', [ADLController::class, 'ReportADL'])->name('report.adl');
 
     Route::get('cg-show', [CGController::class, 'index'])->name('cg.index');
     Route::get('cg-edit/{id}', [CGController::class, 'edit'])->name('cg.edit');
@@ -130,11 +130,15 @@ Route::middleware(['CheckLogin', 'IsStaff'])->group(function () {
     Route::delete('cg-destroy/{id}', [CGController::class, 'destroy'])->name('cg.destroy');
     Route::get('cg-create', [CGController::class, 'create'])->name('cg.create');
     Route::post('cg-store', [CGController::class, 'store'])->name('cg.store');
+    Route::get('report-all-cg', [CGController::class, 'ReportCGAll'])->name('report.all.cg');
+    Route::get('report-cg/{id}', [CGController::class, 'ReportCG'])->name('report.cg');
 
     Route::get('acg-show', [CGController::class, 'showACG'])->name('acg.index');
     Route::get('acg-edit/{id}', [CGController::class, 'editActivity'])->name('acg.edit');
     Route::put('acg-update/{id}', [CGController::class, 'updateActivity'])->name('acg.update');
     Route::delete('acg-destroy/{id}', [CGController::class, 'destroyActivity'])->name('acg.destroy');
+    Route::get('report-all-acg', [CGController::class, 'ReportACGAll'])->name('report.all.acg');
+    Route::get('report-acg/{id}', [CGController::class, 'ReportACG'])->name('report.acg');
 
     Route::get('search-location/{id}', [ElderlyController::class, 'searchLocation'])->name('search-location');
 });

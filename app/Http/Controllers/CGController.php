@@ -374,4 +374,30 @@ class CGController extends Controller
             'Group_ADL' => 'ไม่พบข้อมูล',
         ]);
     }
+
+    public function ReportCGAll()
+    {
+        $cgs = CareGiver::all();
+
+        return view('staff.Report.report-cg-all', compact('cgs'));
+    }
+
+    public function ReportCG($id)
+    {
+        $cg = CareGiver::with('elderly')->findOrFail($id);
+
+        return view('staff.Report.report-cg', compact('cg'));
+    }
+
+    public function ReportACGAll()
+    {
+        $activities = ActivityCaregiver::with('caregiver')->get();
+        return view('staff.Report.report-acg-all', compact('activities'));
+    }
+
+    public function ReportACG($id)
+    {
+        $activity = ActivityCaregiver::with('caregiver')->findOrFail($id);
+        return view('staff.Report.report-acg', compact('activity'));
+    }
 }

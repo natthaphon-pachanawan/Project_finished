@@ -57,12 +57,13 @@
                     <div class="card mb-4">
                         <div class="card-header pb-0 d-flex justify-content-between align-items-center">
                             <h6>ข้อมูลประวัติส่วนตัวของผู้สูงอายุ</h6>
-                            <a href="add-elderly" class="btn btn-primary">
-                                <i class="fas fa-plus"></i> เพิ่มผู้สูงอายุ
-                            </a>
                             <a href="{{ route('elderly-report') }}" class="btn btn-success ml-2">
                                 <i class="fas fa-file-pdf"></i> ออกรายงาน
                             </a>
+                            <a href="add-elderly" class="btn btn-primary">
+                                <i class="fas fa-plus"></i> เพิ่มผู้สูงอายุ
+                            </a>
+
                         </div>
                         <div class="card-body px-0 pt-0 pb-2">
                             <div class="table-responsive p-0">

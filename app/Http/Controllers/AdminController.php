@@ -206,4 +206,11 @@ class AdminController extends Controller
 
         return redirect()->route('admin.layout-admin')->with('success', 'Slider image deleted successfully.');
     }
+
+    public function ReportUser()
+    {
+        $users = User::all();
+
+        return view('admin.report-admin', compact('users'));
+    }
 }

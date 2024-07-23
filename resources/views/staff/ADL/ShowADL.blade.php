@@ -40,6 +40,9 @@
                     <div class="card mb-4">
                         <div class="card-header pb-0 d-flex justify-content-between align-items-center">
                             <h6>ประเมินความสามารถในการดำเนินชีวิตประจำวัน (ADL)</h6>
+                            <a href="{{ route('report.all.adl') }}" class="btn btn-success ml-2">
+                                <i class="fas fa-file-pdf"></i> ออกรายงาน ADL
+                            </a>
                             <a href="adl-elderly" class="btn btn-primary">
                                 <i class="fas fa-plus"></i> เพิ่ม ADL
                             </a>
@@ -64,6 +67,7 @@
                                                 <td class="text-center">{{ $adl->Score_ADL }}</td>
                                                 <td class="text-center">{{ $adl->Group_ADL }}</td>
                                                 <td class="text-center">
+                                                    <a href="{{ route('report.adl', ['id' => $adl->ID_ADL]) }}" class="btn btn-success btn-sm">ออกรายงาน</a>
                                                     <button onclick="toggleDetails({{ $adl->ID_ADL }})" class="btn btn-info btn-sm">ดูข้อมูล</button>
                                                     <a href="{{ route('adl.edit', ['id' => $adl->ID_ADL]) }}" class="btn btn-warning btn-sm">แก้ไข</a>
                                                     <form action="{{ route('adl.destroy', ['id' => $adl->ID_ADL]) }}" method="POST" style="display:inline-block;" onsubmit="return confirm('คุณแน่ใจหรือไม่ว่าต้องการลบ ?');">

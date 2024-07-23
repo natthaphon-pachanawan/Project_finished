@@ -33,19 +33,11 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-white {{ Request::is('acg-show') ? 'active bg-gradient-primary' : '' }}" href="acg-show">
-                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="material-icons opacity-10">report</i>
-                    </div>
-                    <span class="nav-link-text ms-1">ออกรายงานผู้ใช้</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link text-white {{ Request::is('acg-show') ? 'active bg-gradient-primary' : '' }}" href="acg-show">
+                <a class="nav-link text-white {{ Request::is('report-user') ? 'active bg-gradient-primary' : '' }}" href="/report-user">
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="material-icons opacity-10">article</i>
                     </div>
-                    <span class="nav-link-text ms-1">ออกรายงานข่าวสาร</span>
+                    <span class="nav-link-text ms-1">ออกรายงานผู้ใช้</span>
                 </a>
             </li>
         </ul>

@@ -19,9 +19,13 @@
                     <div class="card mb-4">
                         <div class="card-header pb-0 d-flex justify-content-between align-items-center">
                             <h6>จัดการข้อมูลผู้ใช้</h6>
+                            <a href="{{ route('admin.report-user') }}" class="btn btn-success ml-2">
+                                <i class="fas fa-file-pdf"></i> ออกรายงาน
+                            </a>
                             <a href="{{ route('user.register') }}" class="btn btn-primary">
                                 <i class="fas fa-plus"></i> สร้างบัญชี
                             </a>
+
                         </div>
                         <div class="card-body px-0 pt-0 pb-2">
                             <div class="table-responsive p-0">
@@ -29,6 +33,7 @@
                                     <thead>
                                         <tr>
                                             <th class="text-center">รูป</th>
+                                            <th class="text-center">ชื่อ</th>
                                             <th class="text-center">Username</th>
                                             <th class="text-center">ประเภทของผู้ใช้</th>
                                             <th class="text-center">อีเมลล์</th>
@@ -43,11 +48,12 @@
                                                 <td class="text-center">
                                                     <img src="{{ asset($user->Image_User) }}" alt="User Image" class="img-fluid" style="max-width: 50px;">
                                                 </td>
-                                                <td class="text-center">{{ $user->Username }}</td>
+                                                <td class="text-center">{{ $user->Name_User ?: 'ไม่มีข้อมูล' }}</td>
+                                                <td class="text-center">{{ $user->Username ?: 'ไม่มีข้อมูล' }}</td>
                                                 <td class="text-center">{{ $user->Type_Personnel }}</td>
-                                                <td class="text-center">{{ $user->Email }}</td>
-                                                <td class="text-center">{{ $user->Address }}</td>
-                                                <td class="text-center">{{ $user->Phone }}</td>
+                                                <td class="text-center">{{ $user->Email ?: 'ไม่มีข้อมูล' }}</td>
+                                                <td class="text-center">{{ $user->Address ?: 'ไม่มีข้อมูล' }}</td>
+                                                <td class="text-center">{{ $user->Phone ?: 'ไม่มีข้อมูล' }}</td>
                                                 <td class="text-center">
                                                     @if ($user->Type_Personnel !== 'Admin')
                                                         <form action="{{ route('user.delete', $user->ID_User) }}" method="POST" onsubmit="return confirm('คุณแน่ใจหรือไม่ว่าต้องการลบบัญชีนี้?');">

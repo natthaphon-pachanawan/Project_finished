@@ -40,6 +40,9 @@
                     <div class="card mb-4">
                         <div class="card-header pb-0 d-flex justify-content-between align-items-center">
                             <h6>แบบฟอร์มกิจกรรมการดูแลผู้สงอายุ (ACG)</h6>
+                            <a href="{{ route('report.all.acg') }}" class="btn btn-success ml-2">
+                                <i class="fas fa-file-pdf"></i> ออกรายงาน ACG
+                            </a>
                             <a href="{{ route('activities.create') }}" class="btn btn-primary">
                                 <i class="fas fa-plus"></i> เพิ่ม ACG
                             </a>
@@ -62,6 +65,7 @@
                                                 <td class="text-center">{{ $activity->caregiver->Name_Elderly }}</td>
                                                 <td class="text-center">{{ $activity->caregiver->Name_CG }}</td>
                                                 <td class="text-center">
+                                                    <a href="{{ route('report.acg', ['id' => $activity->ID_ACG]) }}" class="btn btn-success btn-sm">ออกรายงาน</a>
                                                     <a href="{{ route('acg.edit', ['id' => $activity->ID_ACG]) }}" class="btn btn-warning btn-sm">แก้ไข</a>
                                                     <form action="{{ route('acg.destroy', ['id' => $activity->ID_ACG]) }}" method="POST" style="display:inline-block;" onsubmit="return confirm('คุณแน่ใจหรือไม่ว่าต้องการลบ ?');">
                                                         @csrf

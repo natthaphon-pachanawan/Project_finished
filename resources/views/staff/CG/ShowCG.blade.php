@@ -40,9 +40,13 @@
                     <div class="card mb-4">
                         <div class="card-header pb-0 d-flex justify-content-between align-items-center">
                             <h6>แบบฟอร์มรายงานผลการปฏิบัติงานผู้ดูแลผู้สูงอายุ (CG)</h6>
+                            <a href="{{ route('report.all.cg') }}" class="btn btn-success ml-2">
+                                <i class="fas fa-file-pdf"></i> ออกรายงาน CG
+                            </a>
                             <a href="{{ route('cg.create') }}" class="btn btn-primary">
                                 <i class="fas fa-plus"></i> เพิ่ม CG
                             </a>
+
                         </div>
                         <div class="card-body px-0 pt-0 pb-2">
                             <div class="table-responsive p-0">
@@ -52,7 +56,7 @@
                                             <th class="text-center">วันที่</th>
                                             <th class="text-center">ชื่อผู้สูงอายุ</th>
                                             <th class="text-center">ชื่อผู้ดูแลผู้สูงอายุ</th>
-                                            <th class="text-center">คะแนน ADL</th>
+                                            <th class="text-center">กลุ่ม ADL</th>
                                             <th class="text-center">Actions</th>
                                         </tr>
                                     </thead>
@@ -64,6 +68,7 @@
                                                 <td class="text-center">{{ $cg->Name_CG }}</td>
                                                 <td class="text-center">{{ $cg->Group_ADL }}</td>
                                                 <td class="text-center">
+                                                    <a href="{{ route('report.cg', ['id' => $cg->ID_CG]) }}" class="btn btn-success btn-sm">ออกรายงาน</a>
                                                     <a href="{{ route('cg.edit', ['id' => $cg->ID_CG]) }}" class="btn btn-warning btn-sm">แก้ไข</a>
                                                     <form action="{{ route('cg.destroy', ['id' => $cg->ID_CG]) }}" method="POST" style="display:inline-block;" onsubmit="return confirm('คุณแน่ใจหรือไม่ว่าต้องการลบ ?');">
                                                         @csrf
