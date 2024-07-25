@@ -13,14 +13,10 @@ class ADLController extends Controller
     {
         $search = $request->get('search');
 
-        $adls = BarthelAdl::with('elderly')
-            ->when($search, function ($query, $search) {
-                return $query->where('Name_Elderly', 'LIKE', "%$search%");
-            })->paginate(10);
+        $adls = BarthelAdl::with('elderly')->get();
 
         return view('staff.ADL.ShowADL', compact('adls'));
     }
-
 
     public function create()
     {
@@ -145,11 +141,6 @@ class ADLController extends Controller
         $adl->delete();
 
         return redirect()->route('adl.index')->with('success', 'ADL Assessment deleted successfully!');
-    }
-    public function SumADL()
-    {
-        $adls = BarthelAdl::all();
-        return view('doctor.Sm.SummaryADL', ['adls' => $adls]);
     }
 
     public function ReportADLAll()

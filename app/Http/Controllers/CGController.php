@@ -20,7 +20,7 @@ class CGController extends Controller
                 ->orWhere('Name_CG', 'like', '%' . $request->search . '%');
         }
 
-        $careGivers = $query->paginate(10);
+        $careGivers = $query->get();
         return view('staff.CG.ShowCG', compact('careGivers'));
     }
 
@@ -125,8 +125,12 @@ class CGController extends Controller
     public function edit($id)
     {
         $caregiver = CareGiver::findOrFail($id);
-        $elderlys = Elderly::all();
-        return view('staff.CG.EditCG', compact('caregiver', 'elderlys'));
+        $elderly = Elderly::findOrFail($caregiver->ID_Elderly);
+
+        $birthDate = $elderly->Birthday;
+        $age = Carbon::parse($birthDate)->age;
+
+        return view('staff.CG.EditCG', compact('caregiver', 'elderly', 'age'));
     }
 
     public function update(Request $request, $id)
@@ -203,7 +207,7 @@ class CGController extends Controller
             });
         }
 
-        $activities = $query->paginate(10);
+        $activities = $query->get();
         return view('staff.ACG.ShowACG', compact('activities'));
     }
 
@@ -277,7 +281,7 @@ class CGController extends Controller
 
     public function createActivity()
     {
-        $elderlys = BarthelAdl::with('elderly')->get();
+        $elderlys = Elderly::has('care_giver')->with('care_giver')->get();
         return view('staff.ACG.AddACG', compact('elderlys'));
     }
 

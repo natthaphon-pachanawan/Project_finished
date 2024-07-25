@@ -1,11 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Manage User</title>
+    <!-- Include DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+    </style>
 </head>
+
 <body class="g-sidenav-show bg-gray-100">
 
     @include('layout.nav')
@@ -25,11 +34,10 @@
                             <a href="{{ route('user.register') }}" class="btn btn-primary">
                                 <i class="fas fa-plus"></i> สร้างบัญชี
                             </a>
-
                         </div>
                         <div class="card-body px-0 pt-0 pb-2">
                             <div class="table-responsive p-0">
-                                <table class="table align-items-center mb-0">
+                                <table id="myTable" class="table align-items-center mb-0">
                                     <thead>
                                         <tr>
                                             <th class="text-center">รูป</th>
@@ -75,6 +83,16 @@
 
         </div>
     </main>
-</body>
-</html>
 
+    <!-- Include jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <!-- Include DataTables JS -->
+    <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#myTable').DataTable();
+        });
+    </script>
+</body>
+
+</html>

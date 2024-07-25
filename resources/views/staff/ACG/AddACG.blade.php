@@ -128,12 +128,10 @@
                         @csrf
                         <div class="form-group">
                             <label for="ID_Elderly">ชื่อ-สกุลผู้สูงอายุ</label>
-                            <select id="ID_Elderly" name="ID_Elderly" class="form-control"
-                                onchange="fetchElderlyDetails()" required>
+                            <select id="ID_Elderly" name="ID_Elderly" class="form-control" onchange="fetchElderlyDetails()" required>
                                 <option value="">เลือกผู้สูงอายุ</option>
                                 @foreach ($elderlys as $elderly)
-                                    <option value="{{ $elderly->ID_ADL }}">{{ $elderly->elderly->Name_Elderly }}
-                                    </option>
+                                    <option value="{{ $elderly->ID_Elderly }}">{{ $elderly->Name_Elderly }}</option>
                                 @endforeach
                             </select>
                         </div>

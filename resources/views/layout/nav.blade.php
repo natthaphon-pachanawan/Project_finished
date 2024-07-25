@@ -184,6 +184,8 @@
             @include('layout.sidebar-admin')
         @elseif (Auth::user()->Type_Personnel === 'Staff')
             @include('layout.sidebar-staff')
+        @elseif (Auth::user()->Type_Personnel === 'Doctor')
+            @include('layout.sidebar-doctor')
         @endif
     @endif
 

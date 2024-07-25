@@ -15,7 +15,8 @@ return new class extends Migration
             $table->id('ID_CI');
             $table->unsignedBigInteger('ID_Elderly');
             $table->string('Name_Elderly');
-            $table->text('Care_instructions');
+            $table->string('Name_User')->nullable();
+            $table->string('Care_instructions');
 
             $table->foreign('ID_Elderly')->references('ID_Elderly')->on('elderlys')->onDelete('cascade');
         });
