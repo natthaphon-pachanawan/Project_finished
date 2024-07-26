@@ -144,9 +144,11 @@ Route::middleware(['CheckLogin', 'IsDoctor'])->group(function () {
 
     Route::controller(DoctorController::class)->group(function () {
         Route::get('doctor-dashboard', 'ShowDataElderly')->name('doctor.dashboard');
-        Route::get('SumADL', 'SumADL');
-        Route::get('Report', 'Dashboard_Report');
-        Route::get('showreport', 'Sum_report');
-        Route::get('Sum_CG', 'Showelderly');
+        Route::get('ci-show', 'ShowCI')->name('ci.index');
+        Route::get('ci-create', 'CreateCI')->name('ci.create');
+        Route::post('/ci-store', 'storeCI')->name('ci.store');
+        Route::delete('/ci/{id}', 'DestroyCI')->name('ci.destroy');
+        Route::get('ci/{id}/edit', 'editCI')->name('ci.edit');
+        Route::put('/ci/{id}', 'updateCI')->name('ci.update');
     });
 });

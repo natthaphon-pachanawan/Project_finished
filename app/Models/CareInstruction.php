@@ -8,8 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class CareInstruction extends Model
 {
     protected $table = 'care_instructions';
+    protected $primaryKey = 'ID_CI';
     protected $fillable = [
-        'ID_Elderly', 'Name_Elderly', 'Care_instructions'
+        'ID_Elderly', 'Date_CI', 'Name_Elderly', 'Name_Doctor', 'Name_Staff', 'Care_instructions'
     ];
     public $timestamps = false;
 
