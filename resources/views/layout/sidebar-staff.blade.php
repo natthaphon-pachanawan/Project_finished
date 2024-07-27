@@ -51,7 +51,7 @@
             <li class="nav-item">
                 <a class="nav-link text-white {{ Request::is('staff-ci') ? 'active bg-gradient-primary' : '' }}" href="/staff-ci">
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="material-icons opacity-10">elderly</i>
+                        <i class="material-icons opacity-10">announcement</i>
                     </div>
                     <span class="nav-link-text ms-1">จัดการข้อมูลคำแนะนำ</span>
                 </a>
@@ -108,8 +108,8 @@
 
     .sidebar-toggle-btn {
         position: fixed;
-        top: 110px; /* ปรับค่าตามต้องการเพื่อให้ปุ่มอยู่ในตำแหน่งที่เหมาะสม */
-        left: 260px; /* เริ่มต้นที่ตำแหน่งปกติของ sidebar */
+        top: 110px; /* Adjust based on your needs */
+        left: 260px; /* Default position */
         z-index: 1100;
         background-color: #333;
         border: none;
@@ -122,11 +122,10 @@
     }
 
     .sidenav.collapsed ~ .sidebar-toggle-btn {
-        left: 0px; /* เมื่อพับเก็บแล้ว, ปุ่มจะเลื่อนไปทางซ้าย */
+        left: 0px; /* Move the button when the sidebar is collapsed */
     }
 
-    /* Adjust icon size for better visual balance */
     .material-icons {
-        font-size: 20px;
+        font-size: 20px; /* Adjust icon size for balance */
     }
 </style>
