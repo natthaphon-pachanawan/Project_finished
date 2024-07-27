@@ -82,25 +82,7 @@
         }
     </style>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            fetchElderlyDetails();
-        });
 
-        function fetchElderlyDetails() {
-            var elderlyId = document.getElementById('ID_Elderly').value;
-            if (elderlyId) {
-                fetch(`/get-elderly-details/${elderlyId}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        document.getElementById('Age').value = data.Age;
-                        document.getElementById('Address').value = data.Address;
-                        document.getElementById('Group_ADL').value = data.Group_ADL;
-                        document.getElementById('Name_Elderly').value = document.getElementById('ID_Elderly').options[
-                            document.getElementById('ID_Elderly').selectedIndex].text;
-                    })
-                    .catch(error => console.error('Error:', error));
-            }
-        }
 
         function showAssessmentForm() {
             document.getElementById('caregiver-form').classList.add('hidden');
@@ -175,7 +157,7 @@
                         <div class="form-group">
                             <label for="Age">อายุ</label>
                             <input type="number" id="Age" name="Age" class="form-control"
-                                value="{{ $caregiver->Age }}" required readonly>
+                                value="{{ $age }}" required readonly>
                         </div>
                         <div class="form-group">
                             <label for="Address">ที่อยู่</label>

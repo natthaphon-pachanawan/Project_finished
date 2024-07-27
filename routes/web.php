@@ -9,8 +9,8 @@ use App\Http\Controllers\PersonnelController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CGController;
-use App\Http\Controllers\ReportController;
-use App\Http\Controllers\SumCGcontroller;
+use App\Http\Controllers\CIController;
+use App\Http\Controllers\DoctorController;
 
 /*
 |--------------------------------------------------------------------------
@@ -46,12 +46,6 @@ Route::controller(AuthController::class)->group(function () {
 });
 
 
-Route::controller(ProfileController::class)->group(function () {
-});
-
-Route::controller(ADLController::class)->group(function () {
-    Route::get('SumADL', 'SumADL');
-});
 
 Route::controller(ElderlyController::class)->group(function () {
 
@@ -65,14 +59,7 @@ Route::controller(ElderlyController::class)->group(function () {
     Route::get('/search-location/{id}', 'searchLocation')->name('search-location');
 });
 
-Route::controller(CGController::class)->group(function () {
 
-    Route::get('get-group-adl/{elderlyId}', 'getGroupADL');
-    Route::get('get-elderly-details/{elderlyId}', 'getElderlyDetails');
-
-    Route::get('activities/create', 'createActivity')->name('activities.create');
-    Route::post('/activities/store', 'storeActivity')->name('activities.store');
-});
 
 
 
@@ -97,8 +84,10 @@ Route::middleware(['CheckLogin', 'IsAdmin'])->group(function () {
     Route::get('register-user', [AdminController::class, 'registerUser'])->name('user.register');
     Route::post('register-submit', [AdminController::class, 'submitUser'])->name('register.submit');
     Route::delete('user-delete/{id}', [AdminController::class, 'deleteUser'])->name('user.delete');
+    Route::get('report-user', [AdminController::class, 'ReportUser'])->name('admin.report-user');
 
     Route::get('layout-admin', [AdminController::class, 'ShowlayoutAdmin'])->name('admin.layout-admin');
+
 
 
     // News routes
@@ -116,6 +105,8 @@ Route::middleware(['CheckLogin', 'IsAdmin'])->group(function () {
 
 Route::middleware(['CheckLogin', 'IsStaff'])->group(function () {
 
+    Route::get('get-elderly-details/{elderlyId}', [CGController::class, 'getElderlyDetails']);
+
     Route::get('staff-dashboard', [ElderlyController::class, 'Showelderly'])->name('staff-dashboard');
     Route::get('adl-show', [ADLController::class, 'index'])->name('adl.index');
     Route::get('adl-edit/{id}', [ADLController::class, 'edit'])->name('adl.edit');
@@ -123,6 +114,8 @@ Route::middleware(['CheckLogin', 'IsStaff'])->group(function () {
     Route::delete('adl-destroy/{id}', [ADLController::class, 'destroy'])->name('adl.destroy');
     Route::get('adl-elderly', [ADLController::class, 'create'])->name('adl.create');
     Route::post('/adl/submit', [ADLController::class,  'submitADL'])->name('adl.submit');
+    Route::get('report-all-adl', [ADLController::class, 'ReportADLAll'])->name('report.all.adl');
+    Route::get('report-adl/{id}', [ADLController::class, 'ReportADL'])->name('report.adl');
 
     Route::get('cg-show', [CGController::class, 'index'])->name('cg.index');
     Route::get('cg-edit/{id}', [CGController::class, 'edit'])->name('cg.edit');
@@ -130,25 +123,37 @@ Route::middleware(['CheckLogin', 'IsStaff'])->group(function () {
     Route::delete('cg-destroy/{id}', [CGController::class, 'destroy'])->name('cg.destroy');
     Route::get('cg-create', [CGController::class, 'create'])->name('cg.create');
     Route::post('cg-store', [CGController::class, 'store'])->name('cg.store');
+    Route::get('report-all-cg', [CGController::class, 'ReportCGAll'])->name('report.all.cg');
+    Route::get('report-cg/{id}', [CGController::class, 'ReportCG'])->name('report.cg');
 
+
+    Route::get('acg-create', [CGController::class, 'createActivity'])->name('activities.create');
+    Route::post('/acg-store', [CGController::class, 'storeActivity'])->name('activities.store');
     Route::get('acg-show', [CGController::class, 'showACG'])->name('acg.index');
     Route::get('acg-edit/{id}', [CGController::class, 'editActivity'])->name('acg.edit');
-    Route::put('acg-update/{id}', [CGController::class, 'updateActivity'])->name('acg.update');
-    Route::delete('acg-destroy/{id}', [CGController::class, 'destroyActivity'])->name('acg.destroy');
+    Route::put('/acg-update/{id}', [CGController::class, 'updateActivity'])->name('acg.update');
+    Route::delete('/acg-destroy/{id}', [CGController::class, 'destroyActivity'])->name('acg.destroy');
+    Route::get('report-all-acg', [CGController::class, 'ReportACGAll'])->name('report.all.acg');
+    Route::get('report-acg/{id}', [CGController::class, 'ReportACG'])->name('report.acg');
+
+    Route::get('staff-ci', [CIController::class,'ShowStaffCI'])->name('staff.ci.index');
+    Route::put('staff-ci/{id}/confirm', [CIController::class, 'confirmCI'])->name('ci.confirm');
+    Route::put('ci/{id}/unconfirm', [CIController::class, 'unconfirmCI'])->name('ci.unconfirm');
 
     Route::get('search-location/{id}', [ElderlyController::class, 'searchLocation'])->name('search-location');
 });
 
 
 Route::middleware(['CheckLogin', 'IsDoctor'])->group(function () {
-    Route::get('doctor-dashboard', function () {
-        return view('doctor.dashboard-doctor');
+
+
+    Route::controller(DoctorController::class)->group(function () {
+        Route::get('doctor-dashboard', 'ShowDataElderly')->name('doctor.dashboard');
+        Route::get('ci-show', 'ShowCI')->name('ci.index');
+        Route::get('ci-create', 'CreateCI')->name('ci.create');
+        Route::post('/ci-store', 'storeCI')->name('ci.store');
+        Route::delete('/ci/{id}', 'DestroyCI')->name('ci.destroy');
+        Route::get('ci/{id}/edit', 'editCI')->name('ci.edit');
+        Route::put('/ci/{id}', 'updateCI')->name('ci.update');
     });
-});
-Route::controller(SumCGcontroller::class)->group(function () {
-    Route::get('Sum_CG', 'Showelderly');
-});
-Route::controller(ReportController::class)->group(function () {
-    Route::get('Report', 'Dashboard_Report');
-    Route::get('showreport','Sum_report');
 });

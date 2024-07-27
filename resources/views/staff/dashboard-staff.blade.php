@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,10 +8,12 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Include DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css">
     <style>
         .chart-container {
             position: relative;
-            height: 300px; /* Adjust the height as needed */
+            height: 300px;
             width: 100%;
         }
 
@@ -35,21 +38,7 @@
     <main class="main-content position-relative h-100 border-radius-lg">
         <div class="container-fluid py-4">
 
-            <!-- Search Form -->
-            <div class="row">
-                <div class="col-12">
-                    <div class="card mb-4">
-                        <div class="card-header pb-0 d-flex justify-content-between align-items-center">
-                        </div>
-                        <div class="card-body px-0 pt-0 pb-2">
-                            <form action="{{ route('staff-dashboard') }}" method="GET" class="d-flex p-3">
-                                <input type="text" name="search" class="form-control" placeholder="ค้นหาชื่อผู้สูงอายุ" value="{{ request()->get('search') }}">
-                                <button type="submit" class="btn btn-primary ml-2">ค้นหา</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
+
 
             <!-- Elderly Information -->
             <div class="row">
@@ -57,16 +46,16 @@
                     <div class="card mb-4">
                         <div class="card-header pb-0 d-flex justify-content-between align-items-center">
                             <h6>ข้อมูลประวัติส่วนตัวของผู้สูงอายุ</h6>
-                            <a href="add-elderly" class="btn btn-primary">
-                                <i class="fas fa-plus"></i> เพิ่มผู้สูงอายุ
-                            </a>
                             <a href="{{ route('elderly-report') }}" class="btn btn-success ml-2">
                                 <i class="fas fa-file-pdf"></i> ออกรายงาน
+                            </a>
+                            <a href="add-elderly" class="btn btn-primary">
+                                <i class="fas fa-plus"></i> เพิ่มผู้สูงอายุ
                             </a>
                         </div>
                         <div class="card-body px-0 pt-0 pb-2">
                             <div class="table-responsive p-0">
-                                <table class="table align-items-center mb-0">
+                                <table id="myTable" class="table align-items-center mb-0">
                                     <thead>
                                         <tr>
                                             <th class="text-center">รูป</th>
@@ -108,7 +97,7 @@
                                                 @endif
                                             </td>
                                             <td class="text-center">
-                                                <a href="{{ route('search-location', ['id' => $elderly->ID_Elderly]) }}" target="_blank" class="btn btn-info">ค้นหาที่ตั้ง</a>
+                                                <a href="{{ route('search-location', ['id' => $elderly->ID_Elderly]) }}" target="_blank" class="btn btn-info">ค้นหาที่อยู่</a>
                                                 <a href="{{ route('edit-elderly', ['id' => $elderly->ID_Elderly]) }}" class="btn btn-warning">แก้ไข</a>
                                                 <form action="{{ route('delete-elderly', ['id' => $elderly->ID_Elderly]) }}" method="POST" style="display:inline-block;" onsubmit="return confirm('คุณแน่ใจหรือไม่ว่าต้องการลบ ?');">
                                                     @csrf
@@ -121,7 +110,6 @@
                                     </tbody>
                                 </table>
                             </div>
-                            {{ $elderlies->links() }} <!-- For pagination links -->
                         </div>
                     </div>
                 </div>
@@ -185,11 +173,17 @@
     <script src="{{ asset('assets/js/core/popper.min.js') }}"></script>
     <script src="{{ asset('assets/js/core/bootstrap.min.js') }}"></script>
     <script src="{{ asset('assets/js/plugins/bootstrap-notify.js') }}"></script>
-    {{--  <script src="{{ asset('assets/js/plugins/chartjs.min.js') }}"></script>  --}}
-    {{--  <script src="{{ asset('assets/js/plugins/Chart.extension.js') }}"></script>  --}}
     <script src="{{ asset('assets/js/plugins/perfect-scrollbar.min.js') }}"></script>
     <script src="{{ asset('assets/js/plugins/smooth-scrollbar.min.js') }}"></script>
+    <!-- Include jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <!-- Include DataTables JS -->
+    <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
     <script>
+        $(document).ready(function() {
+            $('#myTable').DataTable();
+        });
+
         document.addEventListener('DOMContentLoaded', function() {
             var ageGroups = @json($ageGroups);
 

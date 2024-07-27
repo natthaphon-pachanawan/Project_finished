@@ -22,7 +22,7 @@ class ElderlyController extends Controller
             'Birthday' => 'required|date',
             'Address' => 'required|string',
             'Phone_Elderly' => 'required|string',
-            'Image_Elderly' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+            'Image_Elderly' => 'nullable|image'
         ]);
 
         $elderly = new Elderly();
@@ -49,10 +49,7 @@ class ElderlyController extends Controller
     {
         $search = $request->get('search');
 
-        $elderlies = Elderly::with('addressElderly')
-            ->when($search, function ($query, $search) {
-                return $query->where('Name_Elderly', 'LIKE', "%$search%");
-            })->paginate(10);
+        $elderlies = Elderly::with('addressElderly')->get();
 
         $ageGroups = [
             '60-69' => 0,
@@ -93,7 +90,7 @@ class ElderlyController extends Controller
             'Birthday' => 'required|date',
             'Address' => 'required|string',
             'Phone_Elderly' => 'required|string',
-            'Image_Elderly' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+            'Image_Elderly' => 'nullable|image'
         ]);
 
         $elderly->fill($request->only(['Name_Elderly', 'Birthday', 'Address', 'Phone_Elderly']));
@@ -169,6 +166,6 @@ class ElderlyController extends Controller
             }
         }
 
-        return view('staff.elderly.elderly-report', compact('elderlies', 'ageGroups'));
+        return view('staff.Report.report-elderly', compact('elderlies', 'ageGroups'));
     }
 }

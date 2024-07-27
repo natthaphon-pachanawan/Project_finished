@@ -151,7 +151,7 @@
 <body>
     <div class="navbar">
         <div class="logo">
-            <img src="path/to/logo.png" alt="Logo">
+            <img src="{{ asset('images/Logo.webp') }}" alt="Logo">
             <span>การพัฒนาระบบประเมินความสามารถในการดำเนินกิจวัตรประจำวันของผู้สูงอายุที่มีภาวะพึ่งพิง</span>
         </div>
         <div class="nav-links">
@@ -184,6 +184,8 @@
             @include('layout.sidebar-admin')
         @elseif (Auth::user()->Type_Personnel === 'Staff')
             @include('layout.sidebar-staff')
+        @elseif (Auth::user()->Type_Personnel === 'Doctor')
+            @include('layout.sidebar-doctor')
         @endif
     @endif
 
