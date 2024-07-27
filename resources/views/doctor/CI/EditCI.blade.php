@@ -8,7 +8,6 @@
     <!-- Include Bootstrap CSS -->
     <link href="{{ asset('assets/css/argon-dashboard.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/css/nucleo-icons.css') }}" rel="stylesheet">
-    <link href="{{ asset('assets/css/nucleo-svg.css') }}" rel="stylesheet">
 </head>
 
 <body class="g-sidenav-show bg-gray-100">
@@ -41,6 +40,10 @@
                                 <div class="form-group">
                                     <label for="Name_Doctor">ชื่อของหมอ</label>
                                     <input type="text" id="Name_Doctor" name="Name_Doctor" class="form-control" value="{{ $careInstruction->Name_Doctor }}" readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label for="Name_Staff">ชื่อเจ้าหน้าที่</label>
+                                    <input type="text" id="Name_Staff" name="Name_Staff" class="form-control" value="{{ $careInstruction->Name_Staff }}" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label for="Care_instructions">ข้อมูลคำแนะนำ</label>

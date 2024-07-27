@@ -49,6 +49,14 @@
                 </a>
             </li>
             <li class="nav-item">
+                <a class="nav-link text-white {{ Request::is('staff-ci') ? 'active bg-gradient-primary' : '' }}" href="/staff-ci">
+                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="material-icons opacity-10">elderly</i>
+                    </div>
+                    <span class="nav-link-text ms-1">จัดการข้อมูลคำแนะนำ</span>
+                </a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link text-white {{ Request::is('report-all-adl') ? 'active bg-gradient-primary' : '' }}" href="/report-all-adl">
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="material-icons opacity-10">description</i>

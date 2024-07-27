@@ -97,7 +97,7 @@
                                                 @endif
                                             </td>
                                             <td class="text-center">
-                                                <a href="{{ route('search-location', ['id' => $elderly->ID_Elderly]) }}" target="_blank" class="btn btn-info">ค้นหาที่ตั้ง</a>
+                                                <a href="{{ route('search-location', ['id' => $elderly->ID_Elderly]) }}" target="_blank" class="btn btn-info">ค้นหาที่อยู่</a>
                                                 <a href="{{ route('edit-elderly', ['id' => $elderly->ID_Elderly]) }}" class="btn btn-warning">แก้ไข</a>
                                                 <form action="{{ route('delete-elderly', ['id' => $elderly->ID_Elderly]) }}" method="POST" style="display:inline-block;" onsubmit="return confirm('คุณแน่ใจหรือไม่ว่าต้องการลบ ?');">
                                                     @csrf

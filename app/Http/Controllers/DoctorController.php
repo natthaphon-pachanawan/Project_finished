@@ -20,7 +20,10 @@ class DoctorController extends Controller
     public function CreateCI(Request $request)
     {
         $elderly = Elderly::findOrFail($request->elderly_id);
-        return view('doctor.CI.AddCI', compact('elderly'));
+        $careGiver = CareGiver::where('ID_Elderly', $elderly->ID_Elderly)->first();
+        $reporter = $careGiver ? $careGiver->Reporter : 'Unknown';
+
+        return view('doctor.CI.AddCI', compact('elderly', 'reporter'));
     }
 
     public function storeCI(Request $request)
@@ -30,6 +33,7 @@ class DoctorController extends Controller
             'Date_CI' => 'required|date',
             'Name_Elderly' => 'required|string',
             'Name_Doctor' => 'required|string',
+            'Name_Staff' => 'required|string',
             'Care_instructions' => 'required|string',
         ]);
 
@@ -40,7 +44,7 @@ class DoctorController extends Controller
 
     public function ShowCI()
     {
-        $careInstructions = CareInstruction::paginate(10);
+        $careInstructions = CareInstruction::all();
         return view('doctor.CI.ShowCI', compact('careInstructions'));
     }
 
@@ -64,6 +68,7 @@ class DoctorController extends Controller
             'Date_CI' => 'required|date',
             'Name_Elderly' => 'required|string',
             'Name_Doctor' => 'required|string',
+            'Name_Staff' => 'required|string',
             'Care_instructions' => 'required|string',
         ]);
 

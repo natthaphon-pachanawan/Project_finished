@@ -32,8 +32,8 @@
                         <div class="card-header pb-0">
                             <h6>เพิ่มคำแนะนำ</h6>
                         </div>
-                        <div class="card-body px-0 pt-0 pb-2">
-                            <form action="{{ route('ci.store') }}" method="POST" class="p-3">
+                        <div class="card-body px-3 pt-3 pb-2">
+                            <form action="{{ route('ci.store') }}" method="POST">
                                 @csrf
                                 <div class="form-group">
                                     <label for="Date_CI">วันที่</label>
@@ -47,6 +47,10 @@
                                 <div class="form-group">
                                     <label for="Name_Doctor">ชื่อของหมอ</label>
                                     <input type="text" id="Name_Doctor" name="Name_Doctor" class="form-control" value="{{ Auth::user()->Name_User }}" readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label for="Name_Staff">ชื่อเจ้าหน้าที่</label>
+                                    <input type="text" id="Name_Staff" name="Name_Staff" class="form-control" value="{{ $reporter }}" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label for="Care_instructions">ข้อมูลคำแนะนำ</label>

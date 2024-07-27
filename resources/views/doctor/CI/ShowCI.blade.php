@@ -34,24 +34,30 @@
                                             <th class="text-center">วันที่</th>
                                             <th class="text-center">ชื่อผู้สูงอายุ</th>
                                             <th class="text-center">ชื่อหมอ</th>
+                                            <th class="text-center">ชื่อเจ้าหน้าที่</th>
                                             <th class="text-center">คำแนะนำ</th>
                                             <th class="text-center">Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach($careInstructions as $ci)
-                                            @if(empty($ci->Name_Staff))
+                                        @foreach ($careInstructions as $ci)
+                                            @if (empty($ci->Confirm))
                                                 <tr>
                                                     <td class="text-center">{{ $ci->Date_CI }}</td>
                                                     <td class="text-center">{{ $ci->Name_Elderly }}</td>
                                                     <td class="text-center">{{ $ci->Name_Doctor }}</td>
+                                                    <td class="text-center">{{ $ci->Name_Staff }}</td>
                                                     <td class="text-center">{{ $ci->Care_instructions }}</td>
                                                     <td class="text-center">
-                                                        <a href="{{ route('ci.edit', ['id' => $ci->ID_CI]) }}" class="btn btn-warning btn-sm">แก้ไข</a>
-                                                        <form action="{{ route('ci.destroy', ['id' => $ci->ID_CI]) }}" method="POST" style="display:inline-block;" onsubmit="return confirm('คุณแน่ใจหรือไม่ว่าต้องการลบ ?');">
+                                                        <a href="{{ route('ci.edit', ['id' => $ci->ID_CI]) }}"
+                                                            class="btn btn-warning btn-sm">แก้ไข</a>
+                                                        <form action="{{ route('ci.destroy', ['id' => $ci->ID_CI]) }}"
+                                                            method="POST" style="display:inline-block;"
+                                                            onsubmit="return confirm('คุณแน่ใจหรือไม่ว่าต้องการลบ ?');">
                                                             @csrf
                                                             @method('DELETE')
-                                                            <button type="submit" class="btn btn-danger btn-sm">ลบ</button>
+                                                            <button type="submit"
+                                                                class="btn btn-danger btn-sm">ลบ</button>
                                                         </form>
                                                     </td>
                                                 </tr>

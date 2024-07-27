@@ -9,6 +9,7 @@ use App\Http\Controllers\PersonnelController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CGController;
+use App\Http\Controllers\CIController;
 use App\Http\Controllers\DoctorController;
 
 /*
@@ -134,6 +135,10 @@ Route::middleware(['CheckLogin', 'IsStaff'])->group(function () {
     Route::delete('/acg-destroy/{id}', [CGController::class, 'destroyActivity'])->name('acg.destroy');
     Route::get('report-all-acg', [CGController::class, 'ReportACGAll'])->name('report.all.acg');
     Route::get('report-acg/{id}', [CGController::class, 'ReportACG'])->name('report.acg');
+
+    Route::get('staff-ci', [CIController::class,'ShowStaffCI'])->name('staff.ci.index');
+    Route::put('staff-ci/{id}/confirm', [CIController::class, 'confirmCI'])->name('ci.confirm');
+    Route::put('ci/{id}/unconfirm', [CIController::class, 'unconfirmCI'])->name('ci.unconfirm');
 
     Route::get('search-location/{id}', [ElderlyController::class, 'searchLocation'])->name('search-location');
 });
