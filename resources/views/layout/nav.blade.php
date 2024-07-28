@@ -7,16 +7,16 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link href="{{ asset('assets/css/argon-dashboard.css') }}" rel="stylesheet"/>
-    <link href="{{ asset('assets/css/nucleo-icons.css') }}" rel="stylesheet"/>
-    <link href="{{ asset('assets/css/nucleo-svg.css') }}" rel="stylesheet"/>
+    <link href="{{ asset('assets/css/argon-dashboard.css') }}" rel="stylesheet" />
+    <link href="{{ asset('assets/css/nucleo-icons.css') }}" rel="stylesheet" />
+    <link href="{{ asset('assets/css/nucleo-svg.css') }}" rel="stylesheet" />
 
     <style>
         body {
             font-family: 'Open Sans', sans-serif;
             margin: 0;
             padding: 0;
-            padding-top: 70px; /* Adjust this value based on the height of your navbar */
+            padding-top: 70px;
         }
 
         .navbar {
@@ -77,7 +77,8 @@
             cursor: pointer;
         }
 
-        .navbar .user-info .dropdown {
+        .navbar .user-info .dropdown,
+        .navbar .notifications .dropdown {
             display: none;
             position: absolute;
             top: 50px;
@@ -88,7 +89,8 @@
             border-radius: 8px;
         }
 
-        .navbar .user-info .dropdown a {
+        .navbar .user-info .dropdown a,
+        .navbar .notifications .dropdown a {
             display: block;
             padding: 10px 20px;
             color: #333;
@@ -97,15 +99,18 @@
             transition: background-color 0.3s ease;
         }
 
-        .navbar .user-info .dropdown a:last-child {
+        .navbar .user-info .dropdown a:last-child,
+        .navbar .notifications .dropdown a:last-child {
             border-bottom: none;
         }
 
-        .navbar .user-info .dropdown a:hover {
+        .navbar .user-info .dropdown a:hover,
+        .navbar .notifications .dropdown a:hover {
             background-color: #f4f4f4;
         }
 
-        .fa-cog {
+        .fa-cog,
+        .fa-bell {
             cursor: pointer;
             margin-right: 10px;
             font-size: 1.5em;
@@ -117,9 +122,32 @@
             color: #f0ad4e;
         }
 
+        .shake {
+            animation: shake 0.5s;
+            animation-iteration-count: infinite;
+        }
+
+        @keyframes shake {
+            0% {
+                transform: rotate(0deg);
+            }
+            25% {
+                transform: rotate(-15deg);
+            }
+            50% {
+                transform: rotate(0deg);
+            }
+            75% {
+                transform: rotate(15deg);
+            }
+            100% {
+                transform: rotate(0deg);
+            }
+        }
+
         .sidebar {
             position: fixed;
-            top: 70px; /* Adjust based on the navbar height */
+            top: 70px;
             left: 0;
             width: 250px;
             height: 100%;
@@ -144,7 +172,6 @@
         .sidebar.collapsed {
             transform: translateX(-260px);
         }
-
     </style>
 </head>
 
@@ -164,6 +191,23 @@
                     <img src="{{ asset(Auth::user()->Image_User) }}" alt="Profile Image">
                     <span>{{ Auth::user()->Name_User }}</span>
                 </a>
+                <div class="notifications">
+                    @php
+                        $notifications = \App\Models\CareInstruction::where('Name_Staff', Auth::user()->Name_User)
+                            ->whereNull('Confirm')
+                            ->get();
+                    @endphp
+                    <i class="fas fa-bell {{ $notifications->isNotEmpty() && !Request::is('staff-ci') ? 'shake' : '' }}" onclick="toggleNotificationDropdown()"></i>
+                    <div class="dropdown" id="notificationDropdown">
+                        @if ($notifications->isEmpty())
+                            <a href="#">ไม่มีการแจ้งเตือน</a>
+                        @else
+                            @foreach ($notifications as $notification)
+                                <a href="{{ url('staff-ci') }}">{{ $notification->Name_Elderly }} - {{ $notification->Care_instructions }}</a>
+                            @endforeach
+                        @endif
+                    </div>
+                </div>
                 <i class="fas fa-cog" onclick="toggleDropdown()"></i>
                 <div class="dropdown" id="userDropdown">
                     <a href="{{ url('profile-user') }}">Profile</a>
@@ -195,8 +239,13 @@
             dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
         }
 
+        function toggleNotificationDropdown() {
+            var dropdown = document.getElementById("notificationDropdown");
+            dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+        }
+
         window.onclick = function(event) {
-            if (!event.target.matches('.user-info img') && !event.target.matches('.user-info span') && !event.target.matches('.fa-cog')) {
+            if (!event.target.matches('.user-info img') && !event.target.matches('.user-info span') && !event.target.matches('.fa-cog') && !event.target.matches('.fa-bell')) {
                 var dropdowns = document.getElementsByClassName("dropdown");
                 for (var i = 0; i < dropdowns.length; i++) {
                     var openDropdown = dropdowns[i];

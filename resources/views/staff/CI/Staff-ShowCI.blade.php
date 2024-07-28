@@ -76,6 +76,9 @@
                     <div class="card mb-4" style="max-width: 1200px; margin: auto;">
                         <div class="card-header pb-0 d-flex justify-content-between align-items-center">
                             <h6>คำแนะนำการดูแลที่ยืนยันแล้ว</h6>
+                            <a href="{{ route('report.ci.confirm') }}" class="btn btn-success ml-2">
+                                <i class="fas fa-file-pdf"></i> ออกรายงาน CG
+                            </a>
                         </div>
                         <div class="card-body px-3 pt-3 pb-2">
                             <div class="table-responsive p-0">

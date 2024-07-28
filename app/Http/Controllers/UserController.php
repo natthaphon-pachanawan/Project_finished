@@ -11,7 +11,7 @@ class UserController extends Controller
 {
     public function addUser()
     {
-        $personnelTypes = ['Admin', 'Staff', 'Doctor'];
+        $personnelTypes = ['Admin'];
         $usersData = [
             'Admin' => [
                 'Username' => 'admin',
@@ -19,18 +19,6 @@ class UserController extends Controller
                 'Password' => 'admin',
                 'Image' => 'images-user/Admin.jpg'
             ],
-            'Staff' => [
-                'Username' => 'staff',
-                'Email' => 'staff@gmail.com',
-                'Password' => 'staff',
-                'Image' => 'images-user/Staff.png'
-            ],
-            'Doctor' => [
-                'Username' => 'doctor',
-                'Email' => 'doctor@gmail.com',
-                'Password' => 'doctor',
-                'Image' => 'images-user/Doctor.png'
-            ]
         ];
 
         foreach ($personnelTypes as $type) {

@@ -137,7 +137,9 @@
                         <label for="elderly_id">เลือกผู้สูงอายุ:</label>
                         <select name="elderly_id" id="elderly_id" class="form-control" required>
                             @foreach($elderlies as $elderly)
-                            <option value="{{ $elderly->ID_Elderly }}">{{ $elderly->Name_Elderly }}</option>
+                                @if(!$elderly->barthel_adl)
+                                    <option value="{{ $elderly->ID_Elderly }}">{{ $elderly->Name_Elderly }}</option>
+                                @endif
                             @endforeach
                         </select>
                     </div>

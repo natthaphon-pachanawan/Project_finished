@@ -67,9 +67,20 @@
                             \App\Models\CareInstruction::where('ID_Elderly', $elderly->ID_Elderly)
                                 ->orderBy('Date_CI', 'desc')
                                 ->first()->Date_CI ?? null;
+
+                        $showElderly = false;
+
+                        if (auth()->user()->Type_Personnel == 'Doctor') {
+                            $typeDoctor = auth()->user()->Type_Doctor;
+                            if (($typeDoctor == 'กลุ่มติดสังคม' && $elderly->barthel_adl->Group_ADL == 'กลุ่มติดสังคม') ||
+                                ($typeDoctor == 'กลุ่มติดบ้าน' && $elderly->barthel_adl->Group_ADL == 'กลุ่มติดบ้าน') ||
+                                ($typeDoctor == 'กลุ่มติดเตียง' && $elderly->barthel_adl->Group_ADL == 'กลุ่มติดเตียง')) {
+                                $showElderly = true;
+                            }
+                        }
                     @endphp
 
-                    @if ($elderly->barthel_adl && ($latestCaregiverDate > $latestDateCI || $latestActivityDate > $latestDateCI))
+                    @if ($showElderly && $elderly->barthel_adl && ($latestCaregiverDate > $latestDateCI || $latestActivityDate > $latestDateCI))
                         <tr>
                             <td>
                                 @if ($elderly->Image_Elderly)
@@ -90,8 +101,9 @@
                                     data-bs-target="#cgDatesModal-{{ $elderly->ID_Elderly }}">ข้อมูล CG</button>
                                 <button class="btn btn-info btn-sm" data-bs-toggle="modal"
                                     data-bs-target="#acgDatesModal-{{ $elderly->ID_Elderly }}">ข้อมูล ACG</button>
-                                <a href="{{ route('ci.create', ['elderly_id' => $elderly->ID_Elderly]) }}"
-                                    class="btn btn-success btn-sm">คำแนะนำ</a>
+                                <a href="{{ route('ci.create', ['elderly_id' => $elderly->ID_Elderly]) }}" class="btn btn-success btn-sm">
+                                    <i class="fas fa-plus"></i> คำแนะนำ
+                                </a>
                             </td>
                         </tr>
                     @endif

@@ -18,6 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger('ID_Personnel');
             $table->string('Type_Personnel');
             $table->string('Name_User')->nullable();
+            $table->string('Type_Doctor')->nullable();
             $table->string('Email')->unique()->nullable();
             $table->text('Address')->nullable();
             $table->text('Phone')->nullable();

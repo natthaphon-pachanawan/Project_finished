@@ -16,7 +16,7 @@ class User extends Model implements AuthenticatableContract
     protected $primaryKey = 'ID_User'; // primary key ที่คุณกำหนดในฐานข้อมูล
     protected $fillable = [
         'Username', 'Password', 'ID_Personnel', 'Type_Personnel',
-        'Name_User', 'Email', 'Address', 'Phone', 'Image_User'
+        'Name_User', 'Type_Doctor', 'Email', 'Address', 'Phone', 'Image_User'
     ];
     public $timestamps = false;
 
