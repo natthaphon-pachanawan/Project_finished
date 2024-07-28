@@ -33,5 +33,9 @@ class CIController extends Controller
         return redirect()->route('staff.ci.index')->with('success', 'Care Instruction unconfirmed successfully.');
     }
 
-    
+    public function ReportCIConfirm()
+    {
+        $careInstructions = CareInstruction::whereNotNull('Confirm')->get();
+        return view('staff.Report.report-ci-confirm', compact('careInstructions'));
+    }
 }

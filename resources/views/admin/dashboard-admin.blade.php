@@ -44,6 +44,7 @@
                                             <th class="text-center">ชื่อ</th>
                                             <th class="text-center">Username</th>
                                             <th class="text-center">ประเภทของผู้ใช้</th>
+                                            <th class="text-center">ประเภทที่แพทย์ดูแล</th>
                                             <th class="text-center">อีเมลล์</th>
                                             <th class="text-center">ที่อยู่</th>
                                             <th class="text-center">เบอร์โทร</th>
@@ -59,6 +60,7 @@
                                                 <td class="text-center">{{ $user->Name_User ?: 'ไม่มีข้อมูล' }}</td>
                                                 <td class="text-center">{{ $user->Username ?: 'ไม่มีข้อมูล' }}</td>
                                                 <td class="text-center">{{ $user->Type_Personnel }}</td>
+                                                <td class="text-center">{{ $user->Type_Doctor }}</td>
                                                 <td class="text-center">{{ $user->Email ?: 'ไม่มีข้อมูล' }}</td>
                                                 <td class="text-center">{{ $user->Address ?: 'ไม่มีข้อมูล' }}</td>
                                                 <td class="text-center">{{ $user->Phone ?: 'ไม่มีข้อมูล' }}</td>

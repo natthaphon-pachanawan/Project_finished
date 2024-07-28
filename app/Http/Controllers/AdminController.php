@@ -28,8 +28,10 @@ class AdminController extends Controller
     {
         $request->validate([
             'Username' => 'required|unique:users,Username|max:255',
-            'Password' => 'required|min:6',
-            'Type_Personnel' => 'required'
+            'Email' => 'required|email|max:255|unique:users,Email',
+            'Password' => 'required',
+            'Type_Personnel' => 'required',
+            'Type_Elderly' => 'nullable|string'
         ]);
 
         $personnel = Personnel::find($request->Type_Personnel);
@@ -40,13 +42,19 @@ class AdminController extends Controller
 
         $user = new User();
         $user->Username = $request->Username;
+        $user->Email = $request->Email;
         $user->Password = Hash::make($request->Password);
         $user->ID_Personnel = $personnel->ID_Personnel;
         $user->Type_Personnel = $personnel->Type_Personnel;
         $user->Name_User = '';
-        $user->Email = '';
         $user->Address = '';
         $user->Phone = '';
+
+        if ($user->Type_Personnel == 'Doctor') {
+            $user->Type_Doctor = $request->Type_Elderly;
+        } else {
+            $user->Type_Doctor = '';
+        }
 
         // Set default profile image based on user type
         switch ($user->Type_Personnel) {
@@ -112,11 +120,10 @@ class AdminController extends Controller
     }
 
     public function editNews($id)
-{
-    $newsItem = News::findOrFail($id);
+    {
+        $newsItem = News::findOrFail($id);
         return view('admin.news-edit', compact('newsItem'));
-}
-
+    }
 
     public function updateNews(Request $request, $id)
     {

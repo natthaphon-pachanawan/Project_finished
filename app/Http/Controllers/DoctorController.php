@@ -8,12 +8,18 @@ use App\Models\CareGiver;
 use App\Models\Elderly;
 use App\Models\CareInstruction;
 use Carbon\Carbon;
+use Auth;
 
 class DoctorController extends Controller
 {
     public function ShowDataElderly()
     {
-        $elderlys = Elderly::with('barthel_adl')->get();
+
+        $query = Elderly::with('barthel_adl');
+
+
+
+        $elderlys = $query->get();
         return view('doctor.dashboard-doctor', compact('elderlys'));
     }
 
@@ -44,7 +50,23 @@ class DoctorController extends Controller
 
     public function ShowCI()
     {
-        $careInstructions = CareInstruction::all();
+        $user = Auth::user();
+        $query = CareInstruction::query();
+
+        if ($user->Type_Personnel == 'Doctor') {
+            $typeDoctor = $user->Type_Doctor;
+            $query->whereHas('elderly.barthel_adl', function ($q) use ($typeDoctor) {
+                if ($typeDoctor == 'ติดสังคม') {
+                    $q->where('Group_ADL', 'ติดสังคม');
+                } elseif ($typeDoctor == 'ติดบ้าน') {
+                    $q->where('Group_ADL', 'ติดบ้าน');
+                } elseif ($typeDoctor == 'ติดเตียง') {
+                    $q->where('Group_ADL', 'ติดเตียง');
+                }
+            });
+        }
+
+        $careInstructions = $query->get();
         return view('doctor.CI.ShowCI', compact('careInstructions'));
     }
 
@@ -76,5 +98,12 @@ class DoctorController extends Controller
         $careInstruction->update($request->all());
 
         return redirect()->route('ci.index')->with('success', 'คำแนะนำถูกอัปเดตเรียบร้อยแล้ว');
+    }
+
+    public function ReportCI()
+    {
+        $careInstructions = CareInstruction::whereNull('Confirm')->get();
+
+        return view('doctor.Report.report-ci', compact('careInstructions'));
     }
 }

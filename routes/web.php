@@ -139,6 +139,7 @@ Route::middleware(['CheckLogin', 'IsStaff'])->group(function () {
     Route::get('staff-ci', [CIController::class,'ShowStaffCI'])->name('staff.ci.index');
     Route::put('staff-ci/{id}/confirm', [CIController::class, 'confirmCI'])->name('ci.confirm');
     Route::put('ci/{id}/unconfirm', [CIController::class, 'unconfirmCI'])->name('ci.unconfirm');
+    Route::get('report-ci-confirm', [CIController::class, 'ReportCIConfirm'])->name('report.ci.confirm');
 
     Route::get('search-location/{id}', [ElderlyController::class, 'searchLocation'])->name('search-location');
 });
@@ -155,5 +156,6 @@ Route::middleware(['CheckLogin', 'IsDoctor'])->group(function () {
         Route::delete('/ci/{id}', 'DestroyCI')->name('ci.destroy');
         Route::get('ci/{id}/edit', 'editCI')->name('ci.edit');
         Route::put('/ci/{id}', 'updateCI')->name('ci.update');
+        Route::get('report-ci', 'ReportCI')->name('report.ci');
     });
 });

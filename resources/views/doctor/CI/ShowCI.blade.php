@@ -25,6 +25,9 @@
                     <div class="card mb-4" style="max-width: 1200px; margin: auto;">
                         <div class="card-header pb-0 d-flex justify-content-between align-items-center">
                             <h6>คำแนะนำการดูแล</h6>
+                            <a href="{{ route('report.ci') }}" class="btn btn-success ml-2">
+                                <i class="fas fa-file-pdf"></i> ออกรายงาน
+                            </a>
                         </div>
                         <div class="card-body px-3 pt-3 pb-2">
                             <div class="table-responsive p-0">
@@ -42,25 +45,35 @@
                                     <tbody>
                                         @foreach ($careInstructions as $ci)
                                             @if (empty($ci->Confirm))
-                                                <tr>
-                                                    <td class="text-center">{{ $ci->Date_CI }}</td>
-                                                    <td class="text-center">{{ $ci->Name_Elderly }}</td>
-                                                    <td class="text-center">{{ $ci->Name_Doctor }}</td>
-                                                    <td class="text-center">{{ $ci->Name_Staff }}</td>
-                                                    <td class="text-center">{{ $ci->Care_instructions }}</td>
-                                                    <td class="text-center">
-                                                        <a href="{{ route('ci.edit', ['id' => $ci->ID_CI]) }}"
-                                                            class="btn btn-warning btn-sm">แก้ไข</a>
-                                                        <form action="{{ route('ci.destroy', ['id' => $ci->ID_CI]) }}"
-                                                            method="POST" style="display:inline-block;"
-                                                            onsubmit="return confirm('คุณแน่ใจหรือไม่ว่าต้องการลบ ?');">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <button type="submit"
-                                                                class="btn btn-danger btn-sm">ลบ</button>
-                                                        </form>
-                                                    </td>
-                                                </tr>
+                                                @php
+                                                    $showRow = false;
+                                                    if (Auth::user()->Type_Personnel == 'Doctor') {
+                                                        if ((Auth::user()->Type_Doctor == 'กลุ่มติดสังคม' && $ci->elderly->barthel_adl->Group_ADL == 'กลุ่มติดสังคม') ||
+                                                            (Auth::user()->Type_Doctor == 'กลุ่มติดบ้าน' && $ci->elderly->barthel_adl->Group_ADL == 'กลุ่มติดบ้าน') ||
+                                                            (Auth::user()->Type_Doctor == 'กลุ่มติดเตียง' && $ci->elderly->barthel_adl->Group_ADL == 'กลุ่มติดเตียง')) {
+                                                            $showRow = true;
+                                                        }
+                                                    } else {
+                                                        $showRow = true;
+                                                    }
+                                                @endphp
+                                                @if ($showRow)
+                                                    <tr>
+                                                        <td class="text-center">{{ $ci->Date_CI }}</td>
+                                                        <td class="text-center">{{ $ci->Name_Elderly }}</td>
+                                                        <td class="text-center">{{ $ci->Name_Doctor }}</td>
+                                                        <td class="text-center">{{ $ci->Name_Staff }}</td>
+                                                        <td class="text-center">{{ $ci->Care_instructions }}</td>
+                                                        <td class="text-center">
+                                                            <a href="{{ route('ci.edit', ['id' => $ci->ID_CI]) }}" class="btn btn-warning btn-sm">แก้ไข</a>
+                                                            <form action="{{ route('ci.destroy', ['id' => $ci->ID_CI]) }}" method="POST" style="display:inline-block;" onsubmit="return confirm('คุณแน่ใจหรือไม่ว่าต้องการลบ ?');">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <button type="submit" class="btn btn-danger btn-sm">ลบ</button>
+                                                            </form>
+                                                        </td>
+                                                    </tr>
+                                                @endif
                                             @endif
                                         @endforeach
                                     </tbody>
