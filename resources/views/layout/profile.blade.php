@@ -94,13 +94,13 @@
         <p>{{ $user->Type_Personnel }}</p>
 
         <div class="profile-details">
-            <p><strong>Username:</strong> {{ $user->Username }}</p>
+            <p><strong>ชื่อผู้ใช้:</strong> {{ $user->Username }}</p>
             <p><strong>Email:</strong> {{ $user->Email }}</p>
-            <p><strong>Address:</strong> {{ $user->Address }}</p>
-            <p><strong>Phone:</strong> {{ $user->Phone }}</p>
+            <p><strong>ที่อยู่:</strong> {{ $user->Address }}</p>
+            <p><strong>เบอร์โทร:</strong> {{ $user->Phone }}</p>
             <p><strong>ID Personnel:</strong> {{ $user->ID_Personnel }}</p>
         </div>
-        <a href="{{ route('edit-profile') }}" class="edit-button">Edit Profile</a>
+        <a href="{{ route('edit-profile') }}" class="edit-button">แก้ไขโปรไฟล์</a>
     </div>
 </body>
 

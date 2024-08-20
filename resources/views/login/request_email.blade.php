@@ -8,9 +8,9 @@
     <title>Login</title>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link href="{{ asset('assets/css/argon-dashboard.css') }}" rel="stylesheet"/>
-    <link href="{{ asset('assets/css/nucleo-icons.css') }}" rel="stylesheet"/>
-    <link href="{{ asset('assets/css/nucleo-svg.css') }}" rel="stylesheet"/>
+    <link href="{{ asset('assets/css/argon-dashboard.css') }}" rel="stylesheet" />
+    <link href="{{ asset('assets/css/nucleo-icons.css') }}" rel="stylesheet" />
+    <link href="{{ asset('assets/css/nucleo-svg.css') }}" rel="stylesheet" />
     <style>
         body {
             background-color: #f8f9fa;
@@ -121,31 +121,17 @@
     <div class="login-container">
         <div class="login-card">
             <div class="login-header">
-                <h4>เข้าสู่ระบบ</h4>
-                <p>ป้อนอีเมลหรือชื่อผู้ใช้และรหัสผ่านของคุณเพื่อลงชื่อเข้าใช้</p>
+                <h4>รีเซ็ตรหัสผ่าน</h4>
+                <p>ป้อนอีเมลเพื่อขอรีเซ็ทรหัสผ่าน</p>
             </div>
-            <form class="login-form" method="POST" action="{{ route('login.submit') }}">
-                @if (Session::has('fail'))
-                <div class="alert alert-danger">{{ Session::get('fail') }}</div>
-                @endif
+            <form action="{{ route('password.verify') }}" method="POST">
                 @csrf
                 <div class="form-group">
-                    <label for="login">อีเมล์หรือชื่อผู้ใช้:</label>
-                    <input type="text" name="login" id="login" class="form-control" required>
+                    <label for="email">อีเมล์</label>
+                    <input type="email" name="email" class="form-control" required>
                 </div>
-                <div class="form-group">
-                    <label for="password">รหัสผ่าน:</label>
-                    <input type="password" name="password" id="password" class="form-control" required>
-                </div>
-                <div class="form-group">
-                    <button type="submit" class="btn btn-primary btn-block">เข้าสู่ระบบ</button>
-                </div>
+                <button type="submit" class="btn btn-primary">Send Verification Code</button>
             </form>
-            {{--  <div class="login-footer">
-                <p>
-                    หากลืมรหัสผ่าน? <a href="{{ route('password.request') }}">กดที่นี่เพื่อรีเซ็ทรหัสผ่าน</a>
-                </p>
-            </div>  --}}
         </div>
     </div>
 

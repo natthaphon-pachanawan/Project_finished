@@ -337,26 +337,6 @@
         </div>
     </div>
 
-    <!-- ฟอร์มติดต่อ -->
-    <section class="contact-form">
-        <h2>ติดต่อเรา</h2>
-        <form action="path/to/your/form/handler" method="POST">
-            <div>
-                <label for="name">ชื่อ:</label>
-                <input type="text" id="name" name="name" required>
-            </div>
-            <div>
-                <label for="email">อีเมล:</label>
-                <input type="email" id="email" name="email" required>
-            </div>
-            <div>
-                <label for="message">ข้อความ:</label>
-                <textarea id="message" name="message" required></textarea>
-            </div>
-            <button type="submit">ส่งข้อความ</button>
-        </form>
-    </section>
-
     <!-- Modal for Image -->
     <div class="modal fade" id="imageModal" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">

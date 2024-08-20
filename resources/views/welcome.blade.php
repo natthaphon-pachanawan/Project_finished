@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ระบบประเมินความสามารถในการดำเนินกิจวัตรประจำวันของผู้สูงอายุ</title>
-    <link href="{{ asset('assets/css/argon-dashboard.css') }}" rel="stylesheet"/>
-    <link href="{{ asset('assets/css/nucleo-icons.css') }}" rel="stylesheet"/>
-    <link href="{{ asset('assets/css/nucleo-svg.css') }}" rel="stylesheet"/>
+    <link href="{{ asset('assets/css/argon-dashboard.css') }}" rel="stylesheet" />
+    <link href="{{ asset('assets/css/nucleo-icons.css') }}" rel="stylesheet" />
+    <link href="{{ asset('assets/css/nucleo-svg.css') }}" rel="stylesheet" />
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
@@ -14,36 +15,51 @@
             background-color: #f8f9fa;
             color: #344767;
         }
-        .news, .statistics, .contact-form {
+
+        .news,
+        .statistics,
+        .contact-form {
             padding: 20px;
             background-color: #fff;
             border-radius: 10px;
             margin-bottom: 20px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
-        .news h2, .statistics h2, .contact-form h2 {
+
+        .news h2,
+        .statistics h2,
+        .contact-form h2 {
             margin-bottom: 20px;
         }
-        .news-item, .stat-item {
+
+        .news-item,
+        .stat-item {
             margin-bottom: 15px;
         }
-        .news-item h3, .stat-item h3 {
+
+        .news-item h3,
+        .stat-item h3 {
             margin-bottom: 5px;
         }
+
         .news-item p {
             margin-bottom: 10px;
         }
+
         .news-item a {
             color: #fb6340;
             text-decoration: none;
         }
+
         .news-item a:hover {
             text-decoration: underline;
         }
+
         .statistics .stats {
             display: flex;
             gap: 20px;
         }
+
         .statistics .stat-item {
             flex: 1;
             background-color: #f8f9fa;
@@ -52,19 +68,24 @@
             text-align: center;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
+
         .contact-form form div {
             margin-bottom: 15px;
         }
+
         .contact-form label {
             display: block;
             margin-bottom: 5px;
         }
-        .contact-form input, .contact-form textarea {
+
+        .contact-form input,
+        .contact-form textarea {
             width: 100%;
             padding: 10px;
             border: 1px solid #ced4da;
             border-radius: 5px;
         }
+
         .contact-form button {
             background-color: #fb6340;
             color: #fff;
@@ -73,9 +94,11 @@
             border-radius: 5px;
             cursor: pointer;
         }
+
         .contact-form button:hover {
             background-color: #ea3005;
         }
+
         footer {
             background-color: #344767;
             color: #fff;
@@ -83,6 +106,7 @@
             padding: 10px 0;
             margin-top: 20px;
         }
+
         footer ul {
             list-style: none;
             padding: 0;
@@ -91,16 +115,20 @@
             justify-content: center;
             gap: 15px;
         }
+
         footer ul li {
             display: inline;
         }
+
         footer ul li a {
             color: #fff;
             text-decoration: none;
         }
+
         footer ul li a:hover {
             text-decoration: underline;
         }
+
         .slider {
             position: relative;
             overflow: hidden;
@@ -108,17 +136,21 @@
             height: 500px;
             margin-bottom: 50px;
         }
+
         .slides {
             display: flex;
             transition: transform 0.5s ease-in-out;
         }
+
         .slides img {
             width: 100%;
             height: 500px;
             object-fit: cover;
             flex-shrink: 0;
         }
-        .prev, .next {
+
+        .prev,
+        .next {
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
@@ -129,19 +161,24 @@
             cursor: pointer;
             z-index: 1;
         }
+
         .prev {
             left: 10px;
         }
+
         .next {
             right: 10px;
         }
+
         .modal img {
             width: 100%;
             height: auto;
         }
+
         .modal-dialog-centered {
             max-width: 80%;
         }
+
         .dashboard-card {
             background-color: #fff;
             border-radius: 10px;
@@ -152,23 +189,29 @@
             align-items: center;
             justify-content: space-between;
         }
+
         .dashboard-card .icon {
             font-size: 2em;
             color: #fb6340;
         }
+
         .dashboard-card h3 {
             margin: 0;
         }
+
         .dashboard-card p {
             margin: 5px 0 0;
         }
+
         .news-item img {
             cursor: pointer;
             transition: transform 0.2s;
         }
+
         .news-item img:hover {
             transform: scale(1.05);
         }
+
         .news-container {
             background-color: #fff;
             border-radius: 10px;
@@ -176,8 +219,14 @@
             padding: 20px;
             margin-bottom: 20px;
         }
+
+        #adlChart {
+            max-width: 100%;
+            margin: 20px 0;
+        }
     </style>
 </head>
+
 <body>
     <!-- Navbar -->
     @include('layout.nav')
@@ -185,7 +234,7 @@
     <!-- Slider -->
     <section class="slider">
         <div class="slides">
-            @foreach($sliders as $slider)
+            @foreach ($sliders as $slider)
                 <img src="{{ asset('storage/' . $slider->image) }}" alt="Slider Image">
             @endforeach
         </div>
@@ -211,13 +260,15 @@
             <div class="col-sm-4">
                 <section class="news">
                     <h2>ข่าวสารประชาสัมพันธ์</h2>
-                    @foreach($news as $newsItem)
+                    @foreach ($news as $newsItem)
                         <div class="news-container">
                             <div class="news-item">
                                 <h3>{{ $newsItem->title }}</h3>
                                 <p>{{ Str::limit($newsItem->content, 100) }}</p>
-                                @if($newsItem->image)
-                                    <img src="{{ asset('storage/' . $newsItem->image) }}" alt="{{ $newsItem->title }}" style="width:100%; height:auto; margin-bottom:10px;" onclick="showModal('{{ asset('storage/' . $newsItem->image) }}', '{{ $newsItem->title }}', '{{ Str::limit($newsItem->content, 100) }}')">
+                                @if ($newsItem->image)
+                                    <img src="{{ asset('storage/' . $newsItem->image) }}" alt="{{ $newsItem->title }}"
+                                        style="width:100%; height:auto; margin-bottom:10px;"
+                                        onclick="showModal('{{ asset('storage/' . $newsItem->image) }}', '{{ $newsItem->title }}', '{{ Str::limit($newsItem->content, 100) }}')">
                                 @endif
                             </div>
                         </div>
@@ -236,6 +287,9 @@
                         <i class="ni ni-check-bold"></i>
                     </div>
                 </div>
+                <div class="dashboard-card">
+                    <canvas id="adlChart"></canvas>
+                </div>
                 <!-- จำนวนการประเมิน CG -->
                 <div class="dashboard-card">
                     <div>
@@ -250,7 +304,7 @@
         </div>
     </div>
 
-    <!-- ฟอร์มติดต่อ -->
+    {{--  <!-- ฟอร์มติดต่อ -->
     <section class="contact-form">
         <h2>ติดต่อเรา</h2>
         <form action="path/to/your/form/handler" method="POST">
@@ -268,10 +322,11 @@
             </div>
             <button type="submit">ส่งข้อความ</button>
         </form>
-    </section>
+    </section>  --}}
 
     <!-- Modal for Image -->
-    <div class="modal fade" id="imageModal" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel" aria-hidden="true">
+    <div class="modal fade" id="imageModal" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -293,6 +348,7 @@
         <p>&copy; 2024 สำนักงานสาธารณสุข อำเภอห้วยราช จังหวัดบุรีรัมย์</p>
     </footer>
 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         let slideIndex = 0;
         const slides = document.querySelector('.slides');
@@ -330,9 +386,37 @@
             var sidebar = document.querySelector('.sidenav');
             sidebar.classList.toggle('collapsed');
         }
+
+        const adlChartContext = document.getElementById('adlChart').getContext('2d');
+        const adlData = {
+            labels: ['กลุ่มติดสังคม', 'กลุ่มติดบ้าน', 'กลุ่มติดเตียง'],
+            datasets: [{
+                label: 'จำนวนการประเมิน ADL',
+                data: [
+                    {{ $adlGroupCounts['กลุ่มติดสังคม'] }},
+                    {{ $adlGroupCounts['กลุ่มติดบ้าน'] }},
+                    {{ $adlGroupCounts['กลุ่มติดเตียง'] }}
+                ],
+                backgroundColor: ['#3498db', '#2ecc71', '#e74c3c'],
+                borderWidth: 1
+            }]
+        };
+        const adlChart = new Chart(adlChartContext, {
+            type: 'bar',
+            data: adlData,
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
     </script>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 </body>
+
 </html>

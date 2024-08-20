@@ -183,7 +183,7 @@
         </div>
         <div class="nav-links">
             <a href="{{ url('/') }}">หน้าหลัก</a>
-            <a href="/contact">ติดต่อเรา</a>
+            {{--  <a href="/contact">ติดต่อเรา</a>  --}}
         </div>
         @if (Auth::check())
             <div class="user-info">
@@ -219,7 +219,7 @@
                 </div>
             </div>
         @else
-            <a href="{{ url('login') }}" class="btn btn-primary">Login</a>
+            <a href="{{ url('login') }}" class="btn btn-primary">เข้าสู่ระบบ</a>
         @endif
     </div>
 

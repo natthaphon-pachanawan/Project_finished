@@ -128,7 +128,8 @@
                         @csrf
                         <div class="form-group">
                             <label for="ID_Elderly">ชื่อ-สกุลผู้สูงอายุ</label>
-                            <select id="ID_Elderly" name="ID_Elderly" class="form-control" onchange="fetchElderlyDetails()" required>
+                            <select id="ID_Elderly" name="ID_Elderly" class="form-control"
+                                onchange="fetchElderlyDetails()" required>
                                 <option value="">เลือกผู้สูงอายุ</option>
                                 @foreach ($elderlys as $elderly)
                                     <option value="{{ $elderly->ID_Elderly }}">{{ $elderly->Name_Elderly }}</option>
@@ -152,6 +153,15 @@
                                     value="ช่วยเหลือ"> ช่วยเหลือ
                                 <input type="radio" id="dress_the_wound_no_help" name="dress_the_wound"
                                     value="ไม่ต้องช่วยเหลือ"> ไม่ต้องช่วยเหลือ
+                            </div>
+                        </div>
+                        <div class="form-check">
+                            <label>ทำแผล</label>
+                            <div>
+                                <input class="form-check-input" type="checkbox" value="ทำแผล" id="flexCheckDefault">
+                                <label class="form-check-label" for="flexCheckDefault">
+                                    Default checkbox
+                                </label>
                             </div>
                         </div>
                         <div class="form-group">

@@ -86,11 +86,11 @@
     @include('layout.nav')
 
     <div class="profile-container">
-        <h2>Edit Profile</h2>
+        <h2>แก้ไขโปรไฟล์</h2>
         <form action="{{ route('update-profile') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="form-group">
-                <label for="Name_User">Name</label>
+                <label for="Name_User">ชื่อ</label>
                 <input type="text" id="Name_User" name="Name_User" value="{{ $user->Name_User }}" required>
             </div>
             <div class="form-group">
@@ -98,18 +98,18 @@
                 <input type="email" id="Email" name="Email" value="{{ $user->Email }}" required>
             </div>
             <div class="form-group">
-                <label for="Address">Address</label>
+                <label for="Address">ที่อยู่</label>
                 <input type="text" id="Address" name="Address" value="{{ $user->Address }}">
             </div>
             <div class="form-group">
-                <label for="Phone">Phone</label>
+                <label for="Phone">เบอร์โทร</label>
                 <input type="text" id="Phone" name="Phone" value="{{ $user->Phone }}">
             </div>
             <div class="form-group">
-                <label for="Image_User">Profile Image</label>
+                <label for="Image_User">รูปโปรไฟล์</label>
                 <input type="file" id="Image_User" name="Image_User">
             </div>
-            <button type="submit" class="edit-button">Save Changes</button>
+            <button type="submit" class="edit-button">อัพเดท</button>
         </form>
     </div>
 </body>

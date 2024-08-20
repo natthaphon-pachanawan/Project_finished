@@ -11,7 +11,8 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\CGController;
 use App\Http\Controllers\CIController;
 use App\Http\Controllers\DoctorController;
-
+use App\Models\BarthelAdl;
+use App\Models\CareGiver;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -27,10 +28,18 @@ Route::get('/', function () {
     $sliders = App\Models\Slider::all();
     $news = App\Models\News::all();
     $visitorCount = 12344865; // ตัวอย่างข้อมูล
-    $adlAssessmentCount = 6789; // ตัวอย่างข้อมูล
-    $cgAssessmentCount = 6548;
-    return view('welcome', compact('sliders', 'news', 'visitorCount', 'adlAssessmentCount', 'cgAssessmentCount'));
+    $adlAssessmentCount = BarthelAdl::count();
+    $cgAssessmentCount = CareGiver::count();
+
+    $adlGroupCounts = [
+        'กลุ่มติดสังคม' => BarthelAdl::where('Group_ADL', 'กลุ่มติดสังคม')->count(),
+        'กลุ่มติดบ้าน' => BarthelAdl::where('Group_ADL', 'กลุ่มติดบ้าน')->count(),
+        'กลุ่มติดเตียง' => BarthelAdl::where('Group_ADL', 'กลุ่มติดเตียง')->count(),
+    ];
+
+    return view('welcome', compact('sliders', 'news', 'visitorCount', 'adlAssessmentCount', 'cgAssessmentCount', 'adlGroupCounts'));
 })->name('welcome');
+
 
 Route::get('add-personnel-types', [PersonnelController::class, 'addPersonnelTypes']);
 Route::get('add-user', [UserController::class, 'addUser']);
@@ -43,6 +52,15 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('/login', 'loginUser')->name('login.submit');
     Route::post('/logout', 'logout')->name('logout');
     Route::get('dashboard-Doctor', 'Dashboard_Dcotor');
+
+    // แสดงฟอร์มขอรีเซ็ทรหัสผ่าน
+    Route::get('password/request', 'showPasswordRequestForm')->name('password.request');
+    // ส่งรหัสยืนยันไปทางอีเมล
+    Route::post('password/verify', 'sendVerificationCode')->name('password.verify');
+    // แสดงฟอร์มกรอกรหัสยืนยันและรีเซ็ทรหัสผ่าน
+    Route::post('password/verify-code', 'verifyCode')->name('password.verify-code');
+    // บันทึกกรหัสผ่านใหม่
+    Route::post('password/reset', 'resetPassword')->name('password.reset');
 });
 
 
@@ -136,7 +154,7 @@ Route::middleware(['CheckLogin', 'IsStaff'])->group(function () {
     Route::get('report-all-acg', [CGController::class, 'ReportACGAll'])->name('report.all.acg');
     Route::get('report-acg/{id}', [CGController::class, 'ReportACG'])->name('report.acg');
 
-    Route::get('staff-ci', [CIController::class,'ShowStaffCI'])->name('staff.ci.index');
+    Route::get('staff-ci', [CIController::class, 'ShowStaffCI'])->name('staff.ci.index');
     Route::put('staff-ci/{id}/confirm', [CIController::class, 'confirmCI'])->name('ci.confirm');
     Route::put('ci/{id}/unconfirm', [CIController::class, 'unconfirmCI'])->name('ci.unconfirm');
     Route::get('report-ci-confirm', [CIController::class, 'ReportCIConfirm'])->name('report.ci.confirm');
