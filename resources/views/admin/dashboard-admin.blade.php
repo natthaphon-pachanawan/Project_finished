@@ -59,7 +59,17 @@
                                                 </td>
                                                 <td class="text-center">{{ $user->Name_User ?: 'ไม่มีข้อมูล' }}</td>
                                                 <td class="text-center">{{ $user->Username ?: 'ไม่มีข้อมูล' }}</td>
-                                                <td class="text-center">{{ $user->Type_Personnel }}</td>
+                                                <td class="text-center">
+                                                    @if ($user->Type_Personnel === 'Admin')
+                                                        แอดมิน
+                                                    @elseif ($user->Type_Personnel === 'Staff')
+                                                        เจ้าหน้าที่
+                                                    @elseif ($user->Type_Personnel === 'Doctor')
+                                                        แพทย์
+                                                    @else
+                                                        {{ $user->Type_Personnel }}
+                                                    @endif
+                                                </td>
                                                 <td class="text-center">{{ $user->Type_Doctor }}</td>
                                                 <td class="text-center">{{ $user->Email ?: 'ไม่มีข้อมูล' }}</td>
                                                 <td class="text-center">{{ $user->Address ?: 'ไม่มีข้อมูล' }}</td>

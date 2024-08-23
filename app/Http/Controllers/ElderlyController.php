@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Elderly;
 use App\Models\AddressElderly;
+use App\Models\BarthelAdl;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
@@ -71,8 +72,16 @@ class ElderlyController extends Controller
             }
         }
 
-        return view('staff.dashboard-staff', compact('elderlies', 'ageGroups'));
+        // ดึงข้อมูล ADL group counts
+        $adlGroups = [
+            'กลุ่มติดสังคม' => BarthelAdl::where('Group_ADL', 'กลุ่มติดสังคม')->count(),
+            'กลุ่มติดบ้าน' => BarthelAdl::where('Group_ADL', 'กลุ่มติดบ้าน')->count(),
+            'กลุ่มติดเตียง' => BarthelAdl::where('Group_ADL', 'กลุ่มติดเตียง')->count(),
+        ];
+
+        return view('staff.dashboard-staff', compact('elderlies', 'ageGroups', 'adlGroups'));
     }
+
 
     public function Editelderly($id)
     {

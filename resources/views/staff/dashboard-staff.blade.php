@@ -69,43 +69,51 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach($elderlies as $elderly)
-                                        <tr>
-                                            <td class="text-center">
-                                                @if($elderly->Image_Elderly)
-                                                    <img src="{{ asset('storage/'.$elderly->Image_Elderly) }}" alt="Elderly Image" width="50">
-                                                @else
-                                                    <img src="{{ asset('storage/default.png') }}" alt="Elderly Image" width="50">
-                                                @endif
-                                            </td>
-                                            <td class="text-center">{{ $elderly->Name_Elderly }}</td>
-                                            <td class="text-center">{{ \Carbon\Carbon::parse($elderly->Birthday)->age }} ปี</td>
-                                            <td class="text-center">{{ $elderly->Address }}</td>
-                                            <td class="text-center">{{ $elderly->Phone_Elderly }}</td>
-                                            <td class="text-center">
-                                                @if($elderly->barthel_adl)
-                                                    ทำแล้ว
-                                                @else
-                                                    ยังไม่ทำ
-                                                @endif
-                                            </td>
-                                            <td class="text-center">
-                                                @if($elderly->care_giver)
-                                                    ทำแล้ว
-                                                @else
-                                                    ยังไม่ทำ
-                                                @endif
-                                            </td>
-                                            <td class="text-center">
-                                                <a href="{{ route('search-location', ['id' => $elderly->ID_Elderly]) }}" target="_blank" class="btn btn-info">ค้นหาที่อยู่</a>
-                                                <a href="{{ route('edit-elderly', ['id' => $elderly->ID_Elderly]) }}" class="btn btn-warning">แก้ไข</a>
-                                                <form action="{{ route('delete-elderly', ['id' => $elderly->ID_Elderly]) }}" method="POST" style="display:inline-block;" onsubmit="return confirm('คุณแน่ใจหรือไม่ว่าต้องการลบ ?');">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger">ลบ</button>
-                                                </form>
-                                            </td>
-                                        </tr>
+                                        @foreach ($elderlies as $elderly)
+                                            <tr>
+                                                <td class="text-center">
+                                                    @if ($elderly->Image_Elderly)
+                                                        <img src="{{ asset('storage/' . $elderly->Image_Elderly) }}"
+                                                            alt="Elderly Image" width="50">
+                                                    @else
+                                                        <img src="{{ asset('storage/default.png') }}"
+                                                            alt="Elderly Image" width="50">
+                                                    @endif
+                                                </td>
+                                                <td class="text-center">{{ $elderly->Name_Elderly }}</td>
+                                                <td class="text-center">
+                                                    {{ \Carbon\Carbon::parse($elderly->Birthday)->age }} ปี</td>
+                                                <td class="text-center">{{ $elderly->Address }}</td>
+                                                <td class="text-center">{{ $elderly->Phone_Elderly }}</td>
+                                                <td class="text-center">
+                                                    @if ($elderly->barthel_adl)
+                                                        ทำแล้ว
+                                                    @else
+                                                        ยังไม่ทำ
+                                                    @endif
+                                                </td>
+                                                <td class="text-center">
+                                                    @if ($elderly->care_giver)
+                                                        ทำแล้ว
+                                                    @else
+                                                        ยังไม่ทำ
+                                                    @endif
+                                                </td>
+                                                <td class="text-center">
+                                                    <a href="{{ route('search-location', ['id' => $elderly->ID_Elderly]) }}"
+                                                        target="_blank" class="btn btn-info">ค้นหาที่อยู่</a>
+                                                    <a href="{{ route('edit-elderly', ['id' => $elderly->ID_Elderly]) }}"
+                                                        class="btn btn-warning">แก้ไข</a>
+                                                    <form
+                                                        action="{{ route('delete-elderly', ['id' => $elderly->ID_Elderly]) }}"
+                                                        method="POST" style="display:inline-block;"
+                                                        onsubmit="return confirm('คุณแน่ใจหรือไม่ว่าต้องการลบ ?');">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="btn btn-danger">ลบ</button>
+                                                    </form>
+                                                </td>
+                                            </tr>
                                         @endforeach
                                     </tbody>
                                 </table>
@@ -115,9 +123,8 @@
                 </div>
             </div>
 
-            <!-- Combined Graphs -->
             <div class="row">
-                <div class="col-12">
+                <div class="col-md-6">
                     <div class="card mb-4">
                         <div class="card-header pb-0">
                             <h6>จำนวนและสัดส่วนผู้สูงอายุตามช่วงอายุ</h6>
@@ -134,14 +141,25 @@
                                         <canvas id="agePieChart"></canvas>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card mb-4">
+                        <div class="card-header pb-0">
+                            <h6>จำนวนและสัดส่วนของ ADL</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="chart-row">
                                 <div class="chart-column">
                                     <div class="chart-container">
-                                        <canvas id="ageLineChart"></canvas>
+                                        <canvas id="adlBarChart"></canvas>
                                     </div>
                                 </div>
                                 <div class="chart-column">
                                     <div class="chart-container">
-                                        <canvas id="ageDoughnutChart"></canvas>
+                                        <canvas id="adlPieChart"></canvas>
                                     </div>
                                 </div>
                             </div>
@@ -149,6 +167,9 @@
                     </div>
                 </div>
             </div>
+
+
+
 
             <!-- Map -->
             <div class="row">
@@ -164,7 +185,7 @@
                 </div>
             </div>
 
-        </div>
+
     </main>
 
     <!-- Argon Dashboard JS -->
@@ -203,7 +224,9 @@
                 options: {
                     scales: {
                         y: {
-                            beginAtZero: true
+                            beginAtZero: true,
+                            display: false // เอาเส้นพื้นหลังออก
+
                         }
                     }
                 }
@@ -296,29 +319,111 @@
                     }
                 }
             });
+        });
 
+        document.addEventListener('DOMContentLoaded', function() {
             // ข้อมูลตำแหน่งของผู้สูงอายุ
-            var elderlyLocations = @json($elderlies->map(function($elderly) {
-                return [
-                    $elderly->addressElderly->Latitude_position,
-                    $elderly->addressElderly->Longitude_position,
-                    $elderly->Name_Elderly
-                ];
-            }));
+            var elderlyLocations = @json(
+                $elderlies->map(function ($elderly) {
+                    return [
+                        $elderly->addressElderly->Latitude_position,
+                        $elderly->addressElderly->Longitude_position,
+                        $elderly->Name_Elderly
+                    ];
+                }));
 
-            // สร้างแผนที่
-            var map = L.map('map').setView([14.9930, 103.1029], 15); // Set initial position to Buriram
+            // ตรวจสอบว่ามีข้อมูลพิกัดหรือไม่
+            if (elderlyLocations.length > 0) {
+                // สร้างแผนที่
+                var map = L.map('map').setView([14.9930, 103.1029], 15); // Set initial position to Buriram
 
-            // เพิ่ม TileLayer
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            }).addTo(map);
+                // เพิ่ม TileLayer เพื่อให้แผนที่แสดงผล
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                }).addTo(map);
 
-            // เพิ่ม Marker สำหรับผู้สูงอายุแต่ละคน
-            elderlyLocations.forEach(function(location) {
-                var marker = L.marker([location[0], location[1]]).addTo(map);
-                marker.bindPopup("<b>" + location[2] + "</b>").openPopup();
+                // เพิ่ม Marker สำหรับผู้สูงอายุแต่ละคน
+                elderlyLocations.forEach(function(location) {
+                    if (location[0] && location[1]) { // ตรวจสอบว่าค่าละติจูดและลองจิจูดไม่ใช่ null
+                        var marker = L.marker([location[0], location[1]]).addTo(map);
+                        marker.bindPopup("<b>" + location[2] + "</b>").openPopup();
+                    }
+                });
+            } else {
+                console.error("ไม่มีข้อมูลตำแหน่งที่จะแสดงบนแผนที่");
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // กราฟของ ADL
+            var adlGroups = @json($adlGroups);
+
+            var adlBarChartCtx = document.getElementById('adlBarChart').getContext('2d');
+            new Chart(adlBarChartCtx, {
+                type: 'bar', // ใช้ type 'bar'
+                data: {
+                    labels: Object.keys(adlGroups),
+                    datasets: [{
+                        label: 'จำนวนผู้สูงอายุตามกลุ่ม ADL',
+                        data: Object.values(adlGroups),
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    indexAxis: 'y', // ทำให้กราฟแท่งเป็นแนวนอน
+                    scales: {
+                        x: { // แกน x จะเป็นค่าจำนวน
+                            beginAtZero: true,
+                            grid: {
+                                display: false // เอาเส้นพื้นหลังออก
+                            }
+                        },
+                        y: {
+                            grid: {
+                                display: false // เอาเส้นพื้นหลังออก
+                            }
+                        }
+                    }
+                }
             });
+
+
+
+            var adlDoughnutChartCtx = document.getElementById('adlPieChart').getContext('2d');
+            new Chart(adlDoughnutChartCtx, {
+                type: 'doughnut', // เปลี่ยนจาก 'pie' เป็น 'doughnut'
+                data: {
+                    labels: Object.keys(adlGroups),
+                    datasets: [{
+                        label: 'สัดส่วนผู้สูงอายุตามกลุ่ม ADL',
+                        data: Object.values(adlGroups),
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                    }
+                }
+            });
+
         });
     </script>
 </body>
