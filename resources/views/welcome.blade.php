@@ -224,6 +224,169 @@
             max-width: 100%;
             margin: 20px 0;
         }
+
+        .image-grid {
+            display: grid;
+            gap: 10px;
+        }
+
+        .image-grid img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+        }
+
+        @media (min-width: 600px) {
+            .image-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (min-width: 900px) {
+            .image-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .image-item::after {
+            content: "";
+            display: block;
+            padding-bottom: 100%;
+            /* Maintain square aspect ratio */
+        }
+
+        .image-item img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .image-item:hover img {
+            opacity: 0.5;
+        }
+
+        .image-grid {
+            display: grid;
+            gap: 10px;
+        }
+
+        .image-grid img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+        }
+
+        @media (min-width: 600px) {
+            .image-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (min-width: 900px) {
+            .image-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .image-item {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .image-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .more-overlay .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            font-size: 2rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Lightbox Styles */
+        .lightbox {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .lightbox-content {
+            position: relative;
+            margin: auto;
+            max-width: 90%;
+            max-height: 90%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .lightbox-content img {
+            max-width: 80%;
+            max-height: 80%;
+            object-fit: contain;
+            display: block;
+        }
+
+        .close-lightbox {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: white;
+            font-size: 30px;
+            cursor: pointer;
+        }
+
+        /* Lightbox navigation buttons */
+        .prev-lightbox,
+        .next-lightbox {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0, 0, 0, 0.5);
+            color: #fff;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            font-size: 24px;
+        }
+
+        .prev-lightbox {
+            left: 10px;
+        }
+
+        .next-lightbox {
+            right: 10px;
+        }
+
+        .short-content {
+            display: block;
+        }
+
+        .full-content {
+            display: none;
+        }
     </style>
 </head>
 
@@ -260,20 +423,68 @@
             <div class="col-sm-4">
                 <section class="news">
                     <h2>ข่าวสารประชาสัมพันธ์</h2>
+                </section>
                     @foreach ($news as $newsItem)
                         <div class="news-container">
                             <div class="news-item">
                                 <h3>{{ $newsItem->title }}</h3>
-                                <p>{{ Str::limit($newsItem->content, 150) }}</p>
-                                @if ($newsItem->image)
-                                    <img src="{{ asset('storage/' . $newsItem->image) }}" alt="{{ $newsItem->title }}"
-                                        style="width:100%; height:auto; margin-bottom:10px;"
-                                        onclick="showModal('{{ asset('storage/' . $newsItem->image) }}', '{{ $newsItem->title }}', '{{ Str::limit($newsItem->content, 150) }}')">
-                                @endif
+                                <p class="short-content">
+                                    {{ Str::limit($newsItem->content, 150) }}
+                                    <a href="#" class="toggle-content"
+                                        onclick="toggleContent(event, this)">ดูเพิ่มเติม</a>
+                                </p>
+                                <p class="full-content" style="display: none;">
+                                    {{ $newsItem->content }}
+                                    <a href="#" class="toggle-content"
+                                        onclick="toggleContent(event, this)">ดูน้อยลง</a>
+                                </p>
+                                <div class="image-grid">
+                                    @foreach ($newsItem->images as $index => $image)
+                                        @if ($index < 3)
+                                            <div class="image-item">
+                                                <img src="{{ asset('storage/' . $image->image_path) }}"
+                                                    alt="{{ $newsItem->title }}"
+                                                    onclick="openLightbox('{{ asset('storage/' . $image->image_path) }}', [
+                                                        @foreach ($newsItem->images as $img) '{{ asset('storage/' . $img->image_path) }}', @endforeach
+                                                    ], {{ $index }})">
+                                            </div>
+                                        @endif
+                                    @endforeach
+
+                                    @if (count($newsItem->images) === 4)
+                                        <div class="image-item">
+                                            <img src="{{ asset('storage/' . $newsItem->images[3]->image_path) }}"
+                                                alt="{{ $newsItem->title }}"
+                                                onclick="openLightbox('{{ asset('storage/' . $newsItem->images[3]->image_path) }}', [@foreach ($newsItem->images as $img) '{{ asset('storage/' . $img->image_path) }}', @endforeach], 3)">
+                                        </div>
+                                    @elseif (count($newsItem->images) > 4)
+                                        <div class="image-item" style="position: relative;">
+                                            <img src="{{ asset('storage/' . $newsItem->images[3]->image_path) }}"
+                                                alt="{{ $newsItem->title }}"
+                                                onclick="openLightbox('{{ asset('storage/' . $newsItem->images[3]->image_path) }}', [@foreach ($newsItem->images as $img) '{{ asset('storage/' . $img->image_path) }}', @endforeach], 3)">
+                                            <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0, 0, 0, 0.6); color: white; display: flex; align-items: center; justify-content: center; font-size: 24px;"
+                                                onclick="openLightbox('{{ asset('storage/' . $newsItem->images[3]->image_path) }}', [@foreach ($newsItem->images as $img) '{{ asset('storage/' . $img->image_path) }}', @endforeach], 3)">
+                                                +{{ count($newsItem->images) - 4 }}
+                                            </div>
+                                        </div>
+                                    @endif
+
+                                </div>
+
+
+                                <!-- Lightbox HTML -->
+                                <div id="lightbox" class="lightbox">
+                                    <span class="close-lightbox" onclick="closeLightbox()">&times;</span>
+                                    <button class="prev-lightbox" onclick="changeImage(-1)">&#10094;</button>
+                                    <div class="lightbox-content">
+                                        <img id="lightbox-img" src="" alt="Lightbox Image">
+                                    </div>
+                                    <button class="next-lightbox" onclick="changeImage(1)">&#10095;</button>
+                                </div>
                             </div>
                         </div>
                     @endforeach
-                </section>
+
             </div>
             <!-- จำนวนการประเมิน ADL และ CG -->
             <div class="col-sm-4">
@@ -413,6 +624,124 @@
                 }
             }
         });
+
+        function toggleContent(event, element) {
+            event.preventDefault();
+
+            const newsItem = element.closest('.news-item');
+            const shortContent = newsItem.querySelector('.short-content');
+            const fullContent = newsItem.querySelector('.full-content');
+
+            // สลับการแสดงผลของเนื้อหา
+            if (shortContent.style.display === 'none') {
+                shortContent.style.display = 'block';
+                fullContent.style.display = 'none';
+            } else {
+                shortContent.style.display = 'none';
+                fullContent.style.display = 'block';
+            }
+        }
+
+        let currentImageIndex = 0;
+        let images = [];
+        let zoomLevel = 1;
+        let isDragging = false;
+        let startX, startY;
+        let translateX = 0,
+            translateY = 0;
+
+        function openLightbox(imageSrc, imageArray, index) {
+            currentImageIndex = index;
+            images = imageArray;
+            const lightboxImg = document.getElementById('lightbox-img');
+            lightboxImg.src = imageSrc;
+            document.getElementById('lightbox').style.display = 'flex';
+            resetZoomAndPosition(); // รีเซ็ตซูมและตำแหน่งทุกครั้งที่เปิด
+        }
+
+        function closeLightbox() {
+            document.getElementById('lightbox').style.display = 'none';
+        }
+
+        function changeImage(direction) {
+            currentImageIndex += direction;
+            if (currentImageIndex >= images.length) {
+                currentImageIndex = 0;
+            } else if (currentImageIndex < 0) {
+                currentImageIndex = images.length - 1;
+            }
+            const lightboxImg = document.getElementById('lightbox-img');
+            lightboxImg.src = images[currentImageIndex];
+            resetZoomAndPosition(); // รีเซ็ตซูมและตำแหน่งเมื่อเปลี่ยนภาพ
+        }
+
+        function resetZoomAndPosition() {
+            zoomLevel = 1;
+            translateX = 0;
+            translateY = 0;
+            applyTransform();
+        }
+
+        function applyTransform() {
+            const img = document.getElementById('lightbox-img');
+            img.style.transform = `translate(${translateX}px, ${translateY}px) scale(${zoomLevel})`;
+        }
+
+        document.getElementById('lightbox-img').addEventListener('click', function() {
+            zoomLevel = zoomLevel === 1 ? 2 : 1;
+            if (zoomLevel === 1) {
+                translateX = 0;
+                translateY = 0;
+            }
+            applyTransform();
+        });
+
+        document.getElementById('lightbox-img').addEventListener('wheel', function(event) {
+            event.preventDefault();
+            const delta = event.deltaY < 0 ? 0.1 : -0.1;
+            zoomLevel = Math.min(Math.max(zoomLevel + delta, 1), 5);
+            applyTransform();
+        });
+
+        document.getElementById('lightbox-img').addEventListener('mousedown', function(event) {
+            if (zoomLevel > 1) {
+                isDragging = true;
+                startX = event.clientX - translateX;
+                startY = event.clientY - translateY;
+                this.classList.add('grabbing');
+            }
+        });
+
+        document.addEventListener('mousemove', function(event) {
+            if (isDragging) {
+                const lightboxImg = document.getElementById('lightbox-img');
+                translateX = event.clientX - startX;
+                translateY = event.clientY - startY;
+
+                const maxTranslateX = ((zoomLevel - 1) * lightboxImg.width) / 2;
+                const maxTranslateY = ((zoomLevel - 1) * lightboxImg.height) / 2;
+
+                translateX = Math.max(Math.min(translateX, maxTranslateX), -maxTranslateX);
+                translateY = Math.max(Math.min(translateY, maxTranslateY), -maxTranslateY);
+
+                applyTransform();
+            }
+        });
+
+        document.addEventListener('mouseup', function() {
+            if (isDragging) {
+                isDragging = false;
+                document.getElementById('lightbox-img').classList.remove('grabbing');
+            }
+        });
+
+        document.addEventListener('mouseleave', function() {
+            if (isDragging) {
+                isDragging = false;
+                document.getElementById('lightbox-img').classList.remove('grabbing');
+            }
+        });
+
     </script>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>

@@ -124,7 +124,7 @@ class AdminController extends Controller
     return redirect()->route('admin.layout-admin')->with('success', 'News created successfully.');
 }
 
-    public function updateNews(Request $request, $id)
+public function updateNews(Request $request, $id)
 {
     $request->validate([
         'title' => 'required|string|max:255',
@@ -136,7 +136,15 @@ class AdminController extends Controller
     $news->fill($request->only(['title', 'content']));
     $news->save();
 
+    // ถ้ามีการอัปโหลดรูปภาพใหม่ ให้ลบรูปภาพเก่าออก
     if ($request->hasFile('images')) {
+        // ลบรูปภาพเก่าทั้งหมดที่เกี่ยวข้องกับข่าวนี้
+        foreach ($news->images as $oldImage) {
+            Storage::disk('public')->delete($oldImage->image_path);
+            $oldImage->delete();
+        }
+
+        // เพิ่มรูปภาพใหม่เข้าไปในฐานข้อมูลและที่เก็บไฟล์
         foreach ($request->file('images') as $image) {
             $path = $image->store('news_images', 'public');
             NewsImage::create([
@@ -148,6 +156,7 @@ class AdminController extends Controller
 
     return redirect()->route('admin.layout-admin')->with('success', 'News updated successfully.');
 }
+
 
     public function destroyNews($id)
     {

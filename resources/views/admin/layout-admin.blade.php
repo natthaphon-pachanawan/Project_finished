@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ระบบประเมินความสามารถในการดำเนินกิจวัตรประจำวันของผู้สูงอายุ</title>
+    <title>จัดการข่าวสาร</title>
     <link href="{{ asset('assets/css/argon-dashboard.css') }}" rel="stylesheet" />
     <link href="{{ asset('assets/css/nucleo-icons.css') }}" rel="stylesheet" />
     <link href="{{ asset('assets/css/nucleo-svg.css') }}" rel="stylesheet" />
@@ -400,6 +400,14 @@
         .next-lightbox {
             right: 10px;
         }
+
+        .short-content {
+            display: block;
+        }
+
+        .full-content {
+            display: none;
+        }
     </style>
 </head>
 
@@ -449,8 +457,16 @@
                         <div class="news-container">
                             <div class="news-item">
                                 <h3>{{ $newsItem->title }}</h3>
-                                <p>{{ Str::limit($newsItem->content, 150) }}</p>
-
+                                <p class="short-content">
+                                    {{ Str::limit($newsItem->content, 150) }}
+                                    <a href="#" class="toggle-content"
+                                        onclick="toggleContent(event, this)">ดูเพิ่มเติม</a>
+                                </p>
+                                <p class="full-content" style="display: none;">
+                                    {{ $newsItem->content }}
+                                    <a href="#" class="toggle-content"
+                                        onclick="toggleContent(event, this)">ดูน้อยลง</a>
+                                </p>
                                 <div class="image-grid">
                                     @foreach ($newsItem->images as $index => $image)
                                         @if ($index < 3)
@@ -498,7 +514,10 @@
 
 
                                 <button class="btn btn-warning" data-id="{{ $newsItem->id }}"
-                                    onclick="showEditModal('{{ $newsItem->id }}', '{{ $newsItem->title }}', '{{ $newsItem->content }}', '{{ asset('storage/' . $newsItem->image) }}')">แก้ไข</button>
+                                    onclick="showEditModal('{{ $newsItem->id }}', '{{ $newsItem->title }}', '{{ $newsItem->content }}', [
+                                        @foreach ($newsItem->images as $image)
+                                            '{{ asset('storage/' . $image->image_path) }}', @endforeach
+                                    ])">แก้ไข</button>
 
                                 <!-- ปุ่มลบ -->
                                 <form action="{{ route('admin.news.destroy', $newsItem->id) }}" method="POST"
@@ -615,12 +634,16 @@
                             <textarea id="edit-content" name="content" class="form-control" rows="5" required></textarea>
                         </div>
                         <div class="form-group">
-                            <label for="currentNewsImage">รูปภาพปัจจุบัน:</label>
-                            <img id="currentNewsImage" src="" alt="Current News Image" class="img-fluid" style="display:none; margin-bottom: 10px;">
+                            <label for="currentNewsImages">รูปภาพปัจจุบัน:</label>
+                            <div id="currentNewsImages" style="display: flex; flex-wrap: wrap; gap: 5px;">
+                                <!-- รูปภาพจะแสดงที่นี่ -->
+                            </div>
                         </div>
+
                         <div class="form-group">
                             <label for="images">อัปโหลดรูปภาพใหม่:</label>
-                            <input type="file" id="edit-images" name="images[]" class="form-control-file" multiple>
+                            <input type="file" id="edit-images" name="images[]" class="form-control-file"
+                                multiple>
                         </div>
                         <button type="submit" class="btn btn-primary">บันทึก</button>
                     </form>
@@ -732,12 +755,19 @@
     <script>
         let currentImageIndex = 0;
         let images = [];
+        let zoomLevel = 1;
+        let isDragging = false;
+        let startX, startY;
+        let translateX = 0,
+            translateY = 0;
 
         function openLightbox(imageSrc, imageArray, index) {
             currentImageIndex = index;
             images = imageArray;
-            document.getElementById('lightbox-img').src = imageSrc;
+            const lightboxImg = document.getElementById('lightbox-img');
+            lightboxImg.src = imageSrc;
             document.getElementById('lightbox').style.display = 'flex';
+            resetZoomAndPosition(); // รีเซ็ตซูมและตำแหน่งทุกครั้งที่เปิด
         }
 
         function closeLightbox() {
@@ -747,13 +777,81 @@
         function changeImage(direction) {
             currentImageIndex += direction;
             if (currentImageIndex >= images.length) {
-                currentImageIndex = 0; // Loop back to the first image
+                currentImageIndex = 0;
             } else if (currentImageIndex < 0) {
-                currentImageIndex = images.length - 1; // Loop to the last image
+                currentImageIndex = images.length - 1;
             }
-            document.getElementById('lightbox-img').src = images[currentImageIndex];
+            const lightboxImg = document.getElementById('lightbox-img');
+            lightboxImg.src = images[currentImageIndex];
+            resetZoomAndPosition(); // รีเซ็ตซูมและตำแหน่งเมื่อเปลี่ยนภาพ
         }
 
+        function resetZoomAndPosition() {
+            zoomLevel = 1;
+            translateX = 0;
+            translateY = 0;
+            applyTransform();
+        }
+
+        function applyTransform() {
+            const img = document.getElementById('lightbox-img');
+            img.style.transform = `translate(${translateX}px, ${translateY}px) scale(${zoomLevel})`;
+        }
+
+        document.getElementById('lightbox-img').addEventListener('click', function() {
+            zoomLevel = zoomLevel === 1 ? 2 : 1;
+            if (zoomLevel === 1) {
+                translateX = 0;
+                translateY = 0;
+            }
+            applyTransform();
+        });
+
+        document.getElementById('lightbox-img').addEventListener('wheel', function(event) {
+            event.preventDefault();
+            const delta = event.deltaY < 0 ? 0.1 : -0.1;
+            zoomLevel = Math.min(Math.max(zoomLevel + delta, 1), 5);
+            applyTransform();
+        });
+
+        document.getElementById('lightbox-img').addEventListener('mousedown', function(event) {
+            if (zoomLevel > 1) {
+                isDragging = true;
+                startX = event.clientX - translateX;
+                startY = event.clientY - translateY;
+                this.classList.add('grabbing');
+            }
+        });
+
+        document.addEventListener('mousemove', function(event) {
+            if (isDragging) {
+                const lightboxImg = document.getElementById('lightbox-img');
+                translateX = event.clientX - startX;
+                translateY = event.clientY - startY;
+
+                const maxTranslateX = ((zoomLevel - 1) * lightboxImg.width) / 2;
+                const maxTranslateY = ((zoomLevel - 1) * lightboxImg.height) / 2;
+
+                translateX = Math.max(Math.min(translateX, maxTranslateX), -maxTranslateX);
+                translateY = Math.max(Math.min(translateY, maxTranslateY), -maxTranslateY);
+
+                applyTransform();
+            }
+        });
+
+        document.addEventListener('mouseup', function() {
+            if (isDragging) {
+                isDragging = false;
+                document.getElementById('lightbox-img').classList.remove('grabbing');
+            }
+        });
+
+        document.addEventListener('mouseleave', function() {
+            if (isDragging) {
+                isDragging = false;
+                document.getElementById('lightbox-img').classList.remove('grabbing');
+            }
+        });
 
         let slideIndex = 0;
         const slides = document.querySelector('.slides');
@@ -780,24 +878,30 @@
 
         setInterval(showSlides, 3000);
 
-        function showEditModal(id, title, content, imagePath) {
+        function showEditModal(id, title, content, images) {
             // ตั้งค่า URL ในฟอร์มสำหรับอัปเดตข้อมูลข่าวสาร
             document.getElementById('editNewsForm').action = '/news/' + id;
             document.getElementById('edit-title').value = title;
             document.getElementById('edit-content').value = content;
 
+            // ล้างรูปภาพปัจจุบันที่แสดงอยู่ก่อนหน้า
+            let imageContainer = document.getElementById('currentNewsImages');
+            imageContainer.innerHTML = '';
+
             // แสดงรูปภาพที่มีอยู่แล้วถ้ามี
-            if (imagePath) {
-                document.getElementById('currentNewsImage').src = imagePath;
-                document.getElementById('currentNewsImage').style.display = 'block';
-            } else {
-                document.getElementById('currentNewsImage').style.display = 'none';
-            }
+            images.forEach(function(imagePath) {
+                let img = document.createElement('img');
+                img.src = imagePath; // ตั้งค่าลิงก์ของรูปภาพ
+                img.alt = 'Current News Image';
+                img.className = 'img-thumbnail'; // เพิ่มคลาส img-thumbnail เพื่อใช้ Bootstrap class
+                img.style.width = '100px'; // ปรับขนาดความกว้างของรูปภาพ
+                img.style.height = '100px'; // ให้ความสูงอัตโนมัติตามสัดส่วน
+                imageContainer.appendChild(img);
+            });
 
             // เปิด Modal
             $('#editNewsModal').modal('show');
         }
-
 
         function setSliderData(id, image) {
             const form = document.getElementById('editSliderForm');
@@ -811,6 +915,24 @@
             document.getElementById('modalContent').textContent = content;
             $('#imageModal').modal('show');
         }
+
+        function toggleContent(event, element) {
+            event.preventDefault();
+
+            const newsItem = element.closest('.news-item');
+            const shortContent = newsItem.querySelector('.short-content');
+            const fullContent = newsItem.querySelector('.full-content');
+
+            // สลับการแสดงผลของเนื้อหา
+            if (shortContent.style.display === 'none') {
+                shortContent.style.display = 'block';
+                fullContent.style.display = 'none';
+            } else {
+                shortContent.style.display = 'none';
+                fullContent.style.display = 'block';
+            }
+        }
+
     </script>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
