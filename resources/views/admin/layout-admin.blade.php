@@ -43,7 +43,7 @@
         }
 
         .news-item p {
-            margin-bottom: 10px;
+            margin-bottom: 13px;
         }
 
         .news-item a {
@@ -245,6 +245,161 @@
         .admin-buttons a:hover {
             background-color: #ea3005;
         }
+
+        .image-grid {
+            display: grid;
+            gap: 10px;
+        }
+
+        .image-grid img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+        }
+
+        @media (min-width: 600px) {
+            .image-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (min-width: 900px) {
+            .image-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .image-item::after {
+            content: "";
+            display: block;
+            padding-bottom: 100%;
+            /* Maintain square aspect ratio */
+        }
+
+        .image-item img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .image-item:hover img {
+            opacity: 0.5;
+        }
+
+        .image-grid {
+            display: grid;
+            gap: 10px;
+        }
+
+        .image-grid img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+        }
+
+        @media (min-width: 600px) {
+            .image-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (min-width: 900px) {
+            .image-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .image-item {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .image-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .more-overlay .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            font-size: 2rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Lightbox Styles */
+        .lightbox {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .lightbox-content {
+            position: relative;
+            margin: auto;
+            max-width: 90%;
+            max-height: 90%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .lightbox-content img {
+            max-width: 80%;
+            max-height: 80%;
+            object-fit: contain;
+            display: block;
+        }
+
+        .close-lightbox {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: white;
+            font-size: 30px;
+            cursor: pointer;
+        }
+
+        /* Lightbox navigation buttons */
+        .prev-lightbox,
+        .next-lightbox {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0, 0, 0, 0.5);
+            color: #fff;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            font-size: 24px;
+        }
+
+        .prev-lightbox {
+            left: 10px;
+        }
+
+        .next-lightbox {
+            right: 10px;
+        }
     </style>
 </head>
 
@@ -263,7 +418,8 @@
         <button class="next" onclick="plusSlides(1)">&#10095;</button>
     </section>
     <div class="admin-buttons">
-        <button class="btn btn-primary" data-toggle="modal" data-target="#createSliderModal">เพิ่มรูปเลื่อน Slider</button>
+        <button class="btn btn-primary" data-toggle="modal" data-target="#createSliderModal">เพิ่มรูปเลื่อน
+            Slider</button>
         <button class="btn btn-primary" data-toggle="modal" data-target="#viewSliderModal">แก้ไข Slider</button>
     </div>
 
@@ -285,7 +441,8 @@
             <div class="col-sm-4">
                 <section class="news">
                     <div class="admin-buttons">
-                        <button class="btn btn-primary" data-toggle="modal" data-target="#createNewsModal">เพิ่มข่าวสาร</button>
+                        <button class="btn btn-primary" data-toggle="modal"
+                            data-target="#createNewsModal">เพิ่มข่าวสาร</button>
                     </div>
                     <h2>ข่าวสารประชาสัมพันธ์</h2>
                     @foreach ($news as $newsItem)
@@ -293,18 +450,63 @@
                             <div class="news-item">
                                 <h3>{{ $newsItem->title }}</h3>
                                 <p>{{ Str::limit($newsItem->content, 150) }}</p>
-                                @if ($newsItem->image)
-                                    <img src="{{ asset('storage/' . $newsItem->image) }}" alt="{{ $newsItem->title }}"
-                                        style="width:100%; height:auto; margin-bottom:10px;"
-                                        onclick="showModal('{{ asset('storage/' . $newsItem->image) }}', '{{ $newsItem->title }}', '{{ Str::limit($newsItem->content, 150) }}')">
-                                @endif
-                                <button class="btn btn-warning" data-id="{{ $newsItem->id }}" onclick="showEditModal('{{ $newsItem->id }}', '{{ $newsItem->title }}', '{{ $newsItem->content }}', '{{ asset('storage/' . $newsItem->image) }}')">แก้ไข</button>
+
+                                <div class="image-grid">
+                                    @foreach ($newsItem->images as $index => $image)
+                                        @if ($index < 3)
+                                            <div class="image-item">
+                                                <img src="{{ asset('storage/' . $image->image_path) }}"
+                                                    alt="{{ $newsItem->title }}"
+                                                    onclick="openLightbox('{{ asset('storage/' . $image->image_path) }}', [
+                                                        @foreach ($newsItem->images as $img) '{{ asset('storage/' . $img->image_path) }}', @endforeach
+                                                    ], {{ $index }})">
+                                            </div>
+                                        @endif
+                                    @endforeach
+
+                                    @if (count($newsItem->images) === 4)
+                                        <div class="image-item">
+                                            <img src="{{ asset('storage/' . $newsItem->images[3]->image_path) }}"
+                                                alt="{{ $newsItem->title }}"
+                                                onclick="openLightbox('{{ asset('storage/' . $newsItem->images[3]->image_path) }}', [@foreach ($newsItem->images as $img) '{{ asset('storage/' . $img->image_path) }}', @endforeach], 3)">
+                                        </div>
+                                    @elseif (count($newsItem->images) > 4)
+                                        <div class="image-item" style="position: relative;">
+                                            <img src="{{ asset('storage/' . $newsItem->images[3]->image_path) }}"
+                                                alt="{{ $newsItem->title }}"
+                                                onclick="openLightbox('{{ asset('storage/' . $newsItem->images[3]->image_path) }}', [@foreach ($newsItem->images as $img) '{{ asset('storage/' . $img->image_path) }}', @endforeach], 3)">
+                                            <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0, 0, 0, 0.6); color: white; display: flex; align-items: center; justify-content: center; font-size: 24px;"
+                                                onclick="openLightbox('{{ asset('storage/' . $newsItem->images[3]->image_path) }}', [@foreach ($newsItem->images as $img) '{{ asset('storage/' . $img->image_path) }}', @endforeach], 3)">
+                                                +{{ count($newsItem->images) - 4 }}
+                                            </div>
+                                        </div>
+                                    @endif
+
+                                </div>
+
+
+                                <!-- Lightbox HTML -->
+                                <div id="lightbox" class="lightbox">
+                                    <span class="close-lightbox" onclick="closeLightbox()">&times;</span>
+                                    <button class="prev-lightbox" onclick="changeImage(-1)">&#10094;</button>
+                                    <div class="lightbox-content">
+                                        <img id="lightbox-img" src="" alt="Lightbox Image">
+                                    </div>
+                                    <button class="next-lightbox" onclick="changeImage(1)">&#10095;</button>
+                                </div>
+
+
+
+                                <button class="btn btn-warning" data-id="{{ $newsItem->id }}"
+                                    onclick="showEditModal('{{ $newsItem->id }}', '{{ $newsItem->title }}', '{{ $newsItem->content }}', '{{ asset('storage/' . $newsItem->image) }}')">แก้ไข</button>
 
                                 <!-- ปุ่มลบ -->
-                                <form action="{{ route('admin.news.destroy', $newsItem->id) }}" method="POST" style="display:inline;">
+                                <form action="{{ route('admin.news.destroy', $newsItem->id) }}" method="POST"
+                                    style="display:inline;">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-danger" onclick="return confirm('คุณแน่ใจหรือไม่ว่าต้องการลบข่าวสารนี้?');">ลบ</button>
+                                    <button type="submit" class="btn btn-danger"
+                                        onclick="return confirm('คุณแน่ใจหรือไม่ว่าต้องการลบข่าวสารนี้?');">ลบ</button>
                                 </form>
                             </div>
                         </div>
@@ -338,7 +540,8 @@
     </div>
 
     <!-- Modal for Image -->
-    <div class="modal fade" id="imageModal" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel" aria-hidden="true">
+    <div class="modal fade" id="imageModal" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -356,7 +559,8 @@
     </div>
 
     <!-- Modal for Create News -->
-    <div class="modal fade" id="createNewsModal" tabindex="-1" role="dialog" aria-labelledby="createNewsModalLabel" aria-hidden="true">
+    <div class="modal fade" id="createNewsModal" tabindex="-1" role="dialog"
+        aria-labelledby="createNewsModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -377,8 +581,8 @@
                             <textarea id="content" name="content" class="form-control" rows="5" required></textarea>
                         </div>
                         <div class="form-group">
-                            <label for="image">รูปภาพ:</label>
-                            <input type="file" id="image" name="image" class="form-control-file">
+                            <label for="images">รูปภาพ:</label>
+                            <input type="file" id="images" name="images[]" class="form-control-file" multiple>
                         </div>
                         <button type="submit" class="btn btn-primary">บันทึก</button>
                     </form>
@@ -388,7 +592,8 @@
     </div>
 
     <!-- Modal for Edit News -->
-    <div class="modal fade" id="editNewsModal" tabindex="-1" role="dialog" aria-labelledby="editNewsModalLabel" aria-hidden="true">
+    <div class="modal fade" id="editNewsModal" tabindex="-1" role="dialog" aria-labelledby="editNewsModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -410,12 +615,16 @@
                             <textarea id="edit-content" name="content" class="form-control" rows="5" required></textarea>
                         </div>
                         <div class="form-group">
-                            <label for="image">รูปภาพ:</label>
-                            <img id="currentNewsImage" src="" alt="News Image" width="100">
-                            <input type="file" id="edit-image" name="image" class="form-control-file">
+                            <label for="currentNewsImage">รูปภาพปัจจุบัน:</label>
+                            <img id="currentNewsImage" src="" alt="Current News Image" class="img-fluid" style="display:none; margin-bottom: 10px;">
+                        </div>
+                        <div class="form-group">
+                            <label for="images">อัปโหลดรูปภาพใหม่:</label>
+                            <input type="file" id="edit-images" name="images[]" class="form-control-file" multiple>
                         </div>
                         <button type="submit" class="btn btn-primary">บันทึก</button>
                     </form>
+
                 </div>
             </div>
         </div>
@@ -423,7 +632,8 @@
 
 
     <!-- Modal for Create Slider -->
-    <div class="modal fade" id="createSliderModal" tabindex="-1" role="dialog" aria-labelledby="createSliderModalLabel" aria-hidden="true">
+    <div class="modal fade" id="createSliderModal" tabindex="-1" role="dialog"
+        aria-labelledby="createSliderModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -437,7 +647,8 @@
                         @csrf
                         <div class="form-group">
                             <label for="slider-image">รูปภาพ:</label>
-                            <input type="file" id="slider-image" name="image" class="form-control-file" required>
+                            <input type="file" id="slider-image" name="image" class="form-control-file"
+                                required>
                         </div>
                         <button type="submit" class="btn btn-primary">บันทึก</button>
                     </form>
@@ -447,7 +658,8 @@
     </div>
 
     <!-- Modal for View Slider -->
-    <div class="modal fade" id="viewSliderModal" tabindex="-1" role="dialog" aria-labelledby="viewSliderModalLabel" aria-hidden="true">
+    <div class="modal fade" id="viewSliderModal" tabindex="-1" role="dialog"
+        aria-labelledby="viewSliderModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -461,11 +673,15 @@
                         @foreach ($sliders as $slider)
                             <tr>
                                 <td>
-                                    <img src="{{ asset('storage/' . $slider->image) }}" alt="Slider Image" width="100">
+                                    <img src="{{ asset('storage/' . $slider->image) }}" alt="Slider Image"
+                                        width="100">
                                 </td>
                                 <td>
-                                    <button class="btn btn-warning" data-id="{{ $slider->id }}" data-toggle="modal" data-target="#editSliderModal" onclick="setSliderData('{{ $slider->id }}', '{{ $slider->image }}')">แก้ไข</button>
-                                    <form action="{{ route('admin.sliders.destroy', $slider->id) }}" method="POST" style="display:inline;">
+                                    <button class="btn btn-warning" data-id="{{ $slider->id }}"
+                                        data-toggle="modal" data-target="#editSliderModal"
+                                        onclick="setSliderData('{{ $slider->id }}', '{{ $slider->image }}')">แก้ไข</button>
+                                    <form action="{{ route('admin.sliders.destroy', $slider->id) }}" method="POST"
+                                        style="display:inline;">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-danger">ลบ</button>
@@ -481,7 +697,8 @@
 
 
     <!-- Modal for Edit Slider -->
-    <div class="modal fade" id="editSliderModal" tabindex="-1" role="dialog" aria-labelledby="editSliderModalLabel" aria-hidden="true">
+    <div class="modal fade" id="editSliderModal" tabindex="-1" role="dialog"
+        aria-labelledby="editSliderModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -513,6 +730,31 @@
     </footer>
 
     <script>
+        let currentImageIndex = 0;
+        let images = [];
+
+        function openLightbox(imageSrc, imageArray, index) {
+            currentImageIndex = index;
+            images = imageArray;
+            document.getElementById('lightbox-img').src = imageSrc;
+            document.getElementById('lightbox').style.display = 'flex';
+        }
+
+        function closeLightbox() {
+            document.getElementById('lightbox').style.display = 'none';
+        }
+
+        function changeImage(direction) {
+            currentImageIndex += direction;
+            if (currentImageIndex >= images.length) {
+                currentImageIndex = 0; // Loop back to the first image
+            } else if (currentImageIndex < 0) {
+                currentImageIndex = images.length - 1; // Loop to the last image
+            }
+            document.getElementById('lightbox-img').src = images[currentImageIndex];
+        }
+
+
         let slideIndex = 0;
         const slides = document.querySelector('.slides');
 
@@ -538,20 +780,24 @@
 
         setInterval(showSlides, 3000);
 
-        function showEditModal(id, title, content, image) {
+        function showEditModal(id, title, content, imagePath) {
+            // ตั้งค่า URL ในฟอร์มสำหรับอัปเดตข้อมูลข่าวสาร
             document.getElementById('editNewsForm').action = '/news/' + id;
             document.getElementById('edit-title').value = title;
             document.getElementById('edit-content').value = content;
 
-            if (image) {
-                document.getElementById('currentNewsImage').src = image;
+            // แสดงรูปภาพที่มีอยู่แล้วถ้ามี
+            if (imagePath) {
+                document.getElementById('currentNewsImage').src = imagePath;
                 document.getElementById('currentNewsImage').style.display = 'block';
             } else {
                 document.getElementById('currentNewsImage').style.display = 'none';
             }
 
+            // เปิด Modal
             $('#editNewsModal').modal('show');
         }
+
 
         function setSliderData(id, image) {
             const form = document.getElementById('editSliderForm');

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\News;
+use App\Models\NewsImage;
 use App\Models\Slider;
 use App\Models\Personnel;
 use Illuminate\Http\Request;
@@ -100,54 +101,53 @@ class AdminController extends Controller
 
     // News Management
     public function storeNews(Request $request)
-    {
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'content' => 'required|string',
-            'image' => 'nullable|image'
-        ]);
+{
+    $request->validate([
+        'title' => 'required|string|max:255',
+        'content' => 'required|string',
+        'images.*' => 'nullable|image'
+    ]);
 
-        $news = new News($request->only(['title', 'content']));
+    $news = new News($request->only(['title', 'content']));
+    $news->save();
 
-        if ($request->hasFile('image')) {
-            $path = $request->file('image')->store('news_images', 'public');
-            $news->image = $path;
+    if ($request->hasFile('images')) {
+        foreach ($request->file('images') as $image) {
+            $path = $image->store('news_images', 'public');
+            NewsImage::create([
+                'news_id' => $news->id,
+                'image_path' => $path,
+            ]);
         }
-
-        $news->save();
-
-        return redirect()->route('admin.layout-admin')->with('success', 'News created successfully.');
     }
 
-    public function editNews($id)
-    {
-        $newsItem = News::findOrFail($id);
-        return view('admin.news-edit', compact('newsItem'));
-    }
+    return redirect()->route('admin.layout-admin')->with('success', 'News created successfully.');
+}
 
     public function updateNews(Request $request, $id)
-    {
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'content' => 'required|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
-        ]);
+{
+    $request->validate([
+        'title' => 'required|string|max:255',
+        'content' => 'required|string',
+        'images.*' => 'nullable|image'
+    ]);
 
-        $news = News::findOrFail($id);
-        $news->fill($request->only(['title', 'content']));
+    $news = News::findOrFail($id);
+    $news->fill($request->only(['title', 'content']));
+    $news->save();
 
-        if ($request->hasFile('image')) {
-            if ($news->image) {
-                Storage::disk('public')->delete($news->image);
-            }
-            $path = $request->file('image')->store('news_images', 'public');
-            $news->image = $path;
+    if ($request->hasFile('images')) {
+        foreach ($request->file('images') as $image) {
+            $path = $image->store('news_images', 'public');
+            NewsImage::create([
+                'news_id' => $news->id,
+                'image_path' => $path,
+            ]);
         }
-
-        $news->save();
-
-        return redirect()->route('admin.layout-admin')->with('success', 'News updated successfully.');
     }
+
+    return redirect()->route('admin.layout-admin')->with('success', 'News updated successfully.');
+}
 
     public function destroyNews($id)
     {

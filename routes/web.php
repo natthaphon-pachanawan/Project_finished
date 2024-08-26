@@ -107,13 +107,11 @@ Route::middleware(['CheckLogin', 'IsAdmin'])->group(function () {
     Route::get('layout-admin', [AdminController::class, 'ShowlayoutAdmin'])->name('admin.layout-admin');
 
 
-
     // News routes
     Route::post('news/store', [AdminController::class, 'storeNews'])->name('admin.news.store');
     Route::get('news/{id}/edit', [AdminController::class, 'editNews']);
     Route::put('news/{id}', [AdminController::class, 'updateNews'])->name('admin.news.update'); // Add this line
     Route::delete('news/{id}', [AdminController::class, 'destroyNews'])->name('admin.news.destroy');
-
 
     // Slider routes
     Route::post('sliders/store', [AdminController::class, 'storeSlider'])->name('admin.sliders.store');
