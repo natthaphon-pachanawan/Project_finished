@@ -185,10 +185,6 @@
                 <th>ปัญหาที่พบ</th>
                 <td>{{ $activity->Problem ?? 'ไม่มีข้อมูล' }}</td>
             </tr>
-            <tr>
-                <th>การช่วยเหลือ/แนวทางการแก้ไขปัญหา</th>
-                <td>{{ $activity->Troubleshoot ?? 'ไม่มีข้อมูล' }}</td>
-            </tr>
         </table>
     </div>
     <script>

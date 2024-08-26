@@ -30,7 +30,6 @@ return new class extends Migration
             $table->string('Talk_as_friends');
             $table->string('Other_specified');
             $table->string('Problem');
-            $table->string('Troubleshoot');
             $table->foreign('ID_CG')->references('ID_CG')->on('care_givers')->onDelete('cascade');
         });
     }

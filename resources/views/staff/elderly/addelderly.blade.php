@@ -90,12 +90,12 @@
 
                     <div class="form-group">
                         <label for="Postal_Code">รหัสไปรษณีย์:</label>
-                        <input type="text" id="Postal_Code" name="Postal_Code" class="form-control">
+                        <input type="number" id="Postal_Code" name="Postal_Code" class="form-control">
                     </div>
 
                     <div class="form-group">
                         <label for="Phone_Elderly">เบอร์โทร:</label>
-                        <input type="text" id="Phone_Elderly" name="Phone_Elderly" class="form-control" required>
+                        <input type="number" id="Phone_Elderly" name="Phone_Elderly" class="form-control" required>
                     </div>
 
                     <div class="form-group">
@@ -171,8 +171,8 @@
         });
 
         // Leaflet Map for selecting location
-        var initialPosition = [14.9930, 103.1029]; // Initial map position set to Buriram, Thailand
-        var map = L.map('map').setView(initialPosition, 13);
+        var initialPosition = [14.971004543091427, 103.18498849868776]; // Initial map position set to Buriram, Thailand
+        var map = L.map('map').setView(initialPosition, 14);
 
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

@@ -96,6 +96,8 @@
 
         function transferValues() {
             document.getElementById('Name_CG_hidden').value = document.getElementById('Name_CG').value;
+            document.getElementById('Related_hidden').value = document.getElementById('Related').value;
+            document.getElementById('Phone_CG_hidden').value = document.getElementById('Phone_CG').value;
             document.getElementById('ID_Elderly_hidden').value = document.getElementById('ID_Elderly').value;
             document.getElementById('Age_hidden').value = document.getElementById('Age').value;
             document.getElementById('Address_hidden').value = document.getElementById('Address').value;
@@ -106,9 +108,6 @@
             document.getElementById('Disease_hidden').value = document.getElementById('Disease').value;
             document.getElementById('Disability_hidden').value = document.getElementById('Disability').value;
             document.getElementById('Rights_hidden').value = document.getElementById('Rights').value;
-            document.getElementById('Caretaker_hidden').value = document.getElementById('Caretaker').value;
-            document.getElementById('Related_hidden').value = document.getElementById('Related').value;
-            document.getElementById('Phone_Caretaker_hidden').value = document.getElementById('Phone_Caretaker').value;
             document.getElementById('Name_Elderly_hidden').value = document.getElementById('Name_Elderly').value;
         }
     </script>
@@ -143,10 +142,19 @@
                         @csrf
                         @method('PUT')
                         <div class="form-group">
-                            <label for="Name_CG">ชื่อผู้ดูแลผู้สูงอายุ</label>
+                            <label for="Name_CG">ชื่อ - สกุลผู้ดูแลผู้สูงอายุ</label>
                             <input type="text" id="Name_CG" name="Name_CG" class="form-control"
                                 value="{{ $caregiver->Name_CG }}" required>
                         </div>
+                        <div class="form-group">
+                            <label for="Related">เกี่ยวข้องเป็น</label>
+                            <input type="text" id="Related" name="Related" class="form-control"
+                                value="{{ $caregiver->Related }}" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="Phone_CG">เบอร์ติดต่อ</label>
+                            <input type="text" id="Phone_CG" name="Phone_CG" class="form-control"
+                                value="{{ $caregiver->Phone_CG }}" required>
                         <div class="form-group">
                             <label for="Name_Elderly">ชื่อ-สกุลผู้สูงอายุ</label>
                             <input type="text" id="Name_Elderly" name="Name_Elderly" class="form-control"
@@ -199,20 +207,6 @@
                             <input type="text" id="Rights" name="Rights" class="form-control"
                                 value="{{ $caregiver->Rights }}">
                         </div>
-                        <div class="form-group">
-                            <label for="Caretaker">ชื่อ-สกุลผู้ดูแล</label>
-                            <input type="text" id="Caretaker" name="Caretaker" class="form-control"
-                                value="{{ $caregiver->Caretaker }}" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="Related">เกี่ยวข้องเป็น</label>
-                            <input type="text" id="Related" name="Related" class="form-control"
-                                value="{{ $caregiver->Related }}" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="Phone_Caretaker">เบอร์ติดต่อ</label>
-                            <input type="text" id="Phone_Caretaker" name="Phone_Caretaker" class="form-control"
-                                value="{{ $caregiver->Phone_Caretaker }}" required>
                         </div>
                         <input type="hidden" id="ID_ADL" name="ID_ADL" value="{{ $caregiver->ID_ADL }}">
                         <input type="hidden" id="Name_Elderly_hidden" name="Name_Elderly"
@@ -230,6 +224,9 @@
                         @method('PUT')
                         <!-- Hidden fields to pass caregiver form data -->
                         <input type="hidden" id="Name_CG_hidden" name="Name_CG" value="{{ $caregiver->Name_CG }}">
+                        <input type="hidden" id="Related_hidden" name="Related" value="{{ $caregiver->Related }}">
+                        <input type="hidden" id="Phone_CG_hidden" name="Phone_CG"
+                            value="{{ $caregiver->Phone_CG }}">
                         <input type="hidden" id="ID_Elderly_hidden" name="ID_Elderly"
                             value="{{ $caregiver->ID_Elderly }}">
                         <input type="hidden" id="Age_hidden" name="Age" value="{{ $caregiver->Age }}">
@@ -243,11 +240,6 @@
                         <input type="hidden" id="Disability_hidden" name="Disability"
                             value="{{ $caregiver->Disability }}">
                         <input type="hidden" id="Rights_hidden" name="Rights" value="{{ $caregiver->Rights }}">
-                        <input type="hidden" id="Caretaker_hidden" name="Caretaker"
-                            value="{{ $caregiver->Caretaker }}">
-                        <input type="hidden" id="Related_hidden" name="Related" value="{{ $caregiver->Related }}">
-                        <input type="hidden" id="Phone_Caretaker_hidden" name="Phone_Caretaker"
-                            value="{{ $caregiver->Phone_Caretaker }}">
                         <input type="hidden" id="Name_Elderly_hidden" name="Name_Elderly"
                             value="{{ $caregiver->Name_Elderly }}">
                         <!-- End hidden fields -->

@@ -86,26 +86,34 @@
             margin-bottom: 15px;
         }
 
-        .form-group input[type="radio"] {
+        .form-group input[type="checkbox"] {
             margin-right: 10px;
         }
     </style>
     <script>
-        function fetchElderlyDetails() {
-            var elderlyId = document.getElementById('ID_Elderly').value;
-            if (elderlyId) {
-                fetch(`/get-elderly-details/${elderlyId}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        document.getElementById('Age').value = data.Age;
-                        document.getElementById('Address').value = data.Address;
-                        document.getElementById('Group_ADL').value = data.Group_ADL;
-                        document.getElementById('Name_Elderly').value = document.getElementById('ID_Elderly').options[
-                            document.getElementById('ID_Elderly').selectedIndex].text;
-                    })
-                    .catch(error => console.error('Error:', error));
-            }
+        function handleCheckboxValues(event) {
+            event.preventDefault(); // Prevent the form from submitting immediately
+
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            const form = event.target; // Get the form element
+
+            checkboxes.forEach(function (checkbox) {
+                if (!checkbox.checked) {
+                    checkbox.value = "-";
+                    checkbox.checked = true;
+                }
+            });
+
+            // Hide all checkboxes momentarily while form is being submitted
+            checkboxes.forEach(checkbox => checkbox.style.visibility = "hidden");
+
+            // Submit the form after processing checkbox values
+            form.submit();
         }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            document.getElementById('activity-form').addEventListener('submit', handleCheckboxValues);
+        });
     </script>
 </head>
 
@@ -140,167 +148,121 @@
                             <label for="activity_date">ลงเวลากิจกรรมการดูแลผู้สูงอายุ</label>
                             <input type="date" id="activity_date" name="activity_date" class="form-control" required>
                         </div>
-
-                        <h4>กิจกรรมด้านสาธารณสุข</h4>
                         <div class="form-group">
                             <label for="evaluate">ประเมิน/ติดตามอาการ</label>
-                            <input type="text" id="evaluate" name="evaluate" class="form-control">
+                            <select id="evaluate" name="evaluate" class="form-control" required>
+                                <option value="">-- กรุณาเลือก --</option>
+                                <option value="ประเมิน">ประเมิน</option>
+                                <option value="ติดตามอาการ">ติดตามอาการ</option>
+                            </select>
                         </div>
-                        <div class="form-group">
-                            <label>ทำแผล</label>
-                            <div>
-                                <input type="radio" id="dress_the_wound_help" name="dress_the_wound"
-                                    value="ช่วยเหลือ"> ช่วยเหลือ
-                                <input type="radio" id="dress_the_wound_no_help" name="dress_the_wound"
-                                    value="ไม่ต้องช่วยเหลือ"> ไม่ต้องช่วยเหลือ
-                            </div>
-                        </div>
+
+                        <h4>กิจกรรมด้านสาธารณสุข</h4>
+
                         <div class="form-check">
-                            <label>ทำแผล</label>
                             <div>
-                                <input class="form-check-input" type="checkbox" value="ทำแผล" id="flexCheckDefault">
-                                <label class="form-check-label" for="flexCheckDefault">
-                                    Default checkbox
-                                </label>
+                                <input class="form-check-input" type="checkbox" value="ทำแผล" id="dress_the_wound" name="dress_the_wound">
+                                <label class="form-check-label" for="dress_the_wound">ทำแผล</label>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label>ฟื้นฟูสภาพฯ</label>
+
+                        <div class="form-check">
                             <div>
-                                <input type="radio" id="rehabilitate_help" name="rehabilitate" value="ช่วยเหลือ">
-                                ช่วยเหลือ
-                                <input type="radio" id="rehabilitate_no_help" name="rehabilitate"
-                                    value="ไม่ต้องช่วยเหลือ"> ไม่ต้องช่วยเหลือ
-                                <input type="radio" id="rehabilitate_cannot" name="rehabilitate"
-                                    value="ไม่สามารถไปได้"> ไม่สามารถไปได้
+                                <input class="form-check-input" type="checkbox" value="ฟื้นฟูสภาพฯ" id="rehabilitate" name="rehabilitate">
+                                <label class="form-check-label" for="rehabilitate">ฟื้นฟูสภาพฯ</label>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label>ทำความสะอาดร่างกาย</label>
+
+                        <div class="form-check">
                             <div>
-                                <input type="radio" id="clean_body_help" name="clean_body" value="ช่วยเหลือ">
-                                ช่วยเหลือ
-                                <input type="radio" id="clean_body_no_help" name="clean_body"
-                                    value="ไม่ต้องช่วยเหลือ"> ไม่ต้องช่วยเหลือ
+                                <input class="form-check-input" type="checkbox" value="ทำความสะอาดร่างกาย" id="clean_body" name="clean_body">
+                                <label class="form-check-label" for="clean_body">ทำความสะอาดร่างกาย</label>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label>ดูแลเรื่องยา</label>
+
+                        <div class="form-check">
                             <div>
-                                <input type="radio" id="take_care_medicine_help" name="take_care_medicine"
-                                    value="ช่วยเหลือ"> ช่วยเหลือ
-                                <input type="radio" id="take_care_medicine_no_help" name="take_care_medicine"
-                                    value="ไม่ต้องช่วยเหลือ"> ไม่ต้องช่วยเหลือ
+                                <input class="form-check-input" type="checkbox" value="ดูแลเรื่องยา" id="take_care_medicine" name="take_care_medicine">
+                                <label class="form-check-label" for="take_care_medicine">ดูแลเรื่องยา</label>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label>ดูแลให้อาหาร</label>
+
+                        <div class="form-check">
                             <div>
-                                <input type="radio" id="take_care_feeding_help" name="take_care_feeding"
-                                    value="ช่วยเหลือ"> ช่วยเหลือ
-                                <input type="radio" id="take_care_feeding_no_help" name="take_care_feeding"
-                                    value="ไม่ต้องช่วยเหลือ"> ไม่ต้องช่วยเหลือ
+                                <input class="form-check-input" type="checkbox" value="ดูแลให้อาหาร" id="take_care_feeding" name="take_care_feeding">
+                                <label class="form-check-label" for="take_care_feeding">ดูแลให้อาหาร</label>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label>การจัดสิ่งแวดล้อม</label>
+
+                        <div class="form-check">
                             <div>
-                                <input type="radio" id="environmental_help" name="environmental" value="ช่วยเหลือ">
-                                ช่วยเหลือ
-                                <input type="radio" id="environmental_no_help" name="environmental"
-                                    value="ไม่ต้องช่วยเหลือ"> ไม่ต้องช่วยเหลือ
+                                <input class="form-check-input" type="checkbox" value="การจัดสิ่งแวดล้อม" id="environmental" name="environmental">
+                                <label class="form-check-label" for="environmental">การจัดสิ่งแวดล้อม</label>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label>พาออกกำลังกาย</label>
+
+                        <div class="form-check">
                             <div>
-                                <input type="radio" id="take_exercise_help" name="take_exercise"
-                                    value="ช่วยเหลือ"> ช่วยเหลือ
-                                <input type="radio" id="take_exercise_no_help" name="take_exercise"
-                                    value="ไม่ต้องช่วยเหลือ"> ไม่ต้องช่วยเหลือ
-                                <input type="radio" id="take_exercise_cannot" name="take_exercise"
-                                    value="ไม่สามารถไปได้"> ไม่สามารถไปได้
+                                <input class="form-check-input" type="checkbox" value="พาออกกำลังกาย" id="take_exercise" name="take_exercise">
+                                <label class="form-check-label" for="take_exercise">พาออกกำลังกาย</label>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label>ให้คำแนะนำ/ปรึกษา</label>
+
+                        <div class="form-check">
                             <div>
-                                <input type="radio" id="give_advice_consult_help" name="give_advice_consult"
-                                    value="ช่วยเหลือ"> ช่วยเหลือ
-                                <input type="radio" id="give_advice_consult_no_help" name="give_advice_consult"
-                                    value="ไม่ต้องช่วยเหลือ"> ไม่ต้องช่วยเหลือ
+                                <input class="form-check-input" type="checkbox" value="ให้คำแนะนำ/ปรึกษา" id="give_advice_consult" name="give_advice_consult">
+                                <label class="form-check-label" for="give_advice_consult">ให้คำแนะนำ/ปรึกษา</label>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label>พาพบแพทย์</label>
+
+                        <div class="form-check">
                             <div>
-                                <input type="radio" id="take_to_see_a_doctor_help" name="take_to_see_a_doctor"
-                                    value="ช่วยเหลือ"> ช่วยเหลือ
-                                <input type="radio" id="take_to_see_a_doctor_no_help" name="take_to_see_a_doctor"
-                                    value="ไม่ต้องช่วยเหลือ"> ไม่ต้องช่วยเหลือ
-                                <input type="radio" id="take_to_see_a_doctor_cannot" name="take_to_see_a_doctor"
-                                    value="ไม่สามารถไปได้"> ไม่สามารถไปได้
+                                <input class="form-check-input" type="checkbox" value="พาพบแพทย์" id="take_to_see_a_doctor" name="take_to_see_a_doctor">
+                                <label class="form-check-label" for="take_to_see_a_doctor">พาพบแพทย์</label>
                             </div>
                         </div>
+
                         <div class="form-group">
                             <label for="other_specified">อื่น ๆ ระบุ</label>
                             <input type="text" id="other_specified" name="other_specified" class="form-control">
                         </div>
 
                         <h4>กิจกรรมด้านสังคม</h4>
-                        <div class="form-group">
-                            <label>พาไปทำบุญ</label>
+                        <div class="form-check">
                             <div>
-                                <input type="radio" id="take_to_make_merit_help" name="take_to_make_merit"
-                                    value="ช่วยเหลือ"> ช่วยเหลือ
-                                <input type="radio" id="take_to_make_merit_no_help" name="take_to_make_merit"
-                                    value="ไม่ต้องช่วยเหลือ"> ไม่ต้องช่วยเหลือ
-                                <input type="radio" id="take_to_make_merit_cannot" name="take_to_make_merit"
-                                    value="ไม่สามารถไปได้"> ไม่สามารถไปได้
+                                <input class="form-check-input" type="checkbox" value="พาไปทำบุญ" id="take_to_make_merit" name="take_to_make_merit">
+                                <label class="form-check-label" for="take_to_make_merit">พาไปทำบุญ</label>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label>พาไปจ่ายตลาด</label>
+
+                        <div class="form-check">
                             <div>
-                                <input type="radio" id="take_to_market_help" name="take_to_market"
-                                    value="ช่วยเหลือ"> ช่วยเหลือ
-                                <input type="radio" id="take_to_market_no_help" name="take_to_market"
-                                    value="ไม่ต้องช่วยเหลือ"> ไม่ต้องช่วยเหลือ
-                                <input type="radio" id="take_to_market_cannot" name="take_to_market"
-                                    value="ไม่สามารถไปได้"> ไม่สามารถไปได้
+                                <input class="form-check-input" type="checkbox" value="พาไปจ่ายตลาด" id="take_to_market" name="take_to_market">
+                                <label class="form-check-label" for="take_to_market">พาไปจ่ายตลาด</label>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label>พาไปพบเพื่อน</label>
+
+                        <div class="form-check">
                             <div>
-                                <input type="radio" id="take_to_meet_friends_help" name="take_to_meet_friends"
-                                    value="ช่วยเหลือ"> ช่วยเหลือ
-                                <input type="radio" id="take_to_meet_friends_no_help" name="take_to_meet_friends"
-                                    value="ไม่ต้องช่วยเหลือ"> ไม่ต้องช่วยเหลือ
-                                <input type="radio" id="take_to_meet_friends_cannot" name="take_to_meet_friends"
-                                    value="ไม่สามารถไปได้"> ไม่สามารถไปได้
+                                <input class="form-check-input" type="checkbox" value="พาไปพบเพื่อน" id="take_to_meet_friends" name="take_to_meet_friends">
+                                <label class="form-check-label" for="take_to_meet_friends">พาไปพบเพื่อน</label>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label>พาไปรับเบี้ย</label>
+
+                        <div class="form-check">
                             <div>
-                                <input type="radio" id="take_to_allowance_help" name="take_to_allowance"
-                                    value="ช่วยเหลือ"> ช่วยเหลือ
-                                <input type="radio" id="take_to_allowance_no_help" name="take_to_allowance"
-                                    value="ไม่ต้องช่วยเหลือ"> ไม่ต้องช่วยเหลือ
-                                <input type="radio" id="take_to_allowance_cannot" name="take_to_allowance"
-                                    value="ไม่สามารถไปได้"> ไม่สามารถไปได้
+                                <input class="form-check-input" type="checkbox" value="พาไปรับเบี้ย" id="take_to_allowance" name="take_to_allowance">
+                                <label class="form-check-label" for="take_to_allowance">พาไปรับเบี้ย</label>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label>พูดคุยเป็นเพื่อน</label>
+
+                        <div class="form-check">
                             <div>
-                                <input type="radio" id="talk_as_friends_help" name="talk_as_friends"
-                                    value="ช่วยเหลือ"> ช่วยเหลือ
-                                <input type="radio" id="talk_as_friends_no_help" name="talk_as_friends"
-                                    value="ไม่ต้องช่วยเหลือ"> ไม่ต้องช่วยเหลือ
+                                <input class="form-check-input" type="checkbox" value="พูดคุยเป็นเพื่อน" id="talk_as_friends" name="talk_as_friends">
+                                <label class="form-check-label" for="talk_as_friends">พูดคุยเป็นเพื่อน</label>
                             </div>
                         </div>
+
                         <div class="form-group">
                             <label for="other_social_specified">อื่น ๆ ระบุ</label>
                             <input type="text" id="other_social_specified" name="other_social_specified"
@@ -310,10 +272,6 @@
                         <div class="form-group">
                             <label for="problems_found">ปัญหาที่พบ</label>
                             <textarea id="problems_found" name="problems_found" class="form-control" rows="5"></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label for="solutions">การช่วยเหลือ/ แนวทางการแก้ไขปัญหา</label>
-                            <textarea id="solutions" name="solutions" class="form-control" rows="5"></textarea>
                         </div>
                         <button class="btn btn-primary" type="submit">บันทึก</button>
                         <a href="{{ route('acg.index') }}" class="btn btn-secondary">กลับไปหน้า ACG</a>

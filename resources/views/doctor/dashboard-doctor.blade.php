@@ -70,7 +70,7 @@
 
                         $showElderly = false;
 
-                        if (auth()->user()->Type_Personnel == 'Doctor') {
+                        if (auth()->user()->Type_Personnel == 'Doctor' && $elderly->barthel_adl) {
                             $typeDoctor = auth()->user()->Type_Doctor;
                             if (($typeDoctor == 'กลุ่มติดสังคม' && $elderly->barthel_adl->Group_ADL == 'กลุ่มติดสังคม') ||
                                 ($typeDoctor == 'กลุ่มติดบ้าน' && $elderly->barthel_adl->Group_ADL == 'กลุ่มติดบ้าน') ||
@@ -80,7 +80,7 @@
                         }
                     @endphp
 
-                    @if ($showElderly && $elderly->barthel_adl && ($latestCaregiverDate > $latestDateCI || $latestActivityDate > $latestDateCI))
+                    @if ($showElderly && ($latestCaregiverDate > $latestDateCI || $latestActivityDate > $latestDateCI))
                         <tr>
                             <td>
                                 @if ($elderly->Image_Elderly)

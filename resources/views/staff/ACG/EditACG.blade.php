@@ -82,8 +82,16 @@
             margin-bottom: 15px;
         }
 
-        .form-group input[type="radio"] {
-            margin-right: 10px;
+        .form-check {
+            margin-bottom: 15px;
+        }
+
+        .form-check-label {
+            margin-left: 10px;
+        }
+
+        .hidden {
+            display: none;
         }
     </style>
     <script>
@@ -111,7 +119,7 @@
     <div class="container">
         <div class="card">
             <div class="card-header">
-                <h1>แก้ไขแบบฟอร์มกิจกรรมการดูแลผู้สงอายุ (ACG)</h1>
+                <h1>แก้ไขแบบฟอร์มกิจกรรมการดูแลผู้สูงอายุ (ACG)</h1>
                 <div class="card-body">
                     @if (session('success'))
                         <div class="alert alert-success">
@@ -120,236 +128,118 @@
                     @endif
 
                     <!-- Activity Form -->
-                    <form id="activity-form" action="{{ route('acg.update', ['id' => $activity->ID_ACG]) }}"
-                        method="POST">
+                    <form id="activity-form" action="{{ route('acg.update', ['id' => $activity->ID_ACG]) }}" method="POST">
                         @csrf
                         @method('PUT')
+
                         <div class="form-group">
                             <label for="ID_Elderly">ชื่อ-สกุลผู้สูงอายุ</label>
-                            <input type="text" id="Name_Elderly" name="Name_Elderly" class="form-control"
-                                value="{{ $activity->caregiver->Name_Elderly }}" readonly>
+                            <input type="text" id="Name_Elderly" name="Name_Elderly" class="form-control" value="{{ $activity->caregiver->Name_Elderly }}" readonly>
                         </div>
+
                         <div class="form-group">
                             <label for="activity_date">กิจกรรมการดูแลผู้สูงอายุ</label>
-                            <input type="date" id="activity_date" name="activity_date" class="form-control"
-                                value="{{ $activity->Date_ACG }}" required>
+                            <input type="date" id="activity_date" name="activity_date" class="form-control" value="{{ $activity->Date_ACG }}" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="evaluate">ประเมิน/ติดตามอาการ</label>
+                            <select id="evaluate" name="evaluate" class="form-control" required>
+                                <option value="">-- กรุณาเลือก --</option>
+                                <option value="ประเมิน" {{ $activity->Evaluate == 'ประเมิน' ? 'selected' : '' }}>ประเมิน</option>
+                                <option value="ติดตามอาการ" {{ $activity->Evaluate == 'ติดตามอาการ' ? 'selected' : '' }}>ติดตามอาการ</option>
+                            </select>
                         </div>
 
                         <h4>กิจกรรมด้านสาธารณสุข</h4>
-                        <div class="form-group">
-                            <label for="evaluate">ประเมิน/ติดตามอาการ</label>
-                            <input type="text" id="evaluate" name="evaluate" class="form-control"
-                                value="{{ $activity->Evaluate }}">
+
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="ทำแผล" id="dress_the_wound" name="dress_the_wound" {{ $activity->Dress_the_wound == 'ทำแผล' ? 'checked' : '' }}>
+                            <label class="form-check-label" for="dress_the_wound">ทำแผล</label>
                         </div>
-                        <div class="form-group">
-                            <label>ทำแผล</label>
-                            <div>
-                                <input type="radio" id="dress_the_wound_help" name="dress_the_wound" value="ช่วยเหลือ"
-                                    {{ $activity->Dress_the_wound == 'ช่วยเหลือ' ? 'checked' : '' }}> ช่วยเหลือ
-                                <input type="radio" id="dress_the_wound_no_help" name="dress_the_wound"
-                                    value="ไม่ต้องช่วยเหลือ"
-                                    {{ $activity->Dress_the_wound == 'ไม่ต้องช่วยเหลือ' ? 'checked' : '' }}>
-                                ไม่ต้องช่วยเหลือ
-                            </div>
+
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="ฟื้นฟูสภาพฯ" id="rehabilitate" name="rehabilitate" {{ $activity->Rehabilitate == 'ฟื้นฟูสภาพฯ' ? 'checked' : '' }}>
+                            <label class="form-check-label" for="rehabilitate">ฟื้นฟูสภาพฯ</label>
                         </div>
-                        <div class="form-group">
-                            <label>ฟื้นฟูสภาพฯ</label>
-                            <div>
-                                <input type="radio" id="rehabilitate_help" name="rehabilitate" value="ช่วยเหลือ"
-                                    {{ $activity->Rehabilitate == 'ช่วยเหลือ' ? 'checked' : '' }}> ช่วยเหลือ
-                                <input type="radio" id="rehabilitate_no_help" name="rehabilitate"
-                                    value="ไม่ต้องช่วยเหลือ"
-                                    {{ $activity->Rehabilitate == 'ไม่ต้องช่วยเหลือ' ? 'checked' : '' }}>
-                                ไม่ต้องช่วยเหลือ
-                                <input type="radio" id="rehabilitate_cannot" name="rehabilitate"
-                                    value="ไม่สามารถไปได้"
-                                    {{ $activity->Rehabilitate == 'ไม่สามารถไปได้' ? 'checked' : '' }}> ไม่สามารถไปได้
-                            </div>
+
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="ทำความสะอาดร่างกาย" id="clean_body" name="clean_body" {{ $activity->Clean_body == 'ทำความสะอาดร่างกาย' ? 'checked' : '' }}>
+                            <label class="form-check-label" for="clean_body">ทำความสะอาดร่างกาย</label>
                         </div>
-                        <div class="form-group">
-                            <label>ทำความสะอาดร่างกาย</label>
-                            <div>
-                                <input type="radio" id="clean_body_help" name="clean_body" value="ช่วยเหลือ"
-                                    {{ $activity->Clean_body == 'ช่วยเหลือ' ? 'checked' : '' }}> ช่วยเหลือ
-                                <input type="radio" id="clean_body_no_help" name="clean_body" value="ไม่ต้องช่วยเหลือ"
-                                    {{ $activity->Clean_body == 'ไม่ต้องช่วยเหลือ' ? 'checked' : '' }}>
-                                ไม่ต้องช่วยเหลือ
-                            </div>
+
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="ดูแลเรื่องยา" id="take_care_medicine" name="take_care_medicine" {{ $activity->Take_care_medicine == 'ดูแลเรื่องยา' ? 'checked' : '' }}>
+                            <label class="form-check-label" for="take_care_medicine">ดูแลเรื่องยา</label>
                         </div>
-                        <div class="form-group">
-                            <label>ดูแลเรื่องยา</label>
-                            <div>
-                                <input type="radio" id="take_care_medicine_help" name="take_care_medicine"
-                                    value="ช่วยเหลือ"
-                                    {{ $activity->Take_care_medicine == 'ช่วยเหลือ' ? 'checked' : '' }}> ช่วยเหลือ
-                                <input type="radio" id="take_care_medicine_no_help" name="take_care_medicine"
-                                    value="ไม่ต้องช่วยเหลือ"
-                                    {{ $activity->Take_care_medicine == 'ไม่ต้องช่วยเหลือ' ? 'checked' : '' }}>
-                                ไม่ต้องช่วยเหลือ
-                            </div>
+
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="ดูแลให้อาหาร" id="take_care_feeding" name="take_care_feeding" {{ $activity->Take_care_feeding == 'ดูแลให้อาหาร' ? 'checked' : '' }}>
+                            <label class="form-check-label" for="take_care_feeding">ดูแลให้อาหาร</label>
                         </div>
-                        <div class="form-group">
-                            <label>ดูแลให้อาหาร</label>
-                            <div>
-                                <input type="radio" id="take_care_feeding_help" name="take_care_feeding"
-                                    value="ช่วยเหลือ"
-                                    {{ $activity->Take_care_feeding == 'ช่วยเหลือ' ? 'checked' : '' }}> ช่วยเหลือ
-                                <input type="radio" id="take_care_feeding_no_help" name="take_care_feeding"
-                                    value="ไม่ต้องช่วยเหลือ"
-                                    {{ $activity->Take_care_feeding == 'ไม่ต้องช่วยเหลือ' ? 'checked' : '' }}>
-                                ไม่ต้องช่วยเหลือ
-                            </div>
+
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="การจัดสิ่งแวดล้อม" id="environmental" name="environmental" {{ $activity->Environmental == 'การจัดสิ่งแวดล้อม' ? 'checked' : '' }}>
+                            <label class="form-check-label" for="environmental">การจัดสิ่งแวดล้อม</label>
                         </div>
-                        <div class="form-group">
-                            <label>การจัดสิ่งแวดล้อม</label>
-                            <div>
-                                <input type="radio" id="environmental_help" name="environmental" value="ช่วยเหลือ"
-                                    {{ $activity->Environmental == 'ช่วยเหลือ' ? 'checked' : '' }}> ช่วยเหลือ
-                                <input type="radio" id="environmental_no_help" name="environmental"
-                                    value="ไม่ต้องช่วยเหลือ"
-                                    {{ $activity->Environmental == 'ไม่ต้องช่วยเหลือ' ? 'checked' : '' }}>
-                                ไม่ต้องช่วยเหลือ
-                            </div>
+
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="พาออกกำลังกาย" id="take_exercise" name="take_exercise" {{ $activity->Take_exercise == 'พาออกกำลังกาย' ? 'checked' : '' }}>
+                            <label class="form-check-label" for="take_exercise">พาออกกำลังกาย</label>
                         </div>
-                        <div class="form-group">
-                            <label>พาออกกำลังกาย</label>
-                            <div>
-                                <input type="radio" id="take_exercise_help" name="take_exercise" value="ช่วยเหลือ"
-                                    {{ $activity->Take_exercise == 'ช่วยเหลือ' ? 'checked' : '' }}> ช่วยเหลือ
-                                <input type="radio" id="take_exercise_no_help" name="take_exercise"
-                                    value="ไม่ต้องช่วยเหลือ"
-                                    {{ $activity->Take_exercise == 'ไม่ต้องช่วยเหลือ' ? 'checked' : '' }}>
-                                ไม่ต้องช่วยเหลือ
-                                <input type="radio" id="take_exercise_cannot" name="take_exercise"
-                                    value="ไม่สามารถไปได้"
-                                    {{ $activity->Take_exercise == 'ไม่สามารถไปได้' ? 'checked' : '' }}> ไม่สามารถไปได้
-                            </div>
+
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="ให้คำแนะนำ/ปรึกษา" id="give_advice_consult" name="give_advice_consult" {{ $activity->Give_advice_consult == 'ให้คำแนะนำ/ปรึกษา' ? 'checked' : '' }}>
+                            <label class="form-check-label" for="give_advice_consult">ให้คำแนะนำ/ปรึกษา</label>
                         </div>
-                        <div class="form-group">
-                            <label>ให้คำแนะนำ/ปรึกษา</label>
-                            <div>
-                                <input type="radio" id="give_advice_consult_help" name="give_advice_consult"
-                                    value="ช่วยเหลือ"
-                                    {{ $activity->Give_advice_consult == 'ช่วยเหลือ' ? 'checked' : '' }}> ช่วยเหลือ
-                                <input type="radio" id="give_advice_consult_no_help" name="give_advice_consult"
-                                    value="ไม่ต้องช่วยเหลือ"
-                                    {{ $activity->Give_advice_consult == 'ไม่ต้องช่วยเหลือ' ? 'checked' : '' }}>
-                                ไม่ต้องช่วยเหลือ
-                            </div>
+
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="พาพบแพทย์" id="take_to_see_a_doctor" name="take_to_see_a_doctor" {{ $activity->Take_to_see_a_doctor == 'พาพบแพทย์' ? 'checked' : '' }}>
+                            <label class="form-check-label" for="take_to_see_a_doctor">พาพบแพทย์</label>
                         </div>
-                        <div class="form-group">
-                            <label>พาพบแพทย์</label>
-                            <div>
-                                <input type="radio" id="take_to_see_a_doctor_help" name="take_to_see_a_doctor"
-                                    value="ช่วยเหลือ"
-                                    {{ $activity->Take_to_see_a_doctor == 'ช่วยเหลือ' ? 'checked' : '' }}> ช่วยเหลือ
-                                <input type="radio" id="take_to_see_a_doctor_no_help" name="take_to_see_a_doctor"
-                                    value="ไม่ต้องช่วยเหลือ"
-                                    {{ $activity->Take_to_see_a_doctor == 'ไม่ต้องช่วยเหลือ' ? 'checked' : '' }}>
-                                ไม่ต้องช่วยเหลือ
-                                <input type="radio" id="take_to_see_a_doctor_cannot" name="take_to_see_a_doctor"
-                                    value="ไม่สามารถไปได้"
-                                    {{ $activity->Take_to_see_a_doctor == 'ไม่สามารถไปได้' ? 'checked' : '' }}>
-                                ไม่สามารถไปได้
-                            </div>
-                        </div>
+
                         <div class="form-group">
                             <label for="other_specified">อื่น ๆ ระบุ</label>
-                            <input type="text" id="other_specified" name="other_specified" class="form-control"
-                                value="{{ $activity->Other }}">
+                            <input type="text" id="other_specified" name="other_specified" class="form-control" value="{{ $activity->Other }}">
                         </div>
 
                         <h4>กิจกรรมด้านสังคม</h4>
-                        <div class="form-group">
-                            <label>พาไปทำบุญ</label>
-                            <div>
-                                <input type="radio" id="take_to_make_merit_help" name="take_to_make_merit"
-                                    value="ช่วยเหลือ"
-                                    {{ $activity->Take_to_make_merit == 'ช่วยเหลือ' ? 'checked' : '' }}> ช่วยเหลือ
-                                <input type="radio" id="take_to_make_merit_no_help" name="take_to_make_merit"
-                                    value="ไม่ต้องช่วยเหลือ"
-                                    {{ $activity->Take_to_make_merit == 'ไม่ต้องช่วยเหลือ' ? 'checked' : '' }}>
-                                ไม่ต้องช่วยเหลือ
-                                <input type="radio" id="take_to_make_merit_cannot" name="take_to_make_merit"
-                                    value="ไม่สามารถไปได้"
-                                    {{ $activity->Take_to_make_merit == 'ไม่สามารถไปได้' ? 'checked' : '' }}>
-                                ไม่สามารถไปได้
-                            </div>
+
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="พาไปทำบุญ" id="take_to_make_merit" name="take_to_make_merit" {{ $activity->Take_to_make_merit == 'พาไปทำบุญ' ? 'checked' : '' }}>
+                            <label class="form-check-label" for="take_to_make_merit">พาไปทำบุญ</label>
                         </div>
-                        <div class="form-group">
-                            <label>พาไปจ่ายตลาด</label>
-                            <div>
-                                <input type="radio" id="take_to_market_help" name="take_to_market"
-                                    value="ช่วยเหลือ" {{ $activity->Take_to_market == 'ช่วยเหลือ' ? 'checked' : '' }}>
-                                ช่วยเหลือ
-                                <input type="radio" id="take_to_market_no_help" name="take_to_market"
-                                    value="ไม่ต้องช่วยเหลือ"
-                                    {{ $activity->Take_to_market == 'ไม่ต้องช่วยเหลือ' ? 'checked' : '' }}>
-                                ไม่ต้องช่วยเหลือ
-                                <input type="radio" id="take_to_market_cannot" name="take_to_market"
-                                    value="ไม่สามารถไปได้"
-                                    {{ $activity->Take_to_market == 'ไม่สามารถไปได้' ? 'checked' : '' }}>
-                                ไม่สามารถไปได้
-                            </div>
+
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="พาไปจ่ายตลาด" id="take_to_market" name="take_to_market" {{ $activity->Take_to_market == 'พาไปจ่ายตลาด' ? 'checked' : '' }}>
+                            <label class="form-check-label" for="take_to_market">พาไปจ่ายตลาด</label>
                         </div>
-                        <div class="form-group">
-                            <label>พาไปพบเพื่อน</label>
-                            <div>
-                                <input type="radio" id="take_to_meet_friends_help" name="take_to_meet_friends"
-                                    value="ช่วยเหลือ"
-                                    {{ $activity->Take_to_meet_friends == 'ช่วยเหลือ' ? 'checked' : '' }}> ช่วยเหลือ
-                                <input type="radio" id="take_to_meet_friends_no_help" name="take_to_meet_friends"
-                                    value="ไม่ต้องช่วยเหลือ"
-                                    {{ $activity->Take_to_meet_friends == 'ไม่ต้องช่วยเหลือ' ? 'checked' : '' }}>
-                                ไม่ต้องช่วยเหลือ
-                                <input type="radio" id="take_to_meet_friends_cannot" name="take_to_meet_friends"
-                                    value="ไม่สามารถไปได้"
-                                    {{ $activity->Take_to_meet_friends == 'ไม่สามารถไปได้' ? 'checked' : '' }}>
-                                ไม่สามารถไปได้
-                            </div>
+
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="พาไปพบเพื่อน" id="take_to_meet_friends" name="take_to_meet_friends" {{ $activity->Take_to_meet_friends == 'พาไปพบเพื่อน' ? 'checked' : '' }}>
+                            <label class="form-check-label" for="take_to_meet_friends">พาไปพบเพื่อน</label>
                         </div>
-                        <div class="form-group">
-                            <label>พาไปรับเบี้ย</label>
-                            <div>
-                                <input type="radio" id="take_to_allowance_help" name="take_to_allowance"
-                                    value="ช่วยเหลือ"
-                                    {{ $activity->Take_to_allowance == 'ช่วยเหลือ' ? 'checked' : '' }}> ช่วยเหลือ
-                                <input type="radio" id="take_to_allowance_no_help" name="take_to_allowance"
-                                    value="ไม่ต้องช่วยเหลือ"
-                                    {{ $activity->Take_to_allowance == 'ไม่ต้องช่วยเหลือ' ? 'checked' : '' }}>
-                                ไม่ต้องช่วยเหลือ
-                                <input type="radio" id="take_to_allowance_cannot" name="take_to_allowance"
-                                    value="ไม่สามารถไปได้"
-                                    {{ $activity->Take_to_allowance == 'ไม่สามารถไปได้' ? 'checked' : '' }}>
-                                ไม่สามารถไปได้
-                            </div>
+
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="พาไปรับเบี้ย" id="take_to_allowance" name="take_to_allowance" {{ $activity->Take_to_allowance == 'พาไปรับเบี้ย' ? 'checked' : '' }}>
+                            <label class="form-check-label" for="take_to_allowance">พาไปรับเบี้ย</label>
                         </div>
-                        <div class="form-group">
-                            <label>พูดคุยเป็นเพื่อน</label>
-                            <div>
-                                <input type="radio" id="talk_as_friends_help" name="talk_as_friends"
-                                    value="ช่วยเหลือ"
-                                    {{ $activity->Talk_as_friends == 'ช่วยเหลือ' ? 'checked' : '' }}> ช่วยเหลือ
-                                <input type="radio" id="talk_as_friends_no_help" name="talk_as_friends"
-                                    value="ไม่ต้องช่วยเหลือ"
-                                    {{ $activity->Talk_as_friends == 'ไม่ต้องช่วยเหลือ' ? 'checked' : '' }}>
-                                ไม่ต้องช่วยเหลือ
-                            </div>
+
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="พูดคุยเป็นเพื่อน" id="talk_as_friends" name="talk_as_friends" {{ $activity->Talk_as_friends == 'พูดคุยเป็นเพื่อน' ? 'checked' : '' }}>
+                            <label class="form-check-label" for="talk_as_friends">พูดคุยเป็นเพื่อน</label>
                         </div>
+
                         <div class="form-group">
                             <label for="other_social_specified">อื่น ๆ ระบุ</label>
-                            <input type="text" id="other_social_specified" name="other_social_specified"
-                                class="form-control" value="{{ $activity->Other_specified }}">
+                            <input type="text" id="other_social_specified" name="other_social_specified" class="form-control" value="{{ $activity->Other_specified }}">
                         </div>
 
                         <div class="form-group">
                             <label for="problems_found">ปัญหาที่พบ</label>
                             <textarea id="problems_found" name="problems_found" class="form-control" rows="5">{{ $activity->Problem }}</textarea>
                         </div>
-                        <div class="form-group">
-                            <label for="solutions">การช่วยเหลือ/ แนวทางการแก้ไขปัญหา</label>
-                            <textarea id="solutions" name="solutions" class="form-control" rows="5">{{ $activity->Troubleshoot }}</textarea>
-                        </div>
+
                         <button class="btn btn-primary" type="submit">บันทึก</button>
                         <a href="{{ route('acg.index') }}" class="btn btn-secondary">กลับไปหน้า ACG</a>
                     </form>

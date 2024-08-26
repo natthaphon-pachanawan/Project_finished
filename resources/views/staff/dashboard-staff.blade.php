@@ -335,7 +335,7 @@
             // ตรวจสอบว่ามีข้อมูลพิกัดหรือไม่
             if (elderlyLocations.length > 0) {
                 // สร้างแผนที่
-                var map = L.map('map').setView([14.9930, 103.1029], 15); // Set initial position to Buriram
+                var map = L.map('map').setView([14.971004543091427, 103.18498849868776], 14); // Set initial position to Buriram
 
                 // เพิ่ม TileLayer เพื่อให้แผนที่แสดงผล
                 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {

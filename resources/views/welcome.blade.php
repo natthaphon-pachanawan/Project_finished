@@ -264,11 +264,11 @@
                         <div class="news-container">
                             <div class="news-item">
                                 <h3>{{ $newsItem->title }}</h3>
-                                <p>{{ Str::limit($newsItem->content, 100) }}</p>
+                                <p>{{ Str::limit($newsItem->content, 150) }}</p>
                                 @if ($newsItem->image)
                                     <img src="{{ asset('storage/' . $newsItem->image) }}" alt="{{ $newsItem->title }}"
                                         style="width:100%; height:auto; margin-bottom:10px;"
-                                        onclick="showModal('{{ asset('storage/' . $newsItem->image) }}', '{{ $newsItem->title }}', '{{ Str::limit($newsItem->content, 100) }}')">
+                                        onclick="showModal('{{ asset('storage/' . $newsItem->image) }}', '{{ $newsItem->title }}', '{{ Str::limit($newsItem->content, 150) }}')">
                                 @endif
                             </div>
                         </div>

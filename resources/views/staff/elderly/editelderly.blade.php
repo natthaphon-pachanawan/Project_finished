@@ -206,7 +206,7 @@
         });
 
         // Leaflet Map for selecting location
-        var initialPosition = [{{ $addressElderly->Latitude_position ?? 14.9930 }}, {{ $addressElderly->Longitude_position ?? 103.1029 }}]; // Initial map position set to the elderly's current location or default to Buriram, Thailand
+        var initialPosition = [{{ $addressElderly->Latitude_position ?? 14.971004543091427}}, {{ $addressElderly->Longitude_position ?? 103.18498849868776 }}]; // Initial map position set to the elderly's current location or default to Buriram, Thailand
         var map = L.map('map').setView(initialPosition, 13);
 
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {

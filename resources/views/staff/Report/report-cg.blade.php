@@ -75,6 +75,8 @@
             <h2>ข้อมูลทั่วไป</h2>
             <p><strong>ชื่อผู้สูงอายุ:</strong> {{ $cg->elderly->Name_Elderly ?? 'ไม่มีข้อมูล' }}</p>
             <p><strong>ชื่อผู้ดูแลผู้สูงอายุ:</strong> {{ $cg->Name_CG ?? 'ไม่มีข้อมูล' }}</p>
+            <p><strong>เกี่ยวข้องเป็น:</strong> {{ $cg->Related ?? 'ไม่มีข้อมูล' }}</p>
+            <p><strong>เบอร์ติดต่อ:</strong> {{ $cg->Phone_CG ?? 'ไม่มีข้อมูล' }}</p>
             <p><strong>อายุ:</strong> {{ $cg->Age ?? 'ไม่มีข้อมูล' }}</p>
             <p><strong>ที่อยู่:</strong> {{ $cg->Address ?? 'ไม่มีข้อมูล' }}</p>
             <p><strong>น้ำหนักตัว:</strong> {{ $cg->Weight ?? 'ไม่มีข้อมูล' }} กก.</p>
@@ -84,9 +86,6 @@
             <p><strong>โรคประจำตัว:</strong> {{ $cg->Disease ?? 'ไม่มีข้อมูล' }}</p>
             <p><strong>ความพิการ:</strong> {{ $cg->Disability ?? 'ไม่มีข้อมูล' }}</p>
             <p><strong>สิทธิการรักษา:</strong> {{ $cg->Rights ?? 'ไม่มีข้อมูล' }}</p>
-            <p><strong>ชื่อผู้ดูแล:</strong> {{ $cg->Caretaker ?? 'ไม่มีข้อมูล' }}</p>
-            <p><strong>เกี่ยวข้องเป็น:</strong> {{ $cg->Related ?? 'ไม่มีข้อมูล' }}</p>
-            <p><strong>เบอร์ติดต่อ:</strong> {{ $cg->Phone_Caretaker ?? 'ไม่มีข้อมูล' }}</p>
         </div>
 
         <table>
