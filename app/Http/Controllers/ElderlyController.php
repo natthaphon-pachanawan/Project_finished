@@ -174,7 +174,13 @@ class ElderlyController extends Controller
                 $ageGroups['90+']++;
             }
         }
+        // ดึงข้อมูล ADL group counts
+        $adlGroups = [
+            'กลุ่มติดสังคม' => BarthelAdl::where('Group_ADL', 'กลุ่มติดสังคม')->count(),
+            'กลุ่มติดบ้าน' => BarthelAdl::where('Group_ADL', 'กลุ่มติดบ้าน')->count(),
+            'กลุ่มติดเตียง' => BarthelAdl::where('Group_ADL', 'กลุ่มติดเตียง')->count(),
+        ];
 
-        return view('staff.Report.report-elderly', compact('elderlies', 'ageGroups'));
+        return view('staff.Report.report-elderly', compact('elderlies', 'ageGroups','adlGroups'));
     }
 }

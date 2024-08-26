@@ -91,10 +91,10 @@
                 <canvas id="agePieChart"></canvas>
             </div>
             <div class="chart-container">
-                <canvas id="ageLineChart"></canvas>
+                <canvas id="adlBarChart"></canvas>
             </div>
             <div class="chart-container">
-                <canvas id="ageDoughnutChart"></canvas>
+                <canvas id="adlPieChart"></canvas>
             </div>
         </div>
     </div>
@@ -102,6 +102,7 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             var ageGroups = @json($ageGroups);
+            var adlGroups = @json($adlGroups);
 
             var ageBarChartCtx = document.getElementById('ageBarChart').getContext('2d');
             new Chart(ageBarChartCtx, {
@@ -119,7 +120,8 @@
                 options: {
                     scales: {
                         y: {
-                            beginAtZero: true
+                            beginAtZero: true,
+                            display: false // เอาเส้นพื้นหลังออก
                         }
                     }
                 }
@@ -158,47 +160,56 @@
                 }
             });
 
-            var ageLineChartCtx = document.getElementById('ageLineChart').getContext('2d');
-            new Chart(ageLineChartCtx, {
-                type: 'line',
+            var adlBarChartCtx = document.getElementById('adlBarChart').getContext('2d');
+            new Chart(adlBarChartCtx, {
+                type: 'bar', // ใช้ type 'bar'
                 data: {
-                    labels: Object.keys(ageGroups),
+                    labels: Object.keys(adlGroups),
                     datasets: [{
-                        label: 'แนวโน้มจำนวนผู้สูงอายุ',
-                        data: Object.values(ageGroups),
+                        label: 'จำนวนผู้สูงอายุตามกลุ่ม ADL',
+                        data: Object.values(adlGroups),
                         backgroundColor: 'rgba(75, 192, 192, 0.2)',
                         borderColor: 'rgba(75, 192, 192, 1)',
                         borderWidth: 1
                     }]
                 },
                 options: {
+                    indexAxis: 'y', // ทำให้กราฟแท่งเป็นแนวนอน
                     scales: {
+                        x: { // แกน x จะเป็นค่าจำนวน
+                            beginAtZero: true,
+                            grid: {
+                                display: false // เอาเส้นพื้นหลังออก
+                            }
+                        },
                         y: {
-                            beginAtZero: true
+                            grid: {
+                                display: false // เอาเส้นพื้นหลังออก
+                            }
                         }
                     }
                 }
             });
 
-            var ageDoughnutChartCtx = document.getElementById('ageDoughnutChart').getContext('2d');
-            new Chart(ageDoughnutChartCtx, {
-                type: 'doughnut',
+            var adlDoughnutChartCtx = document.getElementById('adlPieChart').getContext('2d');
+            new Chart(adlDoughnutChartCtx, {
+                type: 'doughnut', // เปลี่ยนจาก 'pie' เป็น 'doughnut'
                 data: {
-                    labels: Object.keys(ageGroups),
+                    labels: Object.keys(adlGroups),
                     datasets: [{
-                        label: 'สัดส่วนผู้สูงอายุ (Doughnut)',
-                        data: Object.values(ageGroups),
+                        label: 'สัดส่วนผู้สูงอายุตามกลุ่ม ADL',
+                        data: Object.values(adlGroups),
                         backgroundColor: [
-                            'rgba(153, 102, 255, 0.2)',
-                            'rgba(255, 159, 64, 0.2)',
+                            'rgba(255, 99, 132, 0.2)',
                             'rgba(54, 162, 235, 0.2)',
-                            'rgba(255, 99, 132, 0.2)'
+                            'rgba(255, 206, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)'
                         ],
                         borderColor: [
-                            'rgba(153, 102, 255, 1)',
-                            'rgba(255, 159, 64, 1)',
+                            'rgba(255, 99, 132, 1)',
                             'rgba(54, 162, 235, 1)',
-                            'rgba(255, 99, 132, 1)'
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)'
                         ],
                         borderWidth: 1
                     }]
