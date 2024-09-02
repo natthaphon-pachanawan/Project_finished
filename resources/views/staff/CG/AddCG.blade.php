@@ -110,6 +110,8 @@
 
         function transferValues() {
             document.getElementById('Name_CG_hidden').value = document.getElementById('Name_CG').value;
+            document.getElementById('Related_hidden').value = document.getElementById('Related').value;
+            document.getElementById('Phone_CG_hidden').value = document.getElementById('Phone_CG').value;
             document.getElementById('ID_Elderly_hidden').value = document.getElementById('ID_Elderly').value;
             document.getElementById('Age_hidden').value = document.getElementById('Age').value;
             document.getElementById('Address_hidden').value = document.getElementById('Address').value;
@@ -120,9 +122,6 @@
             document.getElementById('Disease_hidden').value = document.getElementById('Disease').value;
             document.getElementById('Disability_hidden').value = document.getElementById('Disability').value;
             document.getElementById('Rights_hidden').value = document.getElementById('Rights').value;
-            document.getElementById('Caretaker_hidden').value = document.getElementById('Caretaker').value;
-            document.getElementById('Related_hidden').value = document.getElementById('Related').value;
-            document.getElementById('Phone_Caretaker_hidden').value = document.getElementById('Phone_Caretaker').value;
             document.getElementById('Name_Elderly_hidden').value = document.getElementById('Name_Elderly').value;
         }
     </script>
@@ -158,6 +157,15 @@
                         <div class="form-group">
                             <label for="Name_CG">ชื่อผู้ดูแลผู้สูงอายุ</label>
                             <input type="text" id="Name_CG" name="Name_CG" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="Related">เกี่ยวข้องเป็น</label>
+                            <input type="text" id="Related" name="Related" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="Phone_CG">เบอร์ติดต่อ</label>
+                            <input type="text" id="Phone_CG" name="Phone_CG" class="form-control"
+                                required>
                         </div>
                         <div class="form-group">
                             <label for="ID_Elderly">ชื่อ-สกุลผู้สูงอายุ</label>
@@ -210,19 +218,6 @@
                             <label for="Rights">สิทธิการรักษา</label>
                             <input type="text" id="Rights" name="Rights" class="form-control">
                         </div>
-                        <div class="form-group">
-                            <label for="Caretaker">ชื่อ-สกุลผู้ดูแล</label>
-                            <input type="text" id="Caretaker" name="Caretaker" class="form-control" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="Related">เกี่ยวข้องเป็น</label>
-                            <input type="text" id="Related" name="Related" class="form-control" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="Phone_Caretaker">เบอร์ติดต่อ</label>
-                            <input type="text" id="Phone_Caretaker" name="Phone_Caretaker" class="form-control"
-                                required>
-                        </div>
                         <input type="hidden" id="ID_ADL" name="ID_ADL">
                         <input type="hidden" id="Name_Elderly" name="Name_Elderly">
 
@@ -236,6 +231,8 @@
                         @csrf
                         <!-- Hidden fields to pass caregiver form data -->
                         <input type="hidden" id="Name_CG_hidden" name="Name_CG">
+                        <input type="hidden" id="Related_hidden" name="Related">
+                        <input type="hidden" id="Phone_CG_hidden" name="Phone_CG">
                         <input type="hidden" id="ID_Elderly_hidden" name="ID_Elderly">
                         <input type="hidden" id="Age_hidden" name="Age">
                         <input type="hidden" id="Address_hidden" name="Address">
@@ -246,9 +243,6 @@
                         <input type="hidden" id="Disease_hidden" name="Disease">
                         <input type="hidden" id="Disability_hidden" name="Disability">
                         <input type="hidden" id="Rights_hidden" name="Rights">
-                        <input type="hidden" id="Caretaker_hidden" name="Caretaker">
-                        <input type="hidden" id="Related_hidden" name="Related">
-                        <input type="hidden" id="Phone_Caretaker_hidden" name="Phone_Caretaker">
                         <input type="hidden" id="Name_Elderly_hidden" name="Name_Elderly">
                         <!-- End hidden fields -->
                         <div class="form-group">
@@ -264,8 +258,13 @@
                         </div>
                         <div class="form-group">
                             <label for="Vital_signs">สัญญาณชีพ</label>
-                            <input type="text" id="Vital_signs" name="Vital_signs" class="form-control" required
-                                placeholder="BP… PR… RR…. BT…">
+                            <div style="display: flex; gap: 10px;">
+                                <input type="number" id="BP" name="Vital_signs_BP" class="form-control" required placeholder="BP..." style="width: 80px;">
+                                <input type="number" id="PR" name="Vital_signs_PR" class="form-control" required placeholder="PR..." style="width: 80px;">
+                                <input type="number" id="RR" name="Vital_signs_RR" class="form-control" required placeholder="RR..." style="width: 80px;">
+                                <input type="number" id="BT" name="Vital_signs_BT" class="form-control" required placeholder="BT..." style="width: 80px;">
+                            </div>
+                            <input type="hidden" id="Vital_signs" name="Vital_signs"> <!-- Hidden input to store the concatenated value -->
                         </div>
                         <div class="form-group">
                             <label for="Bedsores">แผลกดทับ</label>
@@ -410,6 +409,25 @@
             </div>
         </div>
     </div>
+    <script>
+        function concatenateVitalSigns() {
+            const bp = document.getElementById('BP').value;
+            const pr = document.getElementById('PR').value;
+            const rr = document.getElementById('RR').value;
+            const bt = document.getElementById('BT').value;
+
+            // Concatenate the values into the desired format
+            const vitalSigns = `BP ${bp} - PR ${pr} - RR ${rr} - BT ${bt}`;
+
+            // Set the concatenated value to the hidden field
+            document.getElementById('Vital_signs').value = vitalSigns;
+        }
+
+        // Attach the function to the form's submit event
+        document.getElementById('assessment-form').addEventListener('submit', function(event) {
+            concatenateVitalSigns();
+        });
+    </script>
 </body>
 
 </html>

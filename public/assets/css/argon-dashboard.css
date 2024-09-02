@@ -151,9 +151,11 @@ h6, .h6 {
 }
 
 p {
-  margin-top: 0;
-  margin-bottom: 1rem;
-}
+    margin-top: 0;
+    font-size: 16px; /* Adjust this value to change the font size */
+    margin-bottom: 1rem;
+  }
+
 
 abbr[title],
 abbr[data-bs-original-title] {
@@ -20318,7 +20320,7 @@ textarea.form-control-lg {
 
 label,
 .form-label {
-  font-size: 0.75rem;
+  font-size: 1.11rem;
   font-weight: 700;
   margin-bottom: 0.5rem;
   color: #344767;

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\News;
+use App\Models\NewsImage;
 use App\Models\Slider;
 use App\Models\Personnel;
 use Illuminate\Http\Request;
@@ -37,7 +38,7 @@ class AdminController extends Controller
         $personnel = Personnel::find($request->Type_Personnel);
 
         if (!$personnel) {
-            return redirect()->route('user.register')->with('error', 'Invalid personnel type selected.');
+            return redirect()->route('user.register')->with('error', 'ประเภทบุคลากรที่เลือกไม่ถูกต้อง');
         }
 
         $user = new User();
@@ -74,7 +75,7 @@ class AdminController extends Controller
 
         $user->save();
 
-        return redirect()->route('user.register')->with('success', 'User registered successfully!');
+        return redirect()->route('user.register')->with('success', 'ลงทะเบียนผู้ใช้เรียบร้อยแล้ว!');
     }
 
     public function deleteUser($id)
@@ -82,9 +83,9 @@ class AdminController extends Controller
         $user = User::find($id);
         if ($user->Type_Personnel !== 'Admin') {
             $user->delete();
-            return redirect()->route('admin.dashboard')->with('success', 'User deleted successfully!');
+            return redirect()->route('admin.dashboard')->with('success', 'ลบผู้ใช้เรียบร้อยแล้ว!');
         } else {
-            return redirect()->route('admin.dashboard')->with('error', 'Admin accounts cannot be deleted.');
+            return redirect()->route('admin.dashboard')->with('error', 'บัญชีผู้ดูแลระบบไม่สามารถลบได้');
         }
     }
 
@@ -104,25 +105,23 @@ class AdminController extends Controller
         $request->validate([
             'title' => 'required|string|max:255',
             'content' => 'required|string',
-            'image' => 'nullable|image'
+            'images.*' => 'nullable|image'
         ]);
 
         $news = new News($request->only(['title', 'content']));
-
-        if ($request->hasFile('image')) {
-            $path = $request->file('image')->store('news_images', 'public');
-            $news->image = $path;
-        }
-
         $news->save();
 
-        return redirect()->route('admin.layout-admin')->with('success', 'News created successfully.');
-    }
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $image) {
+                $path = $image->store('news_images', 'public');
+                NewsImage::create([
+                    'news_id' => $news->id,
+                    'image_path' => $path,
+                ]);
+            }
+        }
 
-    public function editNews($id)
-    {
-        $newsItem = News::findOrFail($id);
-        return view('admin.news-edit', compact('newsItem'));
+        return redirect()->route('admin.layout-admin')->with('success', 'บัญชีผู้ดูแลระบบไม่สามารถลบได้');
     }
 
     public function updateNews(Request $request, $id)
@@ -130,34 +129,51 @@ class AdminController extends Controller
         $request->validate([
             'title' => 'required|string|max:255',
             'content' => 'required|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+            'images.*' => 'nullable|image'
         ]);
 
         $news = News::findOrFail($id);
         $news->fill($request->only(['title', 'content']));
-
-        if ($request->hasFile('image')) {
-            if ($news->image) {
-                Storage::disk('public')->delete($news->image);
-            }
-            $path = $request->file('image')->store('news_images', 'public');
-            $news->image = $path;
-        }
-
         $news->save();
 
-        return redirect()->route('admin.layout-admin')->with('success', 'News updated successfully.');
+        // ถ้ามีการอัปโหลดรูปภาพใหม่ ให้ลบรูปภาพเก่าออก
+        if ($request->hasFile('images')) {
+            // ลบรูปภาพเก่าทั้งหมดที่เกี่ยวข้องกับข่าวนี้
+            foreach ($news->images as $oldImage) {
+                Storage::disk('public')->delete($oldImage->image_path);
+                $oldImage->delete();
+            }
+
+            // เพิ่มรูปภาพใหม่เข้าไปในฐานข้อมูลและที่เก็บไฟล์
+            foreach ($request->file('images') as $image) {
+                $path = $image->store('news_images', 'public');
+                NewsImage::create([
+                    'news_id' => $news->id,
+                    'image_path' => $path,
+                ]);
+            }
+        }
+
+        return redirect()->route('admin.layout-admin')->with('success', 'อัปเดตข่าวสารสำเร็จแล้ว');
     }
+
 
     public function destroyNews($id)
     {
         $news = News::findOrFail($id);
-        if ($news->image) {
-            Storage::disk('public')->delete($news->image);
+
+        // ลบรูปภาพที่เกี่ยวข้องทั้งหมดในตาราง NewsImage
+        foreach ($news->images as $image) {
+            Storage::disk('public')->delete($image->image_path);
+            $image->delete();
         }
+
+        // ลบข่าว
         $news->delete();
-        return redirect()->route('admin.layout-admin')->with('success', 'News deleted successfully.');
+
+        return redirect()->route('admin.layout-admin')->with('success', 'ลบข่าวเรียบร้อยแล้ว');
     }
+
 
     // Slider Management
     public function storeSlider(Request $request)
@@ -175,7 +191,7 @@ class AdminController extends Controller
 
         $slider->save();
 
-        return redirect()->route('admin.layout-admin')->with('success', 'Slider image added successfully.');
+        return redirect()->route('admin.layout-admin')->with('success', 'เพิ่มภาพเลื่อนเรียบร้อยแล้ว');
     }
 
     public function updateSlider(Request $request, $id)
@@ -197,7 +213,7 @@ class AdminController extends Controller
 
         $slider->save();
 
-        return redirect()->route('admin.layout-admin')->with('success', 'Slider image updated successfully.');
+        return redirect()->route('admin.layout-admin')->with('success', 'อัปเดตรูปภาพตัวเลื่อนเรียบร้อยแล้ว');
     }
 
     public function destroySlider($id)
@@ -211,7 +227,7 @@ class AdminController extends Controller
 
         $slider->delete();
 
-        return redirect()->route('admin.layout-admin')->with('success', 'Slider image deleted successfully.');
+        return redirect()->route('admin.layout-admin')->with('success', 'ลบภาพเลื่อนเรียบร้อยแล้ว');
     }
 
     public function ReportUser()

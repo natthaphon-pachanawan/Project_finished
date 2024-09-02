@@ -13,6 +13,8 @@ return new class extends Migration
             $table->unsignedBigInteger('ID_ADL');
             $table->unsignedBigInteger('ID_Elderly');
             $table->string('Name_CG');
+            $table->string('Related');
+            $table->string('Phone_CG');
             $table->string('Name_Elderly');
             $table->date('Birthday');
             $table->integer('Weight');
@@ -23,9 +25,6 @@ return new class extends Migration
             $table->string('Disease');
             $table->string('Disability');
             $table->string('Rights');
-            $table->string('Caretaker');
-            $table->string('Related');
-            $table->string('Phone_Caretaker');
             $table->date('Date_CG');
             $table->string('Consciousness');
             $table->string('Vital_signs');

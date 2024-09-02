@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Elderly;
 use App\Models\AddressElderly;
+use App\Models\BarthelAdl;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
@@ -42,7 +43,7 @@ class ElderlyController extends Controller
         $addressElderly->Longitude_position = $request->input('Longitude_position');
         $addressElderly->save();
 
-        return redirect()->back()->with('success', 'Elderly information added successfully.');
+        return redirect()->back()->with('success', 'เพิ่มข้อมูลผู้สูงอายุเรียบร้อยแล้ว');
     }
 
     public function Showelderly(Request $request)
@@ -71,8 +72,16 @@ class ElderlyController extends Controller
             }
         }
 
-        return view('staff.dashboard-staff', compact('elderlies', 'ageGroups'));
+        // ดึงข้อมูล ADL group counts
+        $adlGroups = [
+            'กลุ่มติดสังคม' => BarthelAdl::where('Group_ADL', 'กลุ่มติดสังคม')->count(),
+            'กลุ่มติดบ้าน' => BarthelAdl::where('Group_ADL', 'กลุ่มติดบ้าน')->count(),
+            'กลุ่มติดเตียง' => BarthelAdl::where('Group_ADL', 'กลุ่มติดเตียง')->count(),
+        ];
+
+        return view('staff.dashboard-staff', compact('elderlies', 'ageGroups', 'adlGroups'));
     }
+
 
     public function Editelderly($id)
     {
@@ -116,7 +125,7 @@ class ElderlyController extends Controller
         $addressElderly->Longitude_position = $request->input('Longitude_position');
         $addressElderly->save();
 
-        return redirect()->route('staff-dashboard')->with('success', 'Elderly information updated successfully.');
+        return redirect()->route('staff-dashboard')->with('success', 'อัปเดตข้อมูลผู้สูงอายุเรียบร้อยแล้ว');
     }
 
     public function Deleteelderly($id)
@@ -130,7 +139,7 @@ class ElderlyController extends Controller
 
         $elderly->delete();
 
-        return redirect()->route('staff-dashboard')->with('success', 'Elderly information deleted successfully.');
+        return redirect()->route('staff-dashboard')->with('success', 'ลบข้อมูลผู้สูงอายุเรียบร้อยแล้ว');
     }
 
     public function searchLocation($id)
@@ -165,7 +174,13 @@ class ElderlyController extends Controller
                 $ageGroups['90+']++;
             }
         }
+        // ดึงข้อมูล ADL group counts
+        $adlGroups = [
+            'กลุ่มติดสังคม' => BarthelAdl::where('Group_ADL', 'กลุ่มติดสังคม')->count(),
+            'กลุ่มติดบ้าน' => BarthelAdl::where('Group_ADL', 'กลุ่มติดบ้าน')->count(),
+            'กลุ่มติดเตียง' => BarthelAdl::where('Group_ADL', 'กลุ่มติดเตียง')->count(),
+        ];
 
-        return view('staff.Report.report-elderly', compact('elderlies', 'ageGroups'));
+        return view('staff.Report.report-elderly', compact('elderlies', 'ageGroups','adlGroups'));
     }
 }

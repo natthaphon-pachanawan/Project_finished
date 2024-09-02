@@ -5,14 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class News extends Model
+class NewsImage extends Model
 {
     use HasFactory;
     public $timestamps = false;
-    protected $fillable = ['title', 'content'];
+    protected $fillable = ['news_id', 'image_path'];
 
-    public function images()
+    public function news()
     {
-        return $this->hasMany(NewsImage::class);
+        return $this->belongsTo(News::class);
     }
 }

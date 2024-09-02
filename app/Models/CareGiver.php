@@ -12,10 +12,9 @@ class CareGiver extends Model
     protected $table = 'care_givers';
     protected $primaryKey = 'ID_CG';
     protected $fillable = [
-        'ID_ADL', 'ID_Elderly', 'Name_CG', 'Name_Elderly',
+        'ID_ADL', 'Related', 'Phone_CG', 'ID_Elderly', 'Name_CG', 'Name_Elderly',
         'Birthday', 'Weight', 'Height', 'Waist', 'Address', 'Group_ADL',
-        'Disease', 'Disability', 'Rights', 'Caretaker', 'Related',
-        'Phone_Caretaker', 'Date_CG', 'Consciousness', 'Vital_signs',
+        'Disease', 'Disability', 'Rights', 'Date_CG', 'Consciousness', 'Vital_signs',
         'Bedsores', 'Pain', 'Swelling', 'Itchy_rash', 'Stiff_joints',
         'Malnutrition', 'Eating', 'Swallowing', 'Defecation',
         'Urinary_excretion', 'Taking_medicine', 'Emotional_state',

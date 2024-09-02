@@ -74,7 +74,7 @@ class DoctorController extends Controller
     {
         $careInstruction = CareInstruction::findOrFail($id);
         $careInstruction->delete();
-        return redirect()->route('ci.index')->with('success', 'Care Instruction deleted successfully.');
+        return redirect()->route('ci.index')->with('success', 'ลบคำแนะนำการดูแลเรียบร้อยแล้ว');
     }
 
     public function editCI($id)

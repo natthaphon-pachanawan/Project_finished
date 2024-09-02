@@ -34,7 +34,9 @@ class CGController extends Controller
     {
         $request->validate([
             'Name_CG' => 'required|string',
-            'ID_Elderly' => 'required|exists:elderlys,ID_Elderly',
+            'Related' => 'required|string',
+            'Phone_CG' => 'required|string',
+            'ID_Elderly' => 'required|exists:barthel_adls,ID_ADL',
             'Name_Elderly' => 'required|string',
             'Address' => 'required|string',
             'Weight' => 'required|numeric',
@@ -44,9 +46,6 @@ class CGController extends Controller
             'Disease' => 'nullable|string',
             'Disability' => 'nullable|string',
             'Rights' => 'nullable|string',
-            'Caretaker' => 'required|string',
-            'Related' => 'required|string',
-            'Phone_Caretaker' => 'required|string',
             'Date' => 'required|date',
             'Consciousness' => 'required|string',
             'Vital_signs' => 'required|string',
@@ -80,9 +79,8 @@ class CGController extends Controller
         ]);
 
         $careGiverData = $request->only([
-            'Name_CG', 'Name_Elderly', 'Address', 'Weight', 'Height',
-            'Waist', 'Group_ADL', 'Disease', 'Disability', 'Rights', 'Caretaker',
-            'Related', 'Phone_Caretaker', 'Date', 'Consciousness', 'Vital_signs',
+            'Name_CG', 'Related', 'Phone_CG','Name_Elderly', 'Address', 'Weight', 'Height',
+            'Waist', 'Group_ADL', 'Disease', 'Disability', 'Rights', 'Date', 'Consciousness', 'Vital_signs',
             'Bedsores', 'Bedsores_details', 'Pain', 'Pain_details', 'Swelling',
             'Swelling_details', 'Itchy_rash', 'Itchy_rash_details', 'Stiff_joints',
             'Stiff_joints_details', 'Malnutrition', 'Malnutrition_details', 'Eating',
@@ -93,7 +91,7 @@ class CGController extends Controller
         ]);
 
         $id_elderly = BarthelAdl::findOrFail($request->ID_Elderly);
-        $elderly = Elderly::findOrFail($request->ID_Elderly);
+        $elderly = Elderly::findOrFail($id_elderly->ID_Elderly);
 
         $careGiverData['Bedsores'] = $request->Bedsores . ($request->Bedsores_details ? '-' . $request->Bedsores_details : '');
         $careGiverData['Pain'] = $request->Pain . ($request->Pain_details ? '-' . $request->Pain_details : '');
@@ -119,7 +117,7 @@ class CGController extends Controller
         $cg->fill($careGiverData);
         $cg->save();
 
-        return redirect()->route('cg.create')->with('success', 'Care Giver added successfully!');
+        return redirect()->route('cg.create')->with('success', 'เพิ่ม Care Giver สำเร็จแล้ว!');
     }
 
     public function edit($id)
@@ -137,6 +135,8 @@ class CGController extends Controller
     {
         $request->validate([
             'Name_CG' => 'required|string',
+            'Related' => 'required|string',
+            'Phone_CG' => 'required|string',
             'ID_Elderly' => 'required|string',
             'Name_Elderly' => 'required|string',
             'Address' => 'required|string',
@@ -147,9 +147,6 @@ class CGController extends Controller
             'Disease' => 'nullable|string',
             'Disability' => 'nullable|string',
             'Rights' => 'nullable|string',
-            'Caretaker' => 'required|string',
-            'Related' => 'required|string',
-            'Phone_Caretaker' => 'required|string',
             'Date' => 'required|date',
             'Consciousness' => 'required|string',
             'Vital_signs' => 'required|string',
@@ -174,9 +171,8 @@ class CGController extends Controller
         ]);
 
         $careGiverData = $request->only([
-            'Name_CG', 'ID_Elderly', 'Name_Elderly', 'Address', 'Weight', 'Height',
-            'Waist', 'Group_ADL', 'Disease', 'Disability', 'Rights', 'Caretaker',
-            'Related', 'Phone_Caretaker', 'Date', 'Consciousness', 'Vital_signs',
+            'Name_CG', 'Related', 'Phone_CG','ID_Elderly', 'Name_Elderly', 'Address', 'Weight', 'Height',
+            'Waist', 'Group_ADL', 'Disease', 'Disability', 'Rights', 'Date', 'Consciousness', 'Vital_signs',
             'Bedsores', 'Pain', 'Swelling', 'Itchy_rash', 'Stiff_joints',
             'Malnutrition', 'Eating', 'Swallowing', 'Defecation', 'Urinary_excretion',
             'Taking_medicine', 'Emotional_state', 'Economic_problems', 'Social_problems',
@@ -186,7 +182,7 @@ class CGController extends Controller
         $careGiver = CareGiver::findOrFail($id);
         $careGiver->update($careGiverData);
 
-        return redirect()->route('cg.index')->with('success', 'Care Giver information updated successfully!');
+        return redirect()->route('cg.index')->with('success', 'อัปเดตข้อมูล Care Giver สำเร็จแล้ว!');
     }
 
     public function destroy($id)
@@ -194,7 +190,7 @@ class CGController extends Controller
         $careGiver = CareGiver::findOrFail($id);
         $careGiver->delete();
 
-        return redirect()->route('cg.index')->with('success', 'Care Giver deleted successfully!');
+        return redirect()->route('cg.index')->with('success', 'ลบ Care Giver เรียบร้อยแล้ว!');
     }
 
     public function showACG(Request $request)
@@ -239,7 +235,6 @@ class CGController extends Controller
             'talk_as_friends' => 'nullable|string',
             'other_social_specified' => 'nullable|string',
             'problems_found' => 'nullable|string',
-            'solutions' => 'nullable|string',
         ]);
 
         $activityData = [
@@ -262,13 +257,12 @@ class CGController extends Controller
             'Talk_as_friends' => $request->talk_as_friends,
             'Other_specified' => $request->other_social_specified,
             'Problem' => $request->problems_found,
-            'Troubleshoot' => $request->solutions,
         ];
 
         $activity = ActivityCaregiver::findOrFail($id);
         $activity->update($activityData);
 
-        return redirect()->route('acg.index')->with('success', 'Activity updated successfully!');
+        return redirect()->route('acg.index')->with('success', 'อัปเดตกิจกรรมสำเร็จแล้ว!');
     }
 
     public function destroyActivity($id)
@@ -276,7 +270,7 @@ class CGController extends Controller
         $activity = ActivityCaregiver::findOrFail($id);
         $activity->delete();
 
-        return redirect()->route('acg.index')->with('success', 'Activity deleted successfully!');
+        return redirect()->route('acg.index')->with('success', 'ลบกิจกรรมเรียบร้อยแล้ว!');
     }
 
     public function createActivity()
@@ -308,7 +302,6 @@ class CGController extends Controller
             'talk_as_friends' => 'nullable|string',
             'other_social_specified' => 'nullable|string',
             'problems_found' => 'nullable|string',
-            'solutions' => 'nullable|string',
         ]);
 
         $careGiverId = $this->getLatestCareGiverId($request->ID_Elderly, $request->activity_date);
@@ -338,14 +331,13 @@ class CGController extends Controller
             'Talk_as_friends' => $request->talk_as_friends,
             'Other_specified' => $request->other_social_specified,
             'Problem' => $request->problems_found,
-            'Troubleshoot' => $request->solutions,
         ];
 
         $activity = new ActivityCaregiver();
         $activity->fill($activityData);
         $activity->save();
 
-        return redirect()->route('activities.create')->with('success', 'Activity added successfully!');
+        return redirect()->route('activities.create')->with('success', 'เพิ่มกิจกรรมเรียบร้อยแล้ว!');
     }
 
     private function getLatestCareGiverId($idElderly, $currentDate)

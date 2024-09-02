@@ -227,12 +227,12 @@
                     <!-- Total Score and Group -->
                     <div class="total-group">
                         <div>
-                            <label>คะแนนรวม:</label>
+                            <h4>คะแนนรวม:</h4>
                             <span id="total_score">0</span>
                         </div>
                         <div>
-                            <label>ประเภทกลุ่ม:</label>
-                            <span id="group">N/A</span>
+                            <h4>ประเภทกลุ่ม: <span id="group">N/A</span></h4>
+
                         </div>
                     </div>
 

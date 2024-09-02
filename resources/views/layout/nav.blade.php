@@ -131,15 +131,19 @@
             0% {
                 transform: rotate(0deg);
             }
+
             25% {
                 transform: rotate(-15deg);
             }
+
             50% {
                 transform: rotate(0deg);
             }
+
             75% {
                 transform: rotate(15deg);
             }
+
             100% {
                 transform: rotate(0deg);
             }
@@ -183,7 +187,7 @@
         </div>
         <div class="nav-links">
             <a href="{{ url('/') }}">หน้าหลัก</a>
-            <a href="/contact">ติดต่อเรา</a>
+            {{--  <a href="/contact">ติดต่อเรา</a>  --}}
         </div>
         @if (Auth::check())
             <div class="user-info">
@@ -197,29 +201,35 @@
                             ->whereNull('Confirm')
                             ->get();
                     @endphp
-                    <i class="fas fa-bell {{ $notifications->isNotEmpty() && !Request::is('staff-ci') ? 'shake' : '' }}" onclick="toggleNotificationDropdown()"></i>
+                    <i class="fas fa-bell {{ $notifications->isNotEmpty() && !Request::is('staff-ci') ? 'shake' : '' }}"
+                        onclick="toggleNotificationDropdown()"></i>
                     <div class="dropdown" id="notificationDropdown">
                         @if ($notifications->isEmpty())
                             <a href="#">ไม่มีการแจ้งเตือน</a>
                         @else
                             @foreach ($notifications as $notification)
-                                <a href="{{ url('staff-ci') }}">{{ $notification->Name_Elderly }} - {{ $notification->Care_instructions }}</a>
+                                <a href="{{ url('staff-ci') }}">{{ $notification->Name_Elderly }} -
+                                    {{ $notification->Care_instructions }}</a>
                             @endforeach
                         @endif
                     </div>
                 </div>
                 <i class="fas fa-cog" onclick="toggleDropdown()"></i>
-                <div class="dropdown" id="userDropdown">
-                    <a href="{{ url('profile-user') }}">Profile</a>
+                <div class="dropdown" id="userDropdown" style="width: 200px; padding: 10px;">
+                    <a href="{{ url('profile-user') }}"
+                        style="padding: 12px 20px; font-size: 16px; display: block;">โปรไฟล์</a>
                     <form action="{{ route('logout') }}" method="POST">
                         @csrf
                         <button type="submit"
-                            style="all: unset; cursor: pointer; color: #333; text-decoration: none; padding: 10px 20px; display: block;">Logout</button>
+                            style="all: unset; cursor: pointer; color: #333; text-decoration: none; padding: 12px 20px; font-size: 16px; display: block;">
+                            ออกจากระบบ
+                        </button>
                     </form>
                 </div>
+
             </div>
         @else
-            <a href="{{ url('login') }}" class="btn btn-primary">Login</a>
+            <a href="{{ url('login') }}" class="btn btn-primary">เข้าสู่ระบบ</a>
         @endif
     </div>
 
@@ -245,7 +255,8 @@
         }
 
         window.onclick = function(event) {
-            if (!event.target.matches('.user-info img') && !event.target.matches('.user-info span') && !event.target.matches('.fa-cog') && !event.target.matches('.fa-bell')) {
+            if (!event.target.matches('.user-info img') && !event.target.matches('.user-info span') && !event.target
+                .matches('.fa-cog') && !event.target.matches('.fa-bell')) {
                 var dropdowns = document.getElementsByClassName("dropdown");
                 for (var i = 0; i < dropdowns.length; i++) {
                     var openDropdown = dropdowns[i];
@@ -260,6 +271,7 @@
             var sidebar = document.querySelector('.sidebar');
             sidebar.classList.toggle('collapsed');
         }
+
         function toggleSidebar() {
             var sidebar = document.querySelector('.sidenav');
             sidebar.classList.toggle('collapsed');

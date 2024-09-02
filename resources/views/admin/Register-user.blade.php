@@ -9,6 +9,8 @@
     <link href="{{ asset('assets/css/argon-dashboard.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/css/nucleo-icons.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/css/nucleo-svg.css') }}" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 
@@ -23,9 +25,9 @@
             </div>
             <div class="card-body">
                 @if (session('success'))
-                <div class="alert alert-success">
-                    {{ session('success') }}
-                </div>
+                    <div class="alert alert-success">
+                        {{ session('success') }}
+                    </div>
                 @endif
 
                 <form method="POST" action="{{ route('register.submit') }}">
@@ -38,18 +40,29 @@
                         <label for="Email">อีเมล</label>
                         <input type="email" id="Email" name="Email" class="form-control" required>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group position-relative">
                         <label for="Password">รหัสผ่าน</label>
                         <input type="password" id="Password" name="Password" class="form-control" required>
+                        <span class="fas fa-eye position-absolute" id="togglePassword"
+                            style="top: 73%; right: 15px; transform: translateY(-50%); cursor: pointer;"></span>
                     </div>
+
                     <div class="form-group">
                         <label for="Type_Personnel">ประเภทบุคลากร</label>
                         <select id="Type_Personnel" name="Type_Personnel" class="form-control" required>
                             <option value="">เลือกประเภทบุคลากร</option>
-                            @foreach($personnelTypes as $personnel)
-                            @if ($personnel->Type_Personnel !== 'Admin')
-                            <option value="{{ $personnel->ID_Personnel }}">{{ $personnel->Type_Personnel }}</option>
-                            @endif
+                            @foreach ($personnelTypes as $personnel)
+                                @if ($personnel->Type_Personnel !== 'Admin')
+                                    <option value="{{ $personnel->ID_Personnel }}">
+                                        @if ($personnel->Type_Personnel === 'Staff')
+                                            เจ้าหน้าที่
+                                        @elseif ($personnel->Type_Personnel === 'Doctor')
+                                            แพทย์
+                                        @else
+                                            {{ $personnel->Type_Personnel }}
+                                        @endif
+                                    </option>
+                                @endif
                             @endforeach
                         </select>
                     </div>
@@ -72,11 +85,24 @@
     <script>
         document.getElementById('Type_Personnel').addEventListener('change', function() {
             var elderlyTypeGroup = document.getElementById('elderly-type-group');
-            if (this.options[this.selectedIndex].text === 'Doctor') {
+            if (this.options[this.selectedIndex].text === 'แพทย์') {
                 elderlyTypeGroup.style.display = 'block';
             } else {
                 elderlyTypeGroup.style.display = 'none';
             }
+        });
+
+        const togglePassword = document.getElementById('togglePassword');
+        const passwordField = document.getElementById('Password');
+
+        togglePassword.addEventListener('click', function() {
+            // Toggle the type attribute
+            const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordField.setAttribute('type', type);
+
+            // Toggle the icon
+            this.classList.toggle('fa-eye');
+            this.classList.toggle('fa-eye-slash');
         });
     </script>
 
