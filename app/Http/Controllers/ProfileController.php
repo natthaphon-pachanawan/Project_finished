@@ -31,7 +31,7 @@ class ProfileController extends Controller
     {
         $user = Auth::user();
         if (!$user) {
-            return redirect()->route('profile-user')->with('error', 'You can only edit your own profile.');
+            return redirect()->route('profile-user')->with('error', 'คุณสามารถแก้ไขโปรไฟล์ของคุณเองเท่านั้น');
         }
 
         $request->validate([
@@ -73,6 +73,6 @@ class ProfileController extends Controller
 
         $user->save();
 
-        return redirect()->route('profile-user')->with('success', 'Profile updated successfully');
+        return redirect()->route('profile-user')->with('success', 'อัปเดตโปรไฟล์สำเร็จแล้ว');
     }
 }

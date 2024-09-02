@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    <title>{{ $user->Username }} Profile</title>
+    <title>{{ $user->Username }} โปรไฟล์</title>
     <style>
         body {
             font-family: 'Roboto', sans-serif;
@@ -91,17 +91,26 @@
     <div class="profile-container">
         <img src="{{ asset($user->Image_User ?? 'path/to/default/image.png') }}" alt="Profile Image">
         <h1>{{ $user->Name_User }}</h1>
-        <p>{{ $user->Type_Personnel }}</p>
+        <p>
+            @if($user->Type_Personnel === 'Staff')
+                เจ้าหน้าที่
+            @elseif($user->Type_Personnel === 'Doctor')
+                แพทย์
+            @else
+                {{ $user->Type_Personnel }}
+            @endif
+        </p>
 
         <div class="profile-details">
             <p><strong>ชื่อผู้ใช้:</strong> {{ $user->Username }}</p>
-            <p><strong>Email:</strong> {{ $user->Email }}</p>
+            <p><strong>อีเมล:</strong> {{ $user->Email }}</p>
             <p><strong>ที่อยู่:</strong> {{ $user->Address }}</p>
             <p><strong>เบอร์โทร:</strong> {{ $user->Phone }}</p>
-            <p><strong>ID Personnel:</strong> {{ $user->ID_Personnel }}</p>
+            @if($user->Type_Personnel === 'Doctor')
+                <p><strong>ประเภทผู้สูงอายุที่ดูแล:</strong> {{ $user->Type_Doctor }}</p>
+            @endif
         </div>
         <a href="{{ route('edit-profile') }}" class="edit-button">แก้ไขโปรไฟล์</a>
     </div>
 </body>
-
 </html>

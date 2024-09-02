@@ -30,6 +30,29 @@
         .back-button:hover {
             background-color: #34495e;
         }
+
+        .custom-file-upload {
+            display: inline-block;
+            padding: 6px 12px;
+            cursor: pointer;
+            background-color: #fb6340;
+            color: white;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+
+        .custom-file-upload:hover {
+            background-color: #ea3005;
+        }
+
+        #image-preview {
+            margin-top: 15px;
+            max-width: 200px;
+            max-height: 200px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
     </style>
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -100,7 +123,11 @@
 
                     <div class="form-group">
                         <label for="Image_Elderly">รูปภาพ:</label>
-                        <input type="file" id="Image_Elderly" name="Image_Elderly" class="form-control" accept="image/*">
+                        <label for="Image_Elderly" class="custom-file-upload">
+                            เลือกรูปภาพ
+                        </label>
+                        <input type="file" id="Image_Elderly" name="Image_Elderly" class="form-control" accept="image/*" style="display: none;" onchange="previewImage(event)">
+                        <img id="image-preview" src="#" alt="Image Preview" style="display: none; max-width: 200px; margin-top: 10px;">
                     </div>
 
                     <!-- Leaflet Map for selecting location -->
@@ -204,6 +231,23 @@
             let fullAddress = `จังหวัด${province} อำเภอ${district} ตำบล${subdistrict} ${detailedAddress} รหัสไปรษณีย์ ${postalCode}`;
             $('#Address').val(fullAddress);
         }
+
+        function previewImage(event) {
+            const imagePreview = document.getElementById('image-preview');
+            const file = event.target.files[0];
+
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    imagePreview.src = e.target.result;
+                    imagePreview.style.display = 'block';
+                }
+                reader.readAsDataURL(file);
+            } else {
+                imagePreview.style.display = 'none';
+            }
+        }
+
     </script>
 </body>
 

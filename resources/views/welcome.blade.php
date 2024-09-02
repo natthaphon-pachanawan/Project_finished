@@ -225,16 +225,6 @@
             margin: 20px 0;
         }
 
-        .image-grid {
-            display: grid;
-            gap: 10px;
-        }
-
-        .image-grid img {
-            width: 100%;
-            height: auto;
-            object-fit: cover;
-        }
 
         @media (min-width: 600px) {
             .image-grid {
@@ -408,7 +398,7 @@
     <div class="container-fluid">
         <div class="row">
             <!-- จำนวนผู้เข้าชมเว็บไซต์ -->
-            <div class="col-sm-4">
+            <div class="col-sm-3">
                 <div class="dashboard-card">
                     <div>
                         <h3>จำนวนผู้เข้าชมเว็บไซต์</h3>
@@ -420,7 +410,7 @@
                 </div>
             </div>
             <!-- ข่าวสารประชาสัมพันธ์ -->
-            <div class="col-sm-4">
+            <div class="col-sm-6">
                 <section class="news">
                     <h2>ข่าวสารประชาสัมพันธ์</h2>
                 </section>
@@ -440,7 +430,7 @@
                                 </p>
                                 <div class="image-grid">
                                     @foreach ($newsItem->images as $index => $image)
-                                        @if ($index < 3)
+                                        @if ($index < 1)
                                             <div class="image-item">
                                                 <img src="{{ asset('storage/' . $image->image_path) }}"
                                                     alt="{{ $newsItem->title }}"
@@ -451,20 +441,20 @@
                                         @endif
                                     @endforeach
 
-                                    @if (count($newsItem->images) === 4)
+                                    @if (count($newsItem->images) === 2)
                                         <div class="image-item">
-                                            <img src="{{ asset('storage/' . $newsItem->images[3]->image_path) }}"
+                                            <img src="{{ asset('storage/' . $newsItem->images[1]->image_path) }}"
                                                 alt="{{ $newsItem->title }}"
-                                                onclick="openLightbox('{{ asset('storage/' . $newsItem->images[3]->image_path) }}', [@foreach ($newsItem->images as $img) '{{ asset('storage/' . $img->image_path) }}', @endforeach], 3)">
+                                                onclick="openLightbox('{{ asset('storage/' . $newsItem->images[1]->image_path) }}', [@foreach ($newsItem->images as $img) '{{ asset('storage/' . $img->image_path) }}', @endforeach], 3)">
                                         </div>
-                                    @elseif (count($newsItem->images) > 4)
+                                    @elseif (count($newsItem->images) > 2)
                                         <div class="image-item" style="position: relative;">
-                                            <img src="{{ asset('storage/' . $newsItem->images[3]->image_path) }}"
+                                            <img src="{{ asset('storage/' . $newsItem->images[1]->image_path) }}"
                                                 alt="{{ $newsItem->title }}"
-                                                onclick="openLightbox('{{ asset('storage/' . $newsItem->images[3]->image_path) }}', [@foreach ($newsItem->images as $img) '{{ asset('storage/' . $img->image_path) }}', @endforeach], 3)">
+                                                onclick="openLightbox('{{ asset('storage/' . $newsItem->images[1]->image_path) }}', [@foreach ($newsItem->images as $img) '{{ asset('storage/' . $img->image_path) }}', @endforeach], 3)">
                                             <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0, 0, 0, 0.6); color: white; display: flex; align-items: center; justify-content: center; font-size: 24px;"
-                                                onclick="openLightbox('{{ asset('storage/' . $newsItem->images[3]->image_path) }}', [@foreach ($newsItem->images as $img) '{{ asset('storage/' . $img->image_path) }}', @endforeach], 3)">
-                                                +{{ count($newsItem->images) - 4 }}
+                                                onclick="openLightbox('{{ asset('storage/' . $newsItem->images[1]->image_path) }}', [@foreach ($newsItem->images as $img) '{{ asset('storage/' . $img->image_path) }}', @endforeach], 3)">
+                                                +{{ count($newsItem->images) - 2 }}
                                             </div>
                                         </div>
                                     @endif
@@ -477,17 +467,18 @@
                                     <span class="close-lightbox" onclick="closeLightbox()">&times;</span>
                                     <button class="prev-lightbox" onclick="changeImage(-1)">&#10094;</button>
                                     <div class="lightbox-content">
-                                        <img id="lightbox-img" src="" alt="Lightbox Image">
+                                        <img id="lightbox-img" src="" alt="Lightbox Image" draggable="false">
                                     </div>
                                     <button class="next-lightbox" onclick="changeImage(1)">&#10095;</button>
                                 </div>
+
                             </div>
                         </div>
                     @endforeach
 
             </div>
             <!-- จำนวนการประเมิน ADL และ CG -->
-            <div class="col-sm-4">
+            <div class="col-sm-3">
                 <!-- จำนวนการประเมิน ADL -->
                 <div class="dashboard-card">
                     <div>
@@ -650,97 +641,98 @@
         let translateX = 0,
             translateY = 0;
 
-        function openLightbox(imageSrc, imageArray, index) {
-            currentImageIndex = index;
-            images = imageArray;
-            const lightboxImg = document.getElementById('lightbox-img');
-            lightboxImg.src = imageSrc;
-            document.getElementById('lightbox').style.display = 'flex';
-            resetZoomAndPosition(); // รีเซ็ตซูมและตำแหน่งทุกครั้งที่เปิด
-        }
-
-        function closeLightbox() {
-            document.getElementById('lightbox').style.display = 'none';
-        }
-
-        function changeImage(direction) {
-            currentImageIndex += direction;
-            if (currentImageIndex >= images.length) {
-                currentImageIndex = 0;
-            } else if (currentImageIndex < 0) {
-                currentImageIndex = images.length - 1;
+            function openLightbox(imageSrc, imageArray, index) {
+                currentImageIndex = index;
+                images = imageArray;
+                const lightboxImg = document.getElementById('lightbox-img');
+                lightboxImg.src = imageSrc;
+                document.getElementById('lightbox').style.display = 'flex';
+                resetZoomAndPosition(); // รีเซ็ตซูมและตำแหน่งทุกครั้งที่เปิด
             }
-            const lightboxImg = document.getElementById('lightbox-img');
-            lightboxImg.src = images[currentImageIndex];
-            resetZoomAndPosition(); // รีเซ็ตซูมและตำแหน่งเมื่อเปลี่ยนภาพ
-        }
 
-        function resetZoomAndPosition() {
-            zoomLevel = 1;
-            translateX = 0;
-            translateY = 0;
-            applyTransform();
-        }
+            function closeLightbox() {
+                document.getElementById('lightbox').style.display = 'none';
+            }
 
-        function applyTransform() {
-            const img = document.getElementById('lightbox-img');
-            img.style.transform = `translate(${translateX}px, ${translateY}px) scale(${zoomLevel})`;
-        }
+            function changeImage(direction) {
+                currentImageIndex += direction;
+                if (currentImageIndex >= images.length) {
+                    currentImageIndex = 0;
+                } else if (currentImageIndex < 0) {
+                    currentImageIndex = images.length - 1;
+                }
+                const lightboxImg = document.getElementById('lightbox-img');
+                lightboxImg.src = images[currentImageIndex];
+                resetZoomAndPosition(); // รีเซ็ตซูมและตำแหน่งเมื่อเปลี่ยนภาพ
+            }
 
-        document.getElementById('lightbox-img').addEventListener('click', function() {
-            zoomLevel = zoomLevel === 1 ? 2 : 1;
-            if (zoomLevel === 1) {
+            function resetZoomAndPosition() {
+                zoomLevel = 1;
                 translateX = 0;
                 translateY = 0;
-            }
-            applyTransform();
-        });
-
-        document.getElementById('lightbox-img').addEventListener('wheel', function(event) {
-            event.preventDefault();
-            const delta = event.deltaY < 0 ? 0.1 : -0.1;
-            zoomLevel = Math.min(Math.max(zoomLevel + delta, 1), 5);
-            applyTransform();
-        });
-
-        document.getElementById('lightbox-img').addEventListener('mousedown', function(event) {
-            if (zoomLevel > 1) {
-                isDragging = true;
-                startX = event.clientX - translateX;
-                startY = event.clientY - translateY;
-                this.classList.add('grabbing');
-            }
-        });
-
-        document.addEventListener('mousemove', function(event) {
-            if (isDragging) {
-                const lightboxImg = document.getElementById('lightbox-img');
-                translateX = event.clientX - startX;
-                translateY = event.clientY - startY;
-
-                const maxTranslateX = ((zoomLevel - 1) * lightboxImg.width) / 2;
-                const maxTranslateY = ((zoomLevel - 1) * lightboxImg.height) / 2;
-
-                translateX = Math.max(Math.min(translateX, maxTranslateX), -maxTranslateX);
-                translateY = Math.max(Math.min(translateY, maxTranslateY), -maxTranslateY);
-
                 applyTransform();
             }
-        });
 
-        document.addEventListener('mouseup', function() {
-            if (isDragging) {
-                isDragging = false;
-                document.getElementById('lightbox-img').classList.remove('grabbing');
+            function applyTransform() {
+                const img = document.getElementById('lightbox-img');
+                img.style.transform = `translate(${translateX}px, ${translateY}px) scale(${zoomLevel})`;
             }
-        });
 
-        document.addEventListener('mouseleave', function() {
-            if (isDragging) {
-                isDragging = false;
-                document.getElementById('lightbox-img').classList.remove('grabbing');
-            }
-        });
+            // ซูมเข้าเมื่อคลิกที่รูปภาพ
+            document.getElementById('lightbox-img').addEventListener('click', function() {
+                zoomLevel = zoomLevel === 1 ? 2 : 1;
+                if (zoomLevel === 1) {
+                    translateX = 0;
+                    translateY = 0;
+                }
+                applyTransform();
+            });
+
+            document.getElementById('lightbox-img').addEventListener('wheel', function(event) {
+                event.preventDefault();
+                const delta = event.deltaY < 0 ? 0.1 : -0.1;
+                zoomLevel = Math.min(Math.max(zoomLevel + delta, 1), 5);
+                applyTransform();
+            });
+
+            document.getElementById('lightbox-img').addEventListener('mousedown', function(event) {
+                if (zoomLevel > 1) {
+                    isDragging = true;
+                    startX = event.clientX - translateX;
+                    startY = event.clientY - translateY;
+                    this.classList.add('grabbing');
+                }
+            });
+
+            document.addEventListener('mousemove', function(event) {
+                if (isDragging) {
+                    const lightboxImg = document.getElementById('lightbox-img');
+                    translateX = event.clientX - startX;
+                    translateY = event.clientY - startY;
+
+                    const maxTranslateX = ((zoomLevel - 1) * lightboxImg.width) / 2;
+                    const maxTranslateY = ((zoomLevel - 1) * lightboxImg.height) / 2;
+
+                    translateX = Math.max(Math.min(translateX, maxTranslateX), -maxTranslateX);
+                    translateY = Math.max(Math.min(translateY, maxTranslateY), -maxTranslateY);
+
+                    applyTransform();
+                }
+            });
+
+            document.addEventListener('mouseup', function() {
+                if (isDragging) {
+                    isDragging = false;
+                    document.getElementById('lightbox-img').classList.remove('grabbing');
+                }
+            });
+
+            document.addEventListener('mouseleave', function() {
+                if (isDragging) {
+                    isDragging = false;
+                    document.getElementById('lightbox-img').classList.remove('grabbing');
+                }
+            });
 
     </script>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>

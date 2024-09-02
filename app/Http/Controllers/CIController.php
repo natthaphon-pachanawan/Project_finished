@@ -21,7 +21,7 @@ class CIController extends Controller
         $careInstruction = CareInstruction::findOrFail($id);
         $careInstruction->update(['Confirm' => 'ยืนยัน']);
 
-        return redirect()->route('staff.ci.index')->with('success', 'Care Instruction confirmed successfully.');
+        return redirect()->route('staff.ci.index')->with('success', 'คำแนะนำการดูแลยืนยันเรียบร้อยแล้ว');
     }
 
     // Method to unconfirm the CI
@@ -30,7 +30,7 @@ class CIController extends Controller
         $careInstruction = CareInstruction::findOrFail($id);
         $careInstruction->update(['Confirm' => null]);
 
-        return redirect()->route('staff.ci.index')->with('success', 'Care Instruction unconfirmed successfully.');
+        return redirect()->route('staff.ci.index')->with('success', 'คำแนะนำการดูแลไม่ได้รับการยืนยันสำเร็จ');
     }
 
     public function ReportCIConfirm()

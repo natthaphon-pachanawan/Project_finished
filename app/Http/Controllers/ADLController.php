@@ -77,7 +77,7 @@ class ADLController extends Controller
             'Bladder' => $request->bladder,
         ]);
 
-        return redirect()->back()->with('success', 'ADL Assessment submitted successfully!');
+        return redirect()->back()->with('success', 'ส่งการประเมิน ADL สำเร็จแล้ว!');
     }
 
     public function edit($id)
@@ -132,7 +132,7 @@ class ADLController extends Controller
             'Bladder' => $request->bladder,
         ]);
 
-        return redirect()->route('adl.index')->with('success', 'ADL Assessment updated successfully!');
+        return redirect()->route('adl.index')->with('success', 'อัปเดตการประเมิน ADL สำเร็จแล้ว!');
     }
 
     public function destroy($id)
@@ -140,7 +140,7 @@ class ADLController extends Controller
         $adl = BarthelAdl::findOrFail($id);
         $adl->delete();
 
-        return redirect()->route('adl.index')->with('success', 'ADL Assessment deleted successfully!');
+        return redirect()->route('adl.index')->with('success', 'ลบการประเมิน ADL สำเร็จแล้ว!');
     }
 
     public function ReportADLAll()

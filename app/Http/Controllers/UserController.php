@@ -38,6 +38,6 @@ class UserController extends Controller
             $user->save();
         }
 
-        return response()->json(['message' => 'All users have been added successfully'], 201);
+        return response()->json(['message' => 'เพิ่มผู้ใช้ทั้งหมดเรียบร้อยแล้ว'], 201);
     }
 }

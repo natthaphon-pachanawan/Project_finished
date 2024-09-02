@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Doctor</title>
+    <title>จัดการคำแนะนํา</title>
     <link href="{{ asset('assets/css/argon-dashboard.css') }}" rel="stylesheet" />
     <link href="{{ asset('assets/css/nucleo-icons.css') }}" rel="stylesheet" />
     <link href="{{ asset('assets/css/nucleo-svg.css') }}" rel="stylesheet" />
@@ -35,7 +35,7 @@
     @include('layout.nav')
 
     <div class="container">
-        <h1>Dashboard Doctor</h1>
+        <h3>ข้อมูลผู้สูงอายุ</h3>
         <table id="doctorTable" class="table align-items-center mb-0">
             <thead>
                 <tr>
@@ -398,7 +398,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="acgDatesModalLabel-{{ $elderly->ID_Elderly }}">เลือกวันที่สำหรับ
-                            ACG ของ {{ $elderly->Name_Elderly }}</h5>
+                            CG ของ {{ $elderly->Name_Elderly }}</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                             aria-label="Close"></button>
                     </div>

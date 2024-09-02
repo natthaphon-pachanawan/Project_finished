@@ -426,15 +426,14 @@
         <button class="next" onclick="plusSlides(1)">&#10095;</button>
     </section>
     <div class="admin-buttons">
-        <button class="btn btn-primary" data-toggle="modal" data-target="#createSliderModal">เพิ่มรูปเลื่อน
-            Slider</button>
-        <button class="btn btn-primary" data-toggle="modal" data-target="#viewSliderModal">แก้ไข Slider</button>
+        <button class="btn btn-primary" data-toggle="modal" data-target="#createSliderModal">เพิ่มรูปเลื่อนสไลด์</button>
+        <button class="btn btn-primary" data-toggle="modal" data-target="#viewSliderModal">แก้ไขรูปเลื่อนสไลด์</button>
     </div>
 
     <div class="container-fluid">
         <div class="row">
             <!-- จำนวนผู้เข้าชมเว็บไซต์ -->
-            <div class="col-sm-4">
+            <div class="col-sm-3">
                 <div class="dashboard-card">
                     <div>
                         <h3>จำนวนผู้เข้าชมเว็บไซต์</h3>
@@ -446,7 +445,7 @@
                 </div>
             </div>
             <!-- ข่าวสารประชาสัมพันธ์ -->
-            <div class="col-sm-4">
+            <div class="col-sm-6">
                 <section class="news">
                     <div class="admin-buttons">
                         <button class="btn btn-primary" data-toggle="modal"
@@ -469,7 +468,7 @@
                                 </p>
                                 <div class="image-grid">
                                     @foreach ($newsItem->images as $index => $image)
-                                        @if ($index < 3)
+                                        @if ($index < 1)
                                             <div class="image-item">
                                                 <img src="{{ asset('storage/' . $image->image_path) }}"
                                                     alt="{{ $newsItem->title }}"
@@ -480,20 +479,20 @@
                                         @endif
                                     @endforeach
 
-                                    @if (count($newsItem->images) === 4)
+                                    @if (count($newsItem->images) === 2)
                                         <div class="image-item">
-                                            <img src="{{ asset('storage/' . $newsItem->images[3]->image_path) }}"
+                                            <img src="{{ asset('storage/' . $newsItem->images[1]->image_path) }}"
                                                 alt="{{ $newsItem->title }}"
-                                                onclick="openLightbox('{{ asset('storage/' . $newsItem->images[3]->image_path) }}', [@foreach ($newsItem->images as $img) '{{ asset('storage/' . $img->image_path) }}', @endforeach], 3)">
+                                                onclick="openLightbox('{{ asset('storage/' . $newsItem->images[1]->image_path) }}', [@foreach ($newsItem->images as $img) '{{ asset('storage/' . $img->image_path) }}', @endforeach], 3)">
                                         </div>
-                                    @elseif (count($newsItem->images) > 4)
+                                    @elseif (count($newsItem->images) > 2)
                                         <div class="image-item" style="position: relative;">
-                                            <img src="{{ asset('storage/' . $newsItem->images[3]->image_path) }}"
+                                            <img src="{{ asset('storage/' . $newsItem->images[1]->image_path) }}"
                                                 alt="{{ $newsItem->title }}"
-                                                onclick="openLightbox('{{ asset('storage/' . $newsItem->images[3]->image_path) }}', [@foreach ($newsItem->images as $img) '{{ asset('storage/' . $img->image_path) }}', @endforeach], 3)">
+                                                onclick="openLightbox('{{ asset('storage/' . $newsItem->images[1]->image_path) }}', [@foreach ($newsItem->images as $img) '{{ asset('storage/' . $img->image_path) }}', @endforeach], 3)">
                                             <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0, 0, 0, 0.6); color: white; display: flex; align-items: center; justify-content: center; font-size: 24px;"
-                                                onclick="openLightbox('{{ asset('storage/' . $newsItem->images[3]->image_path) }}', [@foreach ($newsItem->images as $img) '{{ asset('storage/' . $img->image_path) }}', @endforeach], 3)">
-                                                +{{ count($newsItem->images) - 4 }}
+                                                onclick="openLightbox('{{ asset('storage/' . $newsItem->images[1]->image_path) }}', [@foreach ($newsItem->images as $img) '{{ asset('storage/' . $img->image_path) }}', @endforeach], 3)">
+                                                +{{ count($newsItem->images) - 2 }}
                                             </div>
                                         </div>
                                     @endif
@@ -510,8 +509,6 @@
                                     </div>
                                     <button class="next-lightbox" onclick="changeImage(1)">&#10095;</button>
                                 </div>
-
-
 
                                 <button class="btn btn-warning" data-id="{{ $newsItem->id }}"
                                     onclick="showEditModal('{{ $newsItem->id }}', '{{ $newsItem->title }}', '{{ $newsItem->content }}', [
@@ -533,7 +530,7 @@
                 </section>
             </div>
             <!-- จำนวนการประเมิน ADL และ CG -->
-            <div class="col-sm-4">
+            <div class="col-sm-3">
                 <!-- จำนวนการประเมิน ADL -->
                 <div class="dashboard-card">
                     <div>
@@ -578,8 +575,7 @@
     </div>
 
     <!-- Modal for Create News -->
-    <div class="modal fade" id="createNewsModal" tabindex="-1" role="dialog"
-        aria-labelledby="createNewsModalLabel" aria-hidden="true">
+    <div class="modal fade" id="createNewsModal" tabindex="-1" role="dialog" aria-labelledby="createNewsModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -600,8 +596,11 @@
                             <textarea id="content" name="content" class="form-control" rows="5" required></textarea>
                         </div>
                         <div class="form-group">
-                            <label for="images">รูปภาพ:</label>
-                            <input type="file" id="images" name="images[]" class="form-control-file" multiple>
+                            <input type="file" id="customFile" name="images[]" class="form-control-file" multiple onchange="previewImages(event)" style="display: none;">
+                            <button type="button" class="btn btn-secondary" onclick="document.getElementById('customFile').click()">เลือกไฟล์รูป</button>
+                        </div>
+                        <div class="form-group">
+                            <div id="imagePreview" style="display: flex; flex-wrap: wrap; gap: 10px;"></div>
                         </div>
                         <button type="submit" class="btn btn-primary">บันทึก</button>
                     </form>
@@ -610,9 +609,33 @@
         </div>
     </div>
 
+    <script>
+        function previewImages(event) {
+            let imagePreview = document.getElementById('imagePreview');
+            imagePreview.innerHTML = ''; // ล้างภาพเก่าออกก่อน
+
+            for (let i = 0; i < event.target.files.length; i++) {
+                let file = event.target.files[i];
+                let reader = new FileReader();
+
+                reader.onload = function(e) {
+                    let img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.style.width = '100px';
+                    img.style.height = '100px';
+                    img.style.objectFit = 'cover';
+                    img.className = 'img-thumbnail'; // ใช้ Bootstrap class เพื่อความสวยงาม
+                    imagePreview.appendChild(img);
+                };
+
+                reader.readAsDataURL(file); // อ่านไฟล์เพื่อแสดงตัวอย่าง
+            }
+        }
+    </script>
+
+
     <!-- Modal for Edit News -->
-    <div class="modal fade" id="editNewsModal" tabindex="-1" role="dialog" aria-labelledby="editNewsModalLabel"
-        aria-hidden="true">
+    <div class="modal fade" id="editNewsModal" tabindex="-1" role="dialog" aria-labelledby="editNewsModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -641,26 +664,53 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="images">อัปโหลดรูปภาพใหม่:</label>
-                            <input type="file" id="edit-images" name="images[]" class="form-control-file"
-                                multiple>
+                            <label for="edit-images">อัปโหลดรูปภาพใหม่:</label>
+                            <input type="file" id="edit-images" name="images[]" class="form-control-file" multiple style="display: none;">
+                            <button type="button" class="btn btn-secondary" onclick="document.getElementById('edit-images').click()">เลือกไฟล์รูป</button>
+                        </div>
+                        <div class="form-group">
+                            <div id="editImagePreview" style="display: flex; flex-wrap: wrap; gap: 10px;"></div>
                         </div>
                         <button type="submit" class="btn btn-primary">บันทึก</button>
                     </form>
-
                 </div>
             </div>
         </div>
     </div>
 
+    <script>
+        document.getElementById('edit-images').addEventListener('change', function(event) {
+            let editImagePreview = document.getElementById('editImagePreview');
+            editImagePreview.innerHTML = ''; // ล้างภาพเก่าออกก่อน
 
-    <!-- Modal for Create Slider -->
+            for (let i = 0; i < event.target.files.length; i++) {
+                let file = event.target.files[i];
+                let reader = new FileReader();
+
+                reader.onload = function(e) {
+                    let img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.style.width = '100px';
+                    img.style.height = '100px';
+                    img.style.objectFit = 'cover';
+                    img.className = 'img-thumbnail'; // ใช้ Bootstrap class เพื่อความสวยงาม
+                    editImagePreview.appendChild(img);
+                };
+
+                reader.readAsDataURL(file); // อ่านไฟล์เพื่อแสดงตัวอย่าง
+            }
+        });
+    </script>
+
+
+
+        <!-- Modal for Create Slider -->
     <div class="modal fade" id="createSliderModal" tabindex="-1" role="dialog"
         aria-labelledby="createSliderModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="createSliderModalLabel">เพิ่มรูปเลื่อน Slider</h5>
+                    <h5 class="modal-title" id="createSliderModalLabel">เพิ่มรูปเลื่อนสไลด์</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -669,9 +719,11 @@
                     <form action="{{ route('admin.sliders.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="form-group">
-                            <label for="slider-image">รูปภาพ:</label>
-                            <input type="file" id="slider-image" name="image" class="form-control-file"
-                                required>
+                            <input type="file" id="sliderImageFile" name="image" class="form-control-file" style="display: none;" required>
+                            <button type="button" class="btn btn-secondary" onclick="document.getElementById('sliderImageFile').click()">เลือกไฟล์รูป</button>
+                        </div>
+                        <div class="form-group">
+                            <div id="sliderImagePreview" style="display: flex; flex-wrap: wrap; gap: 10px;"></div>
                         </div>
                         <button type="submit" class="btn btn-primary">บันทึก</button>
                     </form>
@@ -680,13 +732,38 @@
         </div>
     </div>
 
+    <script>
+        document.getElementById('sliderImageFile').addEventListener('change', function(event) {
+            let imagePreview = document.getElementById('sliderImagePreview');
+            imagePreview.innerHTML = ''; // ล้างภาพเก่าออกก่อน
+
+            for (let i = 0; i < event.target.files.length; i++) {
+                let file = event.target.files[i];
+                let reader = new FileReader();
+
+                reader.onload = function(e) {
+                    let img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.style.width = '100px';
+                    img.style.height = '100px';
+                    img.style.objectFit = 'cover';
+                    img.className = 'img-thumbnail'; // ใช้ Bootstrap class เพื่อความสวยงาม
+                    imagePreview.appendChild(img);
+                };
+
+                reader.readAsDataURL(file); // อ่านไฟล์เพื่อแสดงตัวอย่าง
+            }
+        });
+    </script>
+
+
     <!-- Modal for View Slider -->
     <div class="modal fade" id="viewSliderModal" tabindex="-1" role="dialog"
         aria-labelledby="viewSliderModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="viewSliderModalLabel">แก้ไข Slider</h5>
+                    <h5 class="modal-title" id="viewSliderModalLabel">แก้ไขรูปเลื่อนสไลด์</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -719,13 +796,13 @@
     </div>
 
 
-    <!-- Modal for Edit Slider -->
+        <!-- Modal for Edit Slider -->
     <div class="modal fade" id="editSliderModal" tabindex="-1" role="dialog"
         aria-labelledby="editSliderModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="editSliderModalLabel">แก้ไข Slider</h5>
+                    <h5 class="modal-title" id="editSliderModalLabel">แก้ไขรูปเลื่อนสไลด์</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -734,10 +811,16 @@
                     <form id="editSliderForm" method="POST" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
-                        <div>
-                            <label for="image">รูปภาพ:</label>
+                        <div class="form-group">
+                            <label for="currentImage">รูปภาพปัจจุบัน:</label>
                             <img id="currentImage" src="" alt="Slider Image" width="100">
-                            <input type="file" id="image" name="image">
+                        </div>
+                        <div class="form-group">
+                            <input type="file" id="editSliderImageFile" name="image" class="form-control-file" style="display: none;">
+                            <button type="button" class="btn btn-secondary" onclick="document.getElementById('editSliderImageFile').click()">เลือกไฟล์รูป</button>
+                        </div>
+                        <div class="form-group">
+                            <div id="editSliderImagePreview" style="display: flex; flex-wrap: wrap; gap: 10px;"></div>
                         </div>
                         <button type="submit" class="btn btn-primary">บันทึก</button>
                     </form>
@@ -745,6 +828,31 @@
             </div>
         </div>
     </div>
+
+    <script>
+        document.getElementById('editSliderImageFile').addEventListener('change', function(event) {
+            let imagePreview = document.getElementById('editSliderImagePreview');
+            imagePreview.innerHTML = ''; // ล้างภาพเก่าออกก่อน
+
+            for (let i = 0; i < event.target.files.length; i++) {
+                let file = event.target.files[i];
+                let reader = new FileReader();
+
+                reader.onload = function(e) {
+                    let img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.style.width = '100px';
+                    img.style.height = '100px';
+                    img.style.objectFit = 'cover';
+                    img.className = 'img-thumbnail'; // ใช้ Bootstrap class เพื่อความสวยงาม
+                    imagePreview.appendChild(img);
+                };
+
+                reader.readAsDataURL(file); // อ่านไฟล์เพื่อแสดงตัวอย่าง
+            }
+        });
+    </script>
+
 
 
     <!-- Footer -->

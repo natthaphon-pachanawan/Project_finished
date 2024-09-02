@@ -117,7 +117,7 @@ class CGController extends Controller
         $cg->fill($careGiverData);
         $cg->save();
 
-        return redirect()->route('cg.create')->with('success', 'Care Giver added successfully!');
+        return redirect()->route('cg.create')->with('success', 'เพิ่ม Care Giver สำเร็จแล้ว!');
     }
 
     public function edit($id)
@@ -182,7 +182,7 @@ class CGController extends Controller
         $careGiver = CareGiver::findOrFail($id);
         $careGiver->update($careGiverData);
 
-        return redirect()->route('cg.index')->with('success', 'Care Giver information updated successfully!');
+        return redirect()->route('cg.index')->with('success', 'อัปเดตข้อมูล Care Giver สำเร็จแล้ว!');
     }
 
     public function destroy($id)
@@ -190,7 +190,7 @@ class CGController extends Controller
         $careGiver = CareGiver::findOrFail($id);
         $careGiver->delete();
 
-        return redirect()->route('cg.index')->with('success', 'Care Giver deleted successfully!');
+        return redirect()->route('cg.index')->with('success', 'ลบ Care Giver เรียบร้อยแล้ว!');
     }
 
     public function showACG(Request $request)
@@ -262,7 +262,7 @@ class CGController extends Controller
         $activity = ActivityCaregiver::findOrFail($id);
         $activity->update($activityData);
 
-        return redirect()->route('acg.index')->with('success', 'Activity updated successfully!');
+        return redirect()->route('acg.index')->with('success', 'อัปเดตกิจกรรมสำเร็จแล้ว!');
     }
 
     public function destroyActivity($id)
@@ -270,7 +270,7 @@ class CGController extends Controller
         $activity = ActivityCaregiver::findOrFail($id);
         $activity->delete();
 
-        return redirect()->route('acg.index')->with('success', 'Activity deleted successfully!');
+        return redirect()->route('acg.index')->with('success', 'ลบกิจกรรมเรียบร้อยแล้ว!');
     }
 
     public function createActivity()
@@ -337,7 +337,7 @@ class CGController extends Controller
         $activity->fill($activityData);
         $activity->save();
 
-        return redirect()->route('activities.create')->with('success', 'Activity added successfully!');
+        return redirect()->route('activities.create')->with('success', 'เพิ่มกิจกรรมเรียบร้อยแล้ว!');
     }
 
     private function getLatestCareGiverId($idElderly, $currentDate)

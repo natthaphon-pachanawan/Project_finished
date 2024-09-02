@@ -65,6 +65,10 @@
             border: 1px solid #ced4da;
         }
 
+        .login-form .form-control {
+            padding-right: 40px;
+        }
+
         .login-form .btn {
             background: #fb6340;
             color: white;
@@ -112,6 +116,18 @@
         .brand-logo img {
             max-width: 100px;
         }
+
+        .position-relative {
+            position: relative;
+        }
+
+        .toggle-password {
+            position: absolute;
+            top: 70%;
+            right: 10px;
+            transform: translateY(-50%);
+            cursor: pointer;
+        }
     </style>
 </head>
 
@@ -133,9 +149,10 @@
                     <label for="login">อีเมล์หรือชื่อผู้ใช้:</label>
                     <input type="text" name="login" id="login" class="form-control" required>
                 </div>
-                <div class="form-group">
+                <div class="form-group position-relative">
                     <label for="password">รหัสผ่าน:</label>
                     <input type="password" name="password" id="password" class="form-control" required>
+                    <span class="fas fa-eye toggle-password" id="togglePassword"></span>
                 </div>
                 <div class="form-group">
                     <button type="submit" class="btn btn-primary btn-block">เข้าสู่ระบบ</button>
@@ -161,6 +178,19 @@
             }
             Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
         }
+
+        const togglePassword = document.getElementById('togglePassword');
+        const passwordField = document.getElementById('password');
+
+        togglePassword.addEventListener('click', function() {
+            // Toggle the type attribute
+            const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordField.setAttribute('type', type);
+
+            // Toggle the icon
+            this.classList.toggle('fa-eye');
+            this.classList.toggle('fa-eye-slash');
+        });
     </script>
 </body>
 

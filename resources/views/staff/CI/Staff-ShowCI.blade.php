@@ -35,7 +35,7 @@
                                             <th class="text-center">ชื่อผู้สูงอายุ</th>
                                             <th class="text-center">ที่อยู่</th>
                                             <th class="text-center">เบอร์โทร</th>
-                                            <th class="text-center">ชื่อหมอ</th>
+                                            <th class="text-center">ชื่อแพทย์</th>
                                             <th class="text-center">คำแนะนำ</th>
                                             <th class="text-center">Actions</th>
                                         </tr>
@@ -89,7 +89,7 @@
                                             <th class="text-center">ชื่อผู้สูงอายุ</th>
                                             <th class="text-center">ที่อยู่</th>
                                             <th class="text-center">เบอร์โทร</th>
-                                            <th class="text-center">ชื่อหมอ</th>
+                                            <th class="text-center">ชื่อแพทย์</th>
                                             <th class="text-center">คำแนะนำ</th>
                                             <th class="text-center">Actions</th>
                                         </tr>

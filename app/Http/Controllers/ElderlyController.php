@@ -43,7 +43,7 @@ class ElderlyController extends Controller
         $addressElderly->Longitude_position = $request->input('Longitude_position');
         $addressElderly->save();
 
-        return redirect()->back()->with('success', 'Elderly information added successfully.');
+        return redirect()->back()->with('success', 'เพิ่มข้อมูลผู้สูงอายุเรียบร้อยแล้ว');
     }
 
     public function Showelderly(Request $request)
@@ -125,7 +125,7 @@ class ElderlyController extends Controller
         $addressElderly->Longitude_position = $request->input('Longitude_position');
         $addressElderly->save();
 
-        return redirect()->route('staff-dashboard')->with('success', 'Elderly information updated successfully.');
+        return redirect()->route('staff-dashboard')->with('success', 'อัปเดตข้อมูลผู้สูงอายุเรียบร้อยแล้ว');
     }
 
     public function Deleteelderly($id)
@@ -139,7 +139,7 @@ class ElderlyController extends Controller
 
         $elderly->delete();
 
-        return redirect()->route('staff-dashboard')->with('success', 'Elderly information deleted successfully.');
+        return redirect()->route('staff-dashboard')->with('success', 'ลบข้อมูลผู้สูงอายุเรียบร้อยแล้ว');
     }
 
     public function searchLocation($id)

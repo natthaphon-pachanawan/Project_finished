@@ -15,6 +15,29 @@
             width: 100%;
             margin-bottom: 20px;
         }
+
+        .custom-file-upload {
+            display: inline-block;
+            padding: 6px 12px;
+            cursor: pointer;
+            background-color: #fb6340;
+            color: white;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+
+        .custom-file-upload:hover {
+            background-color: #ea3005;
+        }
+
+        #image-preview, #current-image {
+            margin-top: 15px;
+            max-width: 200px;
+            max-height: 200px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
     </style>
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -86,11 +109,24 @@
 
                     <div class="form-group">
                         <label for="Image_Elderly">รูปภาพ:</label>
-                        <input type="file" id="Image_Elderly" name="Image_Elderly" class="form-control" accept="image/*">
+                        <label for="Image_Elderly" class="custom-file-upload">
+                            เลือกรูปภาพ
+                        </label>
+                        <input type="file" id="Image_Elderly" name="Image_Elderly" class="form-control" accept="image/*" style="display: none;" onchange="previewImage(event)">
+
+                        <!-- แสดงรูปภาพปัจจุบัน -->
                         @if($elderly->Image_Elderly)
-                        <img src="{{ asset('storage/'.$elderly->Image_Elderly) }}" alt="Elderly Image" width="100">
+                        <div id="current-image-container" style="margin-top: 15px;">
+                            <img src="{{ asset('storage/'.$elderly->Image_Elderly) }}" alt="Elderly Image" id="current-image" style="max-width: 200px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+                        </div>
                         @endif
+
+                        <!-- แสดงรูปภาพที่เลือกใหม่ -->
+                        <div id="new-image-container" style="display: none; margin-top: 15px;">
+                            <img id="image-preview" src="#" alt="Image Preview" style="max-width: 200px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+                        </div>
                     </div>
+
 
                     <div id="map"></div>
 
@@ -239,6 +275,27 @@
             let fullAddress = `จังหวัด${province} อำเภอ${district} ตำบล${subdistrict} ${detailedAddress} รหัสไปรษณีย์ ${postalCode}`;
             $('#Address').val(fullAddress);
         }
+
+        function previewImage(event) {
+            const imagePreview = document.getElementById('image-preview');
+            const newImageContainer = document.getElementById('new-image-container');
+            const currentImageContainer = document.getElementById('current-image-container');
+            const file = event.target.files[0];
+
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    imagePreview.src = e.target.result;
+                    newImageContainer.style.display = 'block';
+                    currentImageContainer.style.display = 'none'; // ซ่อนรูปภาพปัจจุบันเมื่อมีการเลือกภาพใหม่
+                }
+                reader.readAsDataURL(file);
+            } else {
+                newImageContainer.style.display = 'none';
+                currentImageContainer.style.display = 'block'; // แสดงรูปภาพปัจจุบันหากไม่มีการเลือกภาพใหม่
+            }
+        }
+
     </script>
 </body>
 
