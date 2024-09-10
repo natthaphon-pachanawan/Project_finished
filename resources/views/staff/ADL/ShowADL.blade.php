@@ -62,13 +62,11 @@
                                                         data-bs-target="#adlModal-{{ $adl->ID_ADL }}">ดูข้อมูล</button>
                                                     <a href="{{ route('adl.edit', ['id' => $adl->ID_ADL]) }}"
                                                         class="btn btn-warning btn-sm">แก้ไข</a>
-                                                    <form action="{{ route('adl.destroy', ['id' => $adl->ID_ADL]) }}"
-                                                        method="POST" style="display:inline-block;"
-                                                        onsubmit="return confirm('คุณแน่ใจหรือไม่ว่าต้องการลบ ?');">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" class="btn btn-danger btn-sm">ลบ</button>
-                                                    </form>
+                                                        <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete('{{ $adl->ID_ADL }}')">ลบ</button>
+                                                        <form id="delete-adl-form-{{ $adl->ID_ADL }}" action="{{ route('adl.destroy', ['id' => $adl->ID_ADL]) }}" method="POST" style="display: none;">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                        </form>
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -153,8 +151,33 @@
 
     <script>
         $(document).ready(function() {
-            $('#adlTable').DataTable();
+            $('#adlTable').DataTable({
+                "language": {
+                    "paginate": {
+                        "previous": "ก่อนหน้า",
+                        "next": "ถัดไป"
+                    }
+                },
+                "dom": '<"row"<"col-sm-12 col-md-12"l><"col-sm-12 col-md-12"f>>t<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-2 d-flex justify-content-center"p>>'
+             });
         });
+
+        function confirmDelete(id) {
+            Swal.fire({
+                title: 'คุณแน่ใจหรือไม่?',
+                text: "คุณจะไม่สามารถย้อนกลับได้หลังจากลบ!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'ยืนยัน',
+                cancelButtonText: 'ยกเลิก'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('delete-adl-form-' + id).submit();
+                }
+            });
+        }
     </script>
 </body>
 

@@ -269,10 +269,7 @@
                                 class="form-control">
                         </div>
 
-                        <div class="form-group">
-                            <label for="problems_found">ปัญหาที่พบ</label>
-                            <textarea id="problems_found" name="problems_found" class="form-control" rows="5"></textarea>
-                        </div>
+                        
                         <button class="btn btn-primary" type="submit">บันทึก</button>
                         <a href="{{ route('acg.index') }}" class="btn btn-secondary">กลับไปหน้า ACG</a>
                     </form>

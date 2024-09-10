@@ -40,6 +40,11 @@ Route::get('/', function () {
     return view('welcome', compact('sliders', 'news', 'visitorCount', 'adlAssessmentCount', 'cgAssessmentCount', 'adlGroupCounts'));
 })->name('welcome');
 
+Route::get('/news/{id}', function ($id) {
+    $newsItem = App\Models\News::findOrFail($id);
+    return view('layout.newshow', compact('newsItem'));
+})->name('news.show');
+
 
 Route::get('add-personnel-types', [PersonnelController::class, 'addPersonnelTypes']);
 Route::get('add-user', [UserController::class, 'addUser']);
@@ -78,7 +83,16 @@ Route::controller(ElderlyController::class)->group(function () {
 });
 
 
+Route::get('/contact', function () {
+    return view('layout.contact');})->name('contact');
+Route::get('/about', function () {
+    return view('layout.about');})->name('about');
+Route::get('/about/history', function () {
+    return view('layout.history');})->name('history');
+Route::get('/about/vision', function () {
+    return view('layout.vision');})->name('vision');
 
+Route::get('/about/personnel', [PersonnelController::class, 'showPersonnel']);
 
 
 
@@ -102,7 +116,14 @@ Route::middleware(['CheckLogin', 'IsAdmin'])->group(function () {
     Route::get('register-user', [AdminController::class, 'registerUser'])->name('user.register');
     Route::post('register-submit', [AdminController::class, 'submitUser'])->name('register.submit');
     Route::delete('user-delete/{id}', [AdminController::class, 'deleteUser'])->name('user.delete');
-    Route::get('report-user', [AdminController::class, 'ReportUser'])->name('admin.report-user');
+    Route::get('/admin/report-user-pdf', [AdminController::class, 'ReportUser'])->name('admin.report-user');
+
+    // In your web.php or routes file
+    Route::get('/admin/report-user-pdf-content', function () {
+    // Return only the report content without sidebar/layout
+    return view('admin.report-admin');
+    });
+
 
     Route::get('layout-admin', [AdminController::class, 'ShowlayoutAdmin'])->name('admin.layout-admin');
 
@@ -172,6 +193,6 @@ Route::middleware(['CheckLogin', 'IsDoctor'])->group(function () {
         Route::delete('/ci/{id}', 'DestroyCI')->name('ci.destroy');
         Route::get('ci/{id}/edit', 'editCI')->name('ci.edit');
         Route::put('/ci/{id}', 'updateCI')->name('ci.update');
-        Route::get('report-ci', 'ReportCI')->name('report.ci');
+        Route::get('/care-instructions/report', 'ReportCI')->name('report.ci');
     });
 });

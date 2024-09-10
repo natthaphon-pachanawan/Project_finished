@@ -1,8 +1,8 @@
-<aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3" id="sidenav-main" style="top: 70px;">
+<aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3" id="sidenav-main" style="top: 80px; background-color: #355e3b;">
     <div class="sidenav-header">
         <i class="fas fa-times p-3 text-white opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
-        <a class="navbar-brand m-0" href="javascript:void(0)">
-            <span class="ms-1 font-weight-bold text-white">Admin Dashboard</span>
+        <a class="navbar-brand m-0" href="javascript:void(0)" style="text-align: center;">
+            <h6 class="ms-1 font-weight-bold text-white">เมนูของผู้ดูแลระบบ</h6>
         </a>
     </div>
     <hr class="horizontal light mt-0 mb-2">
@@ -33,11 +33,11 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-white {{ Request::is('report-user') ? 'active bg-gradient-primary' : '' }}" href="/report-user">
+                <a class="nav-link text-white {{ Request::is('/admin/report-user-pdf') ? 'active bg-gradient-primary' : '' }}" href="/admin/report-user-pdf">
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="material-icons opacity-10">article</i>
                     </div>
-                    <span class="nav-link-text ms-1">ออกรายงานผู้ใช้</span>
+                    <span class="nav-link-text ms-1">รายงานผู้ใช้</span>
                 </a>
             </li>
         </ul>
@@ -68,10 +68,10 @@
 
     .sidebar-toggle-btn {
         position: fixed;
-        top: 110px; /* ปรับค่าตามต้องการเพื่อให้ปุ่มอยู่ในตำแหน่งที่เหมาะสม */
+        top: 130px; /* ปรับค่าตามต้องการเพื่อให้ปุ่มอยู่ในตำแหน่งที่เหมาะสม */
         left: 260px; /* เริ่มต้นที่ตำแหน่งปกติของ sidebar */
         z-index: 1100;
-        background-color: #333;
+        background-color: #355e3b;
         border: none;
         color: white;
         cursor: pointer;

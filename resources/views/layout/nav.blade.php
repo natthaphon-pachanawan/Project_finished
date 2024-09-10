@@ -11,17 +11,29 @@
     <link href="{{ asset('assets/css/nucleo-icons.css') }}" rel="stylesheet" />
     <link href="{{ asset('assets/css/nucleo-svg.css') }}" rel="stylesheet" />
 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <style>
+
+        .dataTables_wrapper .dataTables_paginate {
+            display: flex;
+            justify-content: center;
+
+        }
+
         body {
             font-family: 'Open Sans', sans-serif;
-            margin: 0;
-            padding: 0;
-            padding-top: 70px;
-        }
+            font-size: 1rem;
+            font-weight: 400;
+            line-height: 1.5;
+            padding-top: 80px;
+            color: #67748e; /* Matches the color from the template */
+            background-color: #fff;
+          }
+
 
         .navbar {
             width: 100%;
-            background-color: #333;
+            background-color: #014421;
             color: #fff;
             padding: 15px;
             position: fixed;
@@ -40,7 +52,7 @@
         }
 
         .navbar .logo img {
-            height: 50px;
+            height: 60px;
             margin-right: 10px;
         }
 
@@ -52,7 +64,7 @@
         }
 
         .navbar .nav-links a:hover {
-            color: #f0ad4e;
+            color: #a2fff6;
         }
 
         .navbar .user-info {
@@ -93,7 +105,7 @@
         .navbar .notifications .dropdown a {
             display: block;
             padding: 10px 20px;
-            color: #333;
+            color: #355e3b;
             text-decoration: none;
             border-bottom: 1px solid #f4f4f4;
             transition: background-color 0.3s ease;
@@ -119,7 +131,7 @@
 
         .fa-cog:hover {
             transform: rotate(90deg);
-            color: #f0ad4e;
+            color: #a2fff6;
         }
 
         .shake {
@@ -165,7 +177,7 @@
             position: absolute;
             top: 20px;
             right: -30px;
-            background-color: #333;
+            background-color: #355e3b;
             color: #fff;
             border: none;
             padding: 10px;
@@ -176,19 +188,67 @@
         .sidebar.collapsed {
             transform: translateX(-260px);
         }
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #014421;
+            min-width: 200px;
+            top : 100%;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            z-index: 1;
+        }
+
+        .dropdown-content a {
+            color: #355e3b;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #037138;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .menu-item-has-children {
+            position: relative;
+        }
+
     </style>
 </head>
 
 <body>
     <div class="navbar">
         <div class="logo">
-            <img src="{{ asset('images/Logo.webp') }}" alt="Logo">
-            <span>การพัฒนาระบบประเมินความสามารถในการดำเนินกิจวัตรประจำวันของผู้สูงอายุที่มีภาวะพึ่งพิง</span>
+            <img src="{{ asset('images/Logo.png') }}" alt="Logo">
+            <div>
+                <span style="font-size: 18px; font-weight: 500; color: #fff;">ระบบประเมินความสามารถในการดำเนินกิจวัตรประจำวันของผู้สูงอายุ</span>
+                <br>
+                <span style="font-size: 14px; font-weight: 400; color: #e6fffc;">Barthel Activities of Daily Living</span>
+            </div>
         </div>
+
         <div class="nav-links">
-            <a href="{{ url('/') }}">หน้าหลัก</a>
-            {{--  <a href="/contact">ติดต่อเรา</a>  --}}
+            <a href="/">หน้าหลัก</a>
+        <div class="dropdown">
+            <a href="/about">เกี่ยวกับ</a>
+            <div class="dropdown-content">
+                <a href="/about/history">ประวัติสำนักงาน</a>
+                <a href="/about/personnel">คณะบุคลากร</a>
+                <a href="/about/vision">วิสัยทัศน์/พันธกิจ</a>
+            </div>
         </div>
+        <a href="/contact">ติดต่อเรา</a>
+    </div>
+
         @if (Auth::check())
             <div class="user-info">
                 <a href="{{ url('profile-user') }}">
@@ -221,7 +281,7 @@
                     <form action="{{ route('logout') }}" method="POST">
                         @csrf
                         <button type="submit"
-                            style="all: unset; cursor: pointer; color: #333; text-decoration: none; padding: 12px 20px; font-size: 16px; display: block;">
+                            style="all: unset; cursor: pointer; color: #355e3b; text-decoration: none; padding: 12px 20px; font-size: 16px; display: block;">
                             ออกจากระบบ
                         </button>
                     </form>
@@ -243,6 +303,8 @@
         @endif
     @endif
 
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         function toggleDropdown() {
             var dropdown = document.getElementById("userDropdown");
@@ -275,6 +337,23 @@
         function toggleSidebar() {
             var sidebar = document.querySelector('.sidenav');
             sidebar.classList.toggle('collapsed');
+        }
+
+        document.querySelector('.dropbtn').addEventListener('click', function() {
+            var dropdownContent = this.nextElementSibling;
+            dropdownContent.style.display = dropdownContent.style.display === 'block' ? 'none' : 'block';
+        });
+
+        window.onclick = function(event) {
+            if (!event.target.matches('.dropbtn')) {
+                var dropdowns = document.getElementsByClassName('dropdown-content');
+                for (var i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                    if (openDropdown.style.display === 'block') {
+                        openDropdown.style.display = 'none';
+                    }
+                }
+            }
         }
     </script>
 

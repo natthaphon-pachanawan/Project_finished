@@ -234,7 +234,7 @@ class CGController extends Controller
             'take_to_allowance' => 'nullable|string',
             'talk_as_friends' => 'nullable|string',
             'other_social_specified' => 'nullable|string',
-            'problems_found' => 'nullable|string',
+
         ]);
 
         $activityData = [
@@ -256,7 +256,7 @@ class CGController extends Controller
             'Take_to_allowance' => $request->take_to_allowance,
             'Talk_as_friends' => $request->talk_as_friends,
             'Other_specified' => $request->other_social_specified,
-            'Problem' => $request->problems_found,
+
         ];
 
         $activity = ActivityCaregiver::findOrFail($id);
@@ -301,7 +301,7 @@ class CGController extends Controller
             'take_to_allowance' => 'nullable|string',
             'talk_as_friends' => 'nullable|string',
             'other_social_specified' => 'nullable|string',
-            'problems_found' => 'nullable|string',
+
         ]);
 
         $careGiverId = $this->getLatestCareGiverId($request->ID_Elderly, $request->activity_date);
@@ -330,7 +330,7 @@ class CGController extends Controller
             'Take_to_allowance' => $request->take_to_allowance,
             'Talk_as_friends' => $request->talk_as_friends,
             'Other_specified' => $request->other_social_specified,
-            'Problem' => $request->problems_found,
+
         ];
 
         $activity = new ActivityCaregiver();

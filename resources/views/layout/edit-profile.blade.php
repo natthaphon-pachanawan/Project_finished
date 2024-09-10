@@ -119,7 +119,7 @@
                 <input type="text" id="Name_User" name="Name_User" value="{{ $user->Name_User }}" required>
             </div>
             <div class="form-group">
-                <label for="Email">Email</label>
+                <label for="Email">อีเมล</label>
                 <input type="email" id="Email" name="Email" value="{{ $user->Email }}" required>
             </div>
 
