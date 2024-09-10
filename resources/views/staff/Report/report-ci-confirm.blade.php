@@ -5,96 +5,49 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>รายงานคำแนะนำการดูแลที่ยืนยันแล้ว</title>
-    <link href="{{ asset('assets/css/argon-dashboard.css') }}" rel="stylesheet" />
-    <link href="{{ asset('assets/css/nucleo-icons.css') }}" rel="stylesheet" />
-    <link href="{{ asset('assets/css/nucleo-svg.css') }}" rel="stylesheet" />
-    <style>
-        body {
-            width: 210mm;
-            height: 297mm;
-            margin: 0;
-            padding: 20mm;
-            font-family: Arial, sans-serif;
-            font-size: 12px;
-            color: #333;
-            background-color: #fff;
-        }
 
-        .container {
-            padding: 10mm;
-            border: 1px solid #000;
-            border-radius: 5px;
-        }
-
-        h1 {
-            text-align: center;
-            margin-bottom: 20px;
-            font-size: 24px;
-            color: #333;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-        }
-
-        table, th, td {
-            border: 1px solid black;
-        }
-
-        th, td {
-            padding: 8px;
-            text-align: left;
-        }
-
-        th {
-            background-color: #f2f2f2;
-        }
-
-        .page-break {
-            page-break-before: always;
-        }
-    </style>
 </head>
 
 <body>
 
     <div class="container">
-        <h1>รายงานคำแนะนำการดูแลที่ยืนยันแล้ว</h1>
+        <h5>
+            <img src="{{ asset('images/Logo.png') }}" alt="Logo">
+            รายงานคำแนะนำการดูแลที่ยืนยันแล้ว
+        </h5>
         <table>
             <thead>
                 <tr>
-                    <th>วันที่</th>
-                    <th>ชื่อผู้สูงอายุ</th>
-                    <th>ชื่อหมอ</th>
-                    <th>ชื่อเจ้าหน้าที่</th>
-                    <th>คำแนะนำ</th>
+                    <th class="date-col">วันที่</th>
+                    <th class="name-col">ชื่อผู้สูงอายุ</th>
+                    <th class="doctor-col">ชื่อนายแพทย์</th>
+                    <th class="staff-col">ชื่อเจ้าหน้าที่</th>
+                    <th class="instructions-col">คำแนะนำ</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach($careInstructions as $ci)
+                @foreach($careInstructions as $index => $ci)
+                @if ($index % 17 == 0 && $index != 0)
+                <tr class="page-break">
+                    <th class="date-col">วันที่</th>
+                    <th class="name-col">ชื่อผู้สูงอายุ</th>
+                    <th class="doctor-col">ชื่อนายแพทย์</th>
+                    <th class="staff-col">ชื่อเจ้าหน้าที่</th>
+                    <th class="instructions-col">คำแนะนำ</th>
+                </tr>
+                @endif
                 <tr>
-                    <td>{{ $ci->Date_CI }}</td>
-                    <td>{{ $ci->Name_Elderly }}</td>
-                    <td>{{ $ci->Name_Doctor }}</td>
-                    <td>{{ $ci->Name_Staff }}</td>
-                    <td>{{ $ci->Care_instructions }}</td>
+                    <td class="date-col">{{ $ci->Date_CI ?? 'ไม่มีข้อมูล' }}</td>
+                    <td class="name-col">{{ $ci->Name_Elderly ?? 'ไม่มีข้อมูล' }}</td>
+                    <td class="doctor-col">{{ $ci->Name_Doctor ?? 'ไม่มีข้อมูล' }}</td>
+                    <td class="staff-col">{{ $ci->Name_Staff ?? 'ไม่มีข้อมูล' }}</td>
+                    <td class="instructions-col">{{ $ci->Care_instructions ?? 'ไม่มีข้อมูล' }}</td>
                 </tr>
                 @endforeach
             </tbody>
         </table>
     </div>
 
-    <script>
-        window.onafterprint = function() {
-            window.history.back();
-        };
-
-        setTimeout(function() {
-            window.print();
-        }, 1000);
-    </script>
 </body>
 
 </html>

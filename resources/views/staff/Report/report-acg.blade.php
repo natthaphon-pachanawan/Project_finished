@@ -8,84 +8,17 @@
     <link href="{{ asset('assets/css/argon-dashboard.css') }}" rel="stylesheet" />
     <link href="{{ asset('assets/css/nucleo-icons.css') }}" rel="stylesheet" />
     <link href="{{ asset('assets/css/nucleo-svg.css') }}" rel="stylesheet" />
-    <style>
-        body {
-            width: 210mm;
-            height: 297mm;
-            margin: 0;
-            padding: 20mm;
-            font-family: Arial, sans-serif;
-            font-size: 14px;
-            color: #333;
-            background-color: #fff;
-        }
 
-        .container {
-            padding: 10mm;
-            border: 1px solid #000;
-            border-radius: 5px;
-        }
-
-        h1 {
-            text-align: center;
-            margin-bottom: 20px;
-            font-size: 24px;
-            color: #333;
-        }
-
-        .section-title {
-            font-size: 18px;
-            margin-top: 20px;
-            margin-bottom: 10px;
-            font-weight: bold;
-            color: #444;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-        }
-
-        table,
-        th,
-        td {
-            border: 1px solid black;
-        }
-
-        th,
-        td {
-            padding: 8px;
-            text-align: left;
-        }
-
-        th {
-            background-color: #f2f2f2;
-        }
-
-        .info {
-            margin-bottom: 15px;
-        }
-
-        .info label {
-            font-weight: bold;
-        }
-
-        .info span {
-            display: block;
-            margin-top: 5px;
-        }
-
-        .page-break {
-            page-break-before: always;
-        }
-    </style>
 </head>
 
 <body>
 
     <div class="container">
-        <h1>รายงานกิจกรรมการดูแลผู้สูงอายุ</h1>
+
+        <div style="text-align: center;">
+            <img src="{{ asset('images/Logo.png') }}" alt="Logo" style="width: 100px; height: auto; padding-bottom: 15px;">
+        </div>
+        <h5>รายงานกิจกรรมการดูแลผู้สูงอายุ</h5>
 
         <div class="section-title">ข้อมูลทั่วไป</div>
         <table>
@@ -154,48 +87,32 @@
         <div class="section-title page-break">กิจกรรมด้านสังคม</div>
         <table>
             <tr>
-                <th>พาไปทำบุญ</th>
-                <td>{{ $activity->Take_to_make_merit ?? 'ไม่มีข้อมูล' }}</td>
+                <th style="width: 50%">พาไปทำบุญ</th>
+                <td style="width: 50%">{{ $activity->Take_to_make_merit ?? 'ไม่มีข้อมูล' }}</td>
             </tr>
             <tr>
-                <th>พาไปจ่ายตลาด</th>
-                <td>{{ $activity->Take_to_market ?? 'ไม่มีข้อมูล' }}</td>
+                <th style="width: 50%">พาไปจ่ายตลาด</th>
+                <td style="width: 50%">{{ $activity->Take_to_market ?? 'ไม่มีข้อมูล' }}</td>
             </tr>
             <tr>
-                <th>พาไปพบเพื่อน</th>
-                <td>{{ $activity->Take_to_meet_friends ?? 'ไม่มีข้อมูล' }}</td>
+                <th style="width: 50%">พาไปพบเพื่อน</th>
+                <td style="width: 50%">{{ $activity->Take_to_meet_friends ?? 'ไม่มีข้อมูล' }}</td>
             </tr>
             <tr>
-                <th>พาไปรับเบี้ย</th>
-                <td>{{ $activity->Take_to_allowance ?? 'ไม่มีข้อมูล' }}</td>
+                <th style="width: 50%">พาไปรับเบี้ย</th>
+                <td style="width: 50%">{{ $activity->Take_to_allowance ?? 'ไม่มีข้อมูล' }}</td>
             </tr>
             <tr>
-                <th>พูดคุยเป็นเพื่อน</th>
-                <td>{{ $activity->Talk_as_friends ?? 'ไม่มีข้อมูล' }}</td>
+                <th style="width: 50%">พูดคุยเป็นเพื่อน</th>
+                <td style="width: 50%">{{ $activity->Talk_as_friends ?? 'ไม่มีข้อมูล' }}</td>
             </tr>
             <tr>
-                <th>อื่น ๆ ระบุ</th>
-                <td>{{ $activity->Other_specified ?? 'ไม่มีข้อมูล' }}</td>
-            </tr>
-        </table>
-
-        <div class="section-title">ปัญหาที่พบและการช่วยเหลือ</div>
-        <table>
-            <tr>
-                <th>ปัญหาที่พบ</th>
-                <td>{{ $activity->Problem ?? 'ไม่มีข้อมูล' }}</td>
+                <th style="width: 50%">อื่น ๆ ระบุ</th>
+                <td style="width: 50%">{{ $activity->Other_specified ?? 'ไม่มีข้อมูล' }}</td>
             </tr>
         </table>
     </div>
-    <script>
-        window.onafterprint = function () {
-            window.history.back();
-        };
 
-        setTimeout(function () {
-            window.print();
-        }, 1000);
-    </script>
 </body>
 
 </html>

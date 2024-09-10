@@ -5,87 +5,70 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>รายงาน Care Giver รายบุคคล</title>
-    <link href="{{ asset('assets/css/argon-dashboard.css') }}" rel="stylesheet" />
-    <link href="{{ asset('assets/css/nucleo-icons.css') }}" rel="stylesheet" />
-    <link href="{{ asset('assets/css/nucleo-svg.css') }}" rel="stylesheet" />
-    <style>
-        body {
-            width: 210mm;
-            height: 297mm;
-            margin: 0;
-            padding: 20mm;
-            font-family: Arial, sans-serif;
-            font-size: 12px;
-        }
-
-        .container {
-            padding: 10mm;
-            border: 1px solid #000;
-            border-radius: 5px;
-        }
-
-        h1 {
-            text-align: center;
-            margin-bottom: 20px;
-            font-size: 24px;
-        }
-
-        .info-section {
-            margin-bottom: 20px;
-        }
-
-        .info-section h2 {
-            margin-bottom: 10px;
-            font-size: 18px;
-            border-bottom: 2px solid #000;
-            padding-bottom: 5px;
-        }
-
-        .info-section p {
-            margin: 5px 0;
-            font-size: 14px;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-        }
-
-        table, th, td {
-            border: 1px solid black;
-        }
-
-        th, td {
-            padding: 8px;
-            text-align: left;
-        }
-
-        th {
-            background-color: #f2f2f2;
-        }
-    </style>
 </head>
 
 <body>
 
     <div class="container">
-        <h1>รายงาน Care Giver รายบุคคล</h1>
+        <div style="text-align: center;">
+            <img src="{{ asset('images/Logo.png') }}" alt="Logo" style="width: 100px; height: auto; padding-bottom: 15px;">
+        </div>
+        <h5>รายงาน Care Giver รายบุคคล</h5>
         <div class="info-section">
-            <h2>ข้อมูลทั่วไป</h2>
-            <p><strong>ชื่อผู้สูงอายุ:</strong> {{ $cg->elderly->Name_Elderly ?? 'ไม่มีข้อมูล' }}</p>
-            <p><strong>ชื่อผู้ดูแลผู้สูงอายุ:</strong> {{ $cg->Name_CG ?? 'ไม่มีข้อมูล' }}</p>
-            <p><strong>เกี่ยวข้องเป็น:</strong> {{ $cg->Related ?? 'ไม่มีข้อมูล' }}</p>
-            <p><strong>เบอร์ติดต่อ:</strong> {{ $cg->Phone_CG ?? 'ไม่มีข้อมูล' }}</p>
-            <p><strong>อายุ:</strong> {{ $cg->Age ?? 'ไม่มีข้อมูล' }}</p>
-            <p><strong>ที่อยู่:</strong> {{ $cg->Address ?? 'ไม่มีข้อมูล' }}</p>
-            <p><strong>น้ำหนักตัว:</strong> {{ $cg->Weight ?? 'ไม่มีข้อมูล' }} กก.</p>
-            <p><strong>ส่วนสูง:</strong> {{ $cg->Height ?? 'ไม่มีข้อมูล' }} ซม.</p>
-            <p><strong>รอบเอว:</strong> {{ $cg->Waist ?? 'ไม่มีข้อมูล' }} ซม.</p>
-            <p><strong>กลุ่ม ADL:</strong> {{ $cg->Group_ADL ?? 'ไม่มีข้อมูล' }}</p>
-            <p><strong>โรคประจำตัว:</strong> {{ $cg->Disease ?? 'ไม่มีข้อมูล' }}</p>
-            <p><strong>ความพิการ:</strong> {{ $cg->Disability ?? 'ไม่มีข้อมูล' }}</p>
-            <p><strong>สิทธิการรักษา:</strong> {{ $cg->Rights ?? 'ไม่มีข้อมูล' }}</p>
+            <table>
+                <tr>
+                    <th>ชื่อผู้สูงอายุ</th>
+                    <td>{{ $cg->elderly->Name_Elderly ?? 'ไม่มีข้อมูล' }}</td>
+                </tr>
+                <tr>
+                    <th>ชื่อผู้ดูแลผู้สูงอายุ</th>
+                    <td>{{ $cg->Name_CG ?? 'ไม่มีข้อมูล' }}</td>
+                </tr>
+                <tr>
+                    <th>เกี่ยวข้องเป็น</th>
+                    <td>{{ $cg->Related ?? 'ไม่มีข้อมูล' }}</td>
+                </tr>
+                <tr>
+                    <th>เบอร์ติดต่อ</th>
+                    <td>{{ $cg->Phone_CG ?? 'ไม่มีข้อมูล' }}</td>
+                </tr>
+                <tr>
+                    <th>อายุ</th>
+                    <td>{{ $cg->Age ?? 'ไม่มีข้อมูล' }}</td>
+                </tr>
+                <tr>
+                    <th>ที่อยู่</th>
+                    <td>{{ $cg->Address ?? 'ไม่มีข้อมูล' }}</td>
+                </tr>
+                <tr>
+                    <th>น้ำหนักตัว</th>
+                    <td>{{ $cg->Weight ?? 'ไม่มีข้อมูล' }} กก.</td>
+                </tr>
+                <tr>
+                    <th>ส่วนสูง</th>
+                    <td>{{ $cg->Height ?? 'ไม่มีข้อมูล' }} ซม.</td>
+                </tr>
+                <tr>
+                    <th>รอบเอว</th>
+                    <td>{{ $cg->Waist ?? 'ไม่มีข้อมูล' }} ซม.</td>
+                </tr>
+                <tr>
+                    <th>กลุ่ม ADL</th>
+                    <td>{{ $cg->Group_ADL ?? 'ไม่มีข้อมูล' }}</td>
+                </tr>
+                <tr>
+                    <th>โรคประจำตัว</th>
+                    <td>{{ $cg->Disease ?? 'ไม่มีข้อมูล' }}</td>
+                </tr>
+                <tr>
+                    <th>ความพิการ</th>
+                    <td>{{ $cg->Disability ?? 'ไม่มีข้อมูล' }}</td>
+                </tr>
+                <tr>
+                    <th>สิทธิการรักษา</th>
+                    <td>{{ $cg->Rights ?? 'ไม่มีข้อมูล' }}</td>
+                </tr>
+            </table>
         </div>
 
         <table>
@@ -183,15 +166,6 @@
             </tbody>
         </table>
     </div>
-    <script>
-        window.onafterprint = function() {
-            window.history.back();
-        };
-
-        setTimeout(function() {
-            window.print();
-        }, 1000);
-    </script>
 </body>
 
 </html>

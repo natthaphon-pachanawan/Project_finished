@@ -160,7 +160,7 @@ Route::middleware(['CheckLogin', 'IsStaff'])->group(function () {
     Route::delete('cg-destroy/{id}', [CGController::class, 'destroy'])->name('cg.destroy');
     Route::get('cg-create', [CGController::class, 'create'])->name('cg.create');
     Route::post('cg-store', [CGController::class, 'store'])->name('cg.store');
-    Route::get('report-all-cg', [CGController::class, 'ReportCGAll'])->name('report.all.cg');
+    Route::get('/report-all-cg', [CGController::class, 'ReportCGAll'])->name('report.all.cg');
     Route::get('report-cg/{id}', [CGController::class, 'ReportCG'])->name('report.cg');
 
 
@@ -174,6 +174,7 @@ Route::middleware(['CheckLogin', 'IsStaff'])->group(function () {
     Route::get('report-acg/{id}', [CGController::class, 'ReportACG'])->name('report.acg');
 
     Route::get('staff-ci', [CIController::class, 'ShowStaffCI'])->name('staff.ci.index');
+    Route::get('staff-unconfirm', [CIController::class, 'ShowUnconfirmCI'])->name('staff.ci.unconfirm');
     Route::put('staff-ci/{id}/confirm', [CIController::class, 'confirmCI'])->name('ci.confirm');
     Route::put('ci/{id}/unconfirm', [CIController::class, 'unconfirmCI'])->name('ci.unconfirm');
     Route::get('report-ci-confirm', [CIController::class, 'ReportCIConfirm'])->name('report.ci.confirm');

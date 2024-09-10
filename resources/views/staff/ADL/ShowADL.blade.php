@@ -295,25 +295,75 @@
                                 color: black !important;
                                 background-color: white !important;
                             }
-                            h1 {
-                                font-size: 24px;
-                                text-align: center;
-                            }
-                            table {
-                                width: 100%;
-                                border-collapse: collapse;
-                                margin-bottom: 20px;
-                            }
-                            th, td {
-                                padding: 8px;
-                                text-align: left;
-                                border: 1px solid black;
-                            }
-                            .page-break {
-                                page-break-before: always;
-                            }
+                            <style>
+                                body {
+                                display: flex;
+                                justify-content: center;  /* จัดกึ่งกลางในแนวนอน */
+                                align-items: center;      /* จัดกึ่งกลางในแนวตั้ง */
+                                height: 100vh;            /* ใช้ 100% ของความสูงหน้ากระดาษ */
+                                margin: 0;                /* ลบ margin ของ body */
+                                }
+
+                                img {
+                                max-width: 100px;  /* กำหนดขนาดรูปภาพ */
+                                height: auto;
+                                }
+
+                                h5 {
+                                    text-align: center;
+                                    margin-bottom: 20px;
+                                    font-size: 24px;
+                                }
+
+                                table {
+                                    width: 100%;
+                                    border-collapse: collapse;
+                                    margin-bottom: 20px;
+                                    page-break-inside: avoid;
+                                }
+
+                                table,
+                                th,
+                                td {
+                                    border: 1px solid black;
+                                }
+
+                                th,
+                                td {
+                                    padding: 8px;
+                                    text-align: left;
+                                }
+
+                               td {
+                                    font-size: 12px;
+                                }
+
+                                .questions {
+                                    margin-top: 20px;
+                                    page-break-inside: avoid;
+                                }
+
+                                .questions table {
+                                    width: 100%;
+                                    border-collapse: collapse;
+                                }
+
+                                .questions th,
+                                .questions td {
+                                    border: 1px solid black;
+                                    padding: 8px;
+                                }
+
+                                .questions th {
+                                    background-color: #f2f2f2;
+                                }
+
+                                .page-break {
+                                    page-break-after: always;
+                                }
+                            </style>
                         `;
-                        doc.head.appendChild(style);
+                        element.appendChild(style);
 
                         // Configure PDF options
                         const opt = {
