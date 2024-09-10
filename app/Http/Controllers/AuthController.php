@@ -50,7 +50,7 @@ class AuthController extends Controller
         }
 
         // If password is incorrect, return with error
-        return back()->with('fail', 'Incorrect password.');
+        return back()->with('fail', 'รหัสผ่านไม่ถูกต้อง');
     }
 
     // public function showPasswordRequestForm()

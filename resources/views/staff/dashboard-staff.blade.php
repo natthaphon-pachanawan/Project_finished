@@ -45,7 +45,7 @@
                 <div class="col-12">
                     <div class="card mb-4">
                         <div class="card-header pb-0 d-flex justify-content-between align-items-center">
-                            <h6>ข้อมูลประวัติส่วนตัวของผู้สูงอายุ</h6>
+                            <h4>ข้อมูลประวัติส่วนตัวของผู้สูงอายุ</h4>
                             <a href="{{ route('elderly-report') }}" class="btn btn-success ml-2">
                                 <i class="fas fa-file-pdf"></i> ออกรายงาน
                             </a>
@@ -104,13 +104,11 @@
                                                         target="_blank" class="btn btn-info">ค้นหาที่อยู่</a>
                                                     <a href="{{ route('edit-elderly', ['id' => $elderly->ID_Elderly]) }}"
                                                         class="btn btn-warning">แก้ไข</a>
-                                                    <form
-                                                        action="{{ route('delete-elderly', ['id' => $elderly->ID_Elderly]) }}"
-                                                        method="POST" style="display:inline-block;"
-                                                        onsubmit="return confirm('คุณแน่ใจหรือไม่ว่าต้องการลบ ?');">
+                                                        <button type="button" class="btn btn-danger" onclick="confirmDelete('{{ $elderly->ID_Elderly }}')">ลบ</button>
+                                                        <form action="{{ route('delete-elderly', ['id' => $elderly->ID_Elderly]) }}" method="POST" id="delete-form-{{ $elderly->ID_Elderly }}" style="display:none;">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button type="submit" class="btn btn-danger">ลบ</button>
+
                                                     </form>
                                                 </td>
                                             </tr>
@@ -202,8 +200,17 @@
     <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
     <script>
         $(document).ready(function() {
-            $('#myTable').DataTable();
+            $('#myTable').DataTable({
+                "language": {
+                    "paginate": {
+                        "previous": "ก่อนหน้า",
+                        "next": "ถัดไป"
+                    }
+                },
+                "dom": '<"row"<"col-sm-12 col-md-12"l><"col-sm-12 col-md-12"f>>t<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-2 d-flex justify-content-center"p>>'
+             });
         });
+
 
         document.addEventListener('DOMContentLoaded', function() {
             var ageGroups = @json($ageGroups);
@@ -425,6 +432,23 @@
             });
 
         });
+
+        function confirmDelete(id) {
+            Swal.fire({
+                title: 'คุณแน่ใจหรือไม่?',
+                text: "คุณจะไม่สามารถย้อนกลับได้หลังจากลบ!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'ยืนยัน',
+                cancelButtonText: 'ยกเลิก'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('delete-form-' + id).submit();
+                }
+            });
+        }
     </script>
 </body>
 

@@ -22,7 +22,7 @@
             <!-- Unconfirmed Care Instructions Card -->
             <div class="row">
                 <div class="col-12">
-                    <div class="card mb-4" style="max-width: 1200px; margin: auto;">
+                    <div class="card mb-4" >
                         <div class="card-header pb-0 d-flex justify-content-between align-items-center">
                             <h6>คำแนะนำการดูแลที่ยังไม่ได้ยืนยัน</h6>
                         </div>
@@ -73,7 +73,7 @@
             <!-- Confirmed Care Instructions Card -->
             <div class="row">
                 <div class="col-12">
-                    <div class="card mb-4" style="max-width: 1200px; margin: auto;">
+                    <div class="card mb-4">
                         <div class="card-header pb-0 d-flex justify-content-between align-items-center">
                             <h6>คำแนะนำการดูแลที่ยืนยันแล้ว</h6>
                             <a href="{{ route('report.ci.confirm') }}" class="btn btn-success ml-2">
@@ -143,8 +143,26 @@
 
     <script>
         $(document).ready(function() {
-            $('#ciTableUnconfirmed').DataTable();
-            $('#ciTableConfirmed').DataTable();
+            $('#ciTableUnconfirmed').DataTable({
+                "language": {
+                    "paginate": {
+                        "previous": "ก่อนหน้า",
+                        "next": "ถัดไป"
+                    }
+                },
+                "dom": '<"row"<"col-sm-12 col-md-12"l><"col-sm-12 col-md-12"f>>t<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-2 d-flex justify-content-center"p>>'
+             });
+        });
+        $(document).ready(function() {
+            $('#ciTableConfirmed').DataTable({
+                "language": {
+                    "paginate": {
+                        "previous": "ก่อนหน้า",
+                        "next": "ถัดไป"
+                    }
+                },
+                "dom": '<"row"<"col-sm-12 col-md-12"l><"col-sm-12 col-md-12"f>>t<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-2 d-flex justify-content-center"p>>'
+             });
         });
     </script>
 </body>

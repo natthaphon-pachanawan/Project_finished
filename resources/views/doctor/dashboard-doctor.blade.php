@@ -34,8 +34,10 @@
 <body>
     @include('layout.nav')
 
+    <br><br>
     <div class="container">
-        <h3>ข้อมูลผู้สูงอายุ</h3>
+        <h4>ข้อมูลผู้สูงอายุ</h4>
+        <br>
         <table id="doctorTable" class="table align-items-center mb-0">
             <thead>
                 <tr>
@@ -590,8 +592,17 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         $(document).ready(function() {
-            $('#doctorTable').DataTable();
+            $('#doctorTable').DataTable({
+                "language": {
+                    "paginate": {
+                        "previous": "ก่อนหน้า",
+                        "next": "ถัดไป"
+                    }
+                },
+                "dom": '<"row"<"col-sm-12 col-md-12"l><"col-sm-12 col-md-12"f>>t<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-3 d-flex justify-content-center"p>>'
+            });
         });
+
     </script>
 </body>
 

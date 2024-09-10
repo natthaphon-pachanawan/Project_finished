@@ -64,11 +64,13 @@
                                                 <td class="text-center">
                                                     <a href="{{ route('report.cg', ['id' => $cg->ID_CG]) }}" class="btn btn-success btn-sm">ออกรายงาน</a>
                                                     <a href="{{ route('cg.edit', ['id' => $cg->ID_CG]) }}" class="btn btn-warning btn-sm">แก้ไข</a>
-                                                    <form action="{{ route('cg.destroy', ['id' => $cg->ID_CG]) }}" method="POST" style="display:inline-block;" onsubmit="return confirm('คุณแน่ใจหรือไม่ว่าต้องการลบ ?');">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" class="btn btn-danger btn-sm">ลบ</button>
-                                                    </form>
+                                                    <form id="delete-cg-form-{{ $cg->ID_CG }}"
+                                                        action="{{ route('cg.destroy', ['id' => $cg->ID_CG]) }}"
+                                                        method="POST" style="display:inline-block;">
+                                                      @csrf
+                                                      @method('DELETE')
+                                                      <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete('{{ $cg->ID_CG }}')">ลบ</button>
+                                                  </form>
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -97,8 +99,34 @@
     <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
     <script>
         $(document).ready(function() {
-            $('#cgTable').DataTable();
+            $('#cgTable').DataTable({
+                "language": {
+                    "paginate": {
+                        "previous": "ก่อนหน้า",
+                        "next": "ถัดไป"
+                    }
+                },
+                "dom": '<"row"<"col-sm-12 col-md-12"l><"col-sm-12 col-md-12"f>>t<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-2 d-flex justify-content-center"p>>'
+             });
         });
+
+
+            function confirmDelete(id) {
+                Swal.fire({
+                    title: 'คุณแน่ใจหรือไม่?',
+                    text: "คุณจะไม่สามารถย้อนกลับได้หลังจากลบ!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'ยืนยัน',
+                    cancelButtonText: 'ยกเลิก'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        document.getElementById('delete-cg-form-' + id).submit();
+                    }
+                });
+            }
     </script>
 </body>
 

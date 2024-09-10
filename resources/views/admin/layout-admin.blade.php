@@ -9,6 +9,8 @@
     <link href="{{ asset('assets/css/nucleo-icons.css') }}" rel="stylesheet" />
     <link href="{{ asset('assets/css/nucleo-svg.css') }}" rel="stylesheet" />
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+    <!-- SweetAlert2 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <style>
         body {
             font-family: 'Open Sans', sans-serif;
@@ -30,29 +32,6 @@
         .statistics h2,
         .contact-form h2 {
             margin-bottom: 20px;
-        }
-
-        .news-item,
-        .stat-item {
-            margin-bottom: 15px;
-        }
-
-        .news-item h3,
-        .stat-item h3 {
-            margin-bottom: 5px;
-        }
-
-        .news-item p {
-            margin-bottom: 13px;
-        }
-
-        .news-item a {
-            color: #fb6340;
-            text-decoration: none;
-        }
-
-        .news-item a:hover {
-            text-decoration: underline;
         }
 
         .statistics .stats {
@@ -204,21 +183,18 @@
             margin: 5px 0 0;
         }
 
-        .news-item img {
-            cursor: pointer;
-            transition: transform 0.2s;
-        }
-
-        .news-item img:hover {
-            transform: scale(1.05);
-        }
-
         .news-container {
             background-color: #fff;
             border-radius: 10px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            margin-bottom: 20px;
+            padding: 10px;
+            margin-bottom: 50px;
+            /* ลด margin ลงเพื่อให้ card ชิดกันมากขึ้น */
+            height: 70%;
+            /* ให้ card เต็มความสูงของคอลัมน์ */
+            display: flex;
+            flex-direction: column;
+            /* จัดเลย์เอาต์ให้เป็นแบบ column เพื่อให้เนื้อหายืด */
         }
 
         .admin-buttons {
@@ -257,18 +233,6 @@
             object-fit: cover;
         }
 
-        @media (min-width: 600px) {
-            .image-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        @media (min-width: 900px) {
-            .image-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
         .image-item::after {
             content: "";
             display: block;
@@ -283,10 +247,6 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-        }
-
-        .image-item:hover img {
-            opacity: 0.5;
         }
 
         .image-grid {
@@ -339,68 +299,6 @@
             justify-content: center;
         }
 
-        /* Lightbox Styles */
-        .lightbox {
-            display: none;
-            position: fixed;
-            z-index: 9999;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.8);
-            justify-content: center;
-            align-items: center;
-        }
-
-        .lightbox-content {
-            position: relative;
-            margin: auto;
-            max-width: 90%;
-            max-height: 90%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .lightbox-content img {
-            max-width: 80%;
-            max-height: 80%;
-            object-fit: contain;
-            display: block;
-        }
-
-        .close-lightbox {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            color: white;
-            font-size: 30px;
-            cursor: pointer;
-        }
-
-        /* Lightbox navigation buttons */
-        .prev-lightbox,
-        .next-lightbox {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background-color: rgba(0, 0, 0, 0.5);
-            color: #fff;
-            border: none;
-            padding: 10px;
-            cursor: pointer;
-            font-size: 24px;
-        }
-
-        .prev-lightbox {
-            left: 10px;
-        }
-
-        .next-lightbox {
-            right: 10px;
-        }
-
         .short-content {
             display: block;
         }
@@ -408,6 +306,8 @@
         .full-content {
             display: none;
         }
+
+
     </style>
 </head>
 
@@ -426,156 +326,65 @@
         <button class="next" onclick="plusSlides(1)">&#10095;</button>
     </section>
     <div class="admin-buttons">
-        <button class="btn btn-primary" data-toggle="modal" data-target="#createSliderModal">เพิ่มรูปเลื่อนสไลด์</button>
+        <button class="btn btn-primary" data-toggle="modal"
+            data-target="#createSliderModal">เพิ่มรูปเลื่อนสไลด์</button>
         <button class="btn btn-primary" data-toggle="modal" data-target="#viewSliderModal">แก้ไขรูปเลื่อนสไลด์</button>
     </div>
 
     <div class="container-fluid">
         <div class="row">
-            <!-- จำนวนผู้เข้าชมเว็บไซต์ -->
-            <div class="col-sm-3">
-                <div class="dashboard-card">
-                    <div>
-                        <h3>จำนวนผู้เข้าชมเว็บไซต์</h3>
-                        <p>{{ $visitorCount }}</p>
-                    </div>
-                    <div class="icon">
-                        <i class="ni ni-tv-2"></i>
-                    </div>
-                </div>
-            </div>
             <!-- ข่าวสารประชาสัมพันธ์ -->
-            <div class="col-sm-6">
+            <div class="col-sm-9">
                 <section class="news">
-                    <div class="admin-buttons">
-                        <button class="btn btn-primary" data-toggle="modal"
-                            data-target="#createNewsModal">เพิ่มข่าวสาร</button>
-                    </div>
-                    <h2>ข่าวสารประชาสัมพันธ์</h2>
+                    <h3 style="text-align: center;">ข่าวสารประชาสัมพันธ์</h3>
+                </section>
+                <div class="admin-buttons">
+                    <button class="btn btn-primary" data-toggle="modal"
+                        data-target="#createNewsModal">เพิ่มข่าวสาร</button>
+                </div>
+                <div class="row">
                     @foreach ($news as $newsItem)
-                        <div class="news-container">
-                            <div class="news-item">
-                                <h3>{{ $newsItem->title }}</h3>
-                                <p class="short-content">
-                                    {{ Str::limit($newsItem->content, 150) }}
-                                    <a href="#" class="toggle-content"
-                                        onclick="toggleContent(event, this)">ดูเพิ่มเติม</a>
-                                </p>
-                                <p class="full-content" style="display: none;">
-                                    {{ $newsItem->content }}
-                                    <a href="#" class="toggle-content"
-                                        onclick="toggleContent(event, this)">ดูน้อยลง</a>
-                                </p>
-                                <div class="image-grid">
-                                    @foreach ($newsItem->images as $index => $image)
-                                        @if ($index < 1)
-                                            <div class="image-item">
-                                                <img src="{{ asset('storage/' . $image->image_path) }}"
-                                                    alt="{{ $newsItem->title }}"
-                                                    onclick="openLightbox('{{ asset('storage/' . $image->image_path) }}', [
-                                                        @foreach ($newsItem->images as $img) '{{ asset('storage/' . $img->image_path) }}', @endforeach
-                                                    ], {{ $index }})">
-                                            </div>
-                                        @endif
-                                    @endforeach
+                        <div class="col-md-6 col-lg-4 mb-4">
+                            <div class="card h-100">
+                                <img src="{{ $newsItem->images->first() ? asset('storage/' . $newsItem->images->first()->image_path) : asset('path/to/default/image.jpg') }}"
+     alt="ไม่มีรูปภาพ" class="card-img-top" style="height: 180px; object-fit: cover;">
 
-                                    @if (count($newsItem->images) === 2)
-                                        <div class="image-item">
-                                            <img src="{{ asset('storage/' . $newsItem->images[1]->image_path) }}"
-                                                alt="{{ $newsItem->title }}"
-                                                onclick="openLightbox('{{ asset('storage/' . $newsItem->images[1]->image_path) }}', [@foreach ($newsItem->images as $img) '{{ asset('storage/' . $img->image_path) }}', @endforeach], 3)">
-                                        </div>
-                                    @elseif (count($newsItem->images) > 2)
-                                        <div class="image-item" style="position: relative;">
-                                            <img src="{{ asset('storage/' . $newsItem->images[1]->image_path) }}"
-                                                alt="{{ $newsItem->title }}"
-                                                onclick="openLightbox('{{ asset('storage/' . $newsItem->images[1]->image_path) }}', [@foreach ($newsItem->images as $img) '{{ asset('storage/' . $img->image_path) }}', @endforeach], 3)">
-                                            <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0, 0, 0, 0.6); color: white; display: flex; align-items: center; justify-content: center; font-size: 24px;"
-                                                onclick="openLightbox('{{ asset('storage/' . $newsItem->images[1]->image_path) }}', [@foreach ($newsItem->images as $img) '{{ asset('storage/' . $img->image_path) }}', @endforeach], 3)">
-                                                +{{ count($newsItem->images) - 2 }}
-                                            </div>
-                                        </div>
-                                    @endif
-
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ $newsItem->title }}</h5>
                                 </div>
-
-
-                                <!-- Lightbox HTML -->
-                                <div id="lightbox" class="lightbox">
-                                    <span class="close-lightbox" onclick="closeLightbox()">&times;</span>
-                                    <button class="prev-lightbox" onclick="changeImage(-1)">&#10094;</button>
-                                    <div class="lightbox-content">
-                                        <img id="lightbox-img" src="" alt="Lightbox Image">
-                                    </div>
-                                    <button class="next-lightbox" onclick="changeImage(1)">&#10095;</button>
+                                <div class="card-footer d-flex justify-content-end">
+                                    <button class="btn btn-warning btn-sm" style="margin-right: 10px;"
+                                        onclick="showEditModal('{{ $newsItem->id }}', '{{ $newsItem->title }}', '{{ $newsItem->content }}', [@foreach ($newsItem->images as $image) '{{ asset('storage/' . $image->image_path) }}', @endforeach])">แก้ไข</button>
+                                    <form action="{{ route('admin.news.destroy', $newsItem->id) }}" method="POST"
+                                        id="delete-news-form-{{ $newsItem->id }}" style="display:inline;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="button" class="btn btn-danger btn-sm"
+                                            onclick="confirmDeleteNews('{{ $newsItem->id }}')">ลบ</button>
+                                    </form>
                                 </div>
-
-                                <button class="btn btn-warning" data-id="{{ $newsItem->id }}"
-                                    onclick="showEditModal('{{ $newsItem->id }}', '{{ $newsItem->title }}', '{{ $newsItem->content }}', [
-                                        @foreach ($newsItem->images as $image)
-                                            '{{ asset('storage/' . $image->image_path) }}', @endforeach
-                                    ])">แก้ไข</button>
-
-                                <!-- ปุ่มลบ -->
-                                <form action="{{ route('admin.news.destroy', $newsItem->id) }}" method="POST"
-                                    style="display:inline;">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-danger"
-                                        onclick="return confirm('คุณแน่ใจหรือไม่ว่าต้องการลบข่าวสารนี้?');">ลบ</button>
-                                </form>
                             </div>
                         </div>
                     @endforeach
-                </section>
+                </div>
             </div>
             <!-- จำนวนการประเมิน ADL และ CG -->
             <div class="col-sm-3">
-                <!-- จำนวนการประเมิน ADL -->
                 <div class="dashboard-card">
                     <div>
-                        <h3>จำนวนการประเมิน ADL</h3>
-                        <p>{{ $adlAssessmentCount }}</p>
+                        <h3>การประเมินความสามารถในการดำเนินกิจวัตรประจำวันของผู้สูงอายุ</h3>
                     </div>
                     <div class="icon">
                         <i class="ni ni-check-bold"></i>
                     </div>
-                </div>
-                <!-- จำนวนการประเมิน CG -->
-                <div class="dashboard-card">
-                    <div>
-                        <h3>จำนวนการประเมิน CG</h3>
-                        <p>{{ $cgAssessmentCount }}</p>
-                    </div>
-                    <div class="icon">
-                        <i class="ni ni-bullet-list-67"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal for Image -->
-    <div class="modal fade" id="imageModal" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modalTitle">รูปภาพข่าวสาร</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <p id="modalContent"></p>
-                    <img id="modalImage" src="" alt="News Image" class="img-fluid">
                 </div>
             </div>
         </div>
     </div>
 
     <!-- Modal for Create News -->
-    <div class="modal fade" id="createNewsModal" tabindex="-1" role="dialog" aria-labelledby="createNewsModalLabel" aria-hidden="true">
+    <div class="modal fade" id="createNewsModal" tabindex="-1" role="dialog" aria-labelledby="createNewsModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -596,8 +405,10 @@
                             <textarea id="content" name="content" class="form-control" rows="5" required></textarea>
                         </div>
                         <div class="form-group">
-                            <input type="file" id="customFile" name="images[]" class="form-control-file" multiple onchange="previewImages(event)" style="display: none;">
-                            <button type="button" class="btn btn-secondary" onclick="document.getElementById('customFile').click()">เลือกไฟล์รูป</button>
+                            <input type="file" id="customFile" name="images[]" class="form-control-file" multiple
+                                onchange="previewImages(event)" style="display: none;">
+                            <button type="button" class="btn btn-secondary"
+                                onclick="document.getElementById('customFile').click()">เลือกไฟล์รูป</button>
                         </div>
                         <div class="form-group">
                             <div id="imagePreview" style="display: flex; flex-wrap: wrap; gap: 10px;"></div>
@@ -635,7 +446,8 @@
 
 
     <!-- Modal for Edit News -->
-    <div class="modal fade" id="editNewsModal" tabindex="-1" role="dialog" aria-labelledby="editNewsModalLabel" aria-hidden="true">
+    <div class="modal fade" id="editNewsModal" tabindex="-1" role="dialog" aria-labelledby="editNewsModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -665,8 +477,10 @@
 
                         <div class="form-group">
                             <label for="edit-images">อัปโหลดรูปภาพใหม่:</label>
-                            <input type="file" id="edit-images" name="images[]" class="form-control-file" multiple style="display: none;">
-                            <button type="button" class="btn btn-secondary" onclick="document.getElementById('edit-images').click()">เลือกไฟล์รูป</button>
+                            <input type="file" id="edit-images" name="images[]" class="form-control-file"
+                                multiple style="display: none;">
+                            <button type="button" class="btn btn-secondary"
+                                onclick="document.getElementById('edit-images').click()">เลือกไฟล์รูป</button>
                         </div>
                         <div class="form-group">
                             <div id="editImagePreview" style="display: flex; flex-wrap: wrap; gap: 10px;"></div>
@@ -703,8 +517,7 @@
     </script>
 
 
-
-        <!-- Modal for Create Slider -->
+    <!-- Modal for Create Slider -->
     <div class="modal fade" id="createSliderModal" tabindex="-1" role="dialog"
         aria-labelledby="createSliderModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -719,8 +532,10 @@
                     <form action="{{ route('admin.sliders.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="form-group">
-                            <input type="file" id="sliderImageFile" name="image" class="form-control-file" style="display: none;" required>
-                            <button type="button" class="btn btn-secondary" onclick="document.getElementById('sliderImageFile').click()">เลือกไฟล์รูป</button>
+                            <input type="file" id="sliderImageFile" name="image" class="form-control-file"
+                                style="display: none;" required>
+                            <button type="button" class="btn btn-secondary"
+                                onclick="document.getElementById('sliderImageFile').click()">เลือกไฟล์รูป</button>
                         </div>
                         <div class="form-group">
                             <div id="sliderImagePreview" style="display: flex; flex-wrap: wrap; gap: 10px;"></div>
@@ -781,10 +596,11 @@
                                         data-toggle="modal" data-target="#editSliderModal"
                                         onclick="setSliderData('{{ $slider->id }}', '{{ $slider->image }}')">แก้ไข</button>
                                     <form action="{{ route('admin.sliders.destroy', $slider->id) }}" method="POST"
-                                        style="display:inline;">
+                                        id="delete-slider-form-{{ $slider->id }}" style="display:inline;">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-danger">ลบ</button>
+                                        <button type="button" class="btn btn-danger"
+                                            onclick="confirmDeleteSlider('{{ $slider->id }}')">ลบ</button>
                                     </form>
                                 </td>
                             </tr>
@@ -795,8 +611,7 @@
         </div>
     </div>
 
-
-        <!-- Modal for Edit Slider -->
+    <!-- Modal for Edit Slider -->
     <div class="modal fade" id="editSliderModal" tabindex="-1" role="dialog"
         aria-labelledby="editSliderModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -816,8 +631,10 @@
                             <img id="currentImage" src="" alt="Slider Image" width="100">
                         </div>
                         <div class="form-group">
-                            <input type="file" id="editSliderImageFile" name="image" class="form-control-file" style="display: none;">
-                            <button type="button" class="btn btn-secondary" onclick="document.getElementById('editSliderImageFile').click()">เลือกไฟล์รูป</button>
+                            <input type="file" id="editSliderImageFile" name="image" class="form-control-file"
+                                style="display: none;">
+                            <button type="button" class="btn btn-secondary"
+                                onclick="document.getElementById('editSliderImageFile').click()">เลือกไฟล์รูป</button>
                         </div>
                         <div class="form-group">
                             <div id="editSliderImagePreview" style="display: flex; flex-wrap: wrap; gap: 10px;"></div>
@@ -853,8 +670,6 @@
         });
     </script>
 
-
-
     <!-- Footer -->
     <footer>
         <p>&copy; 2024 สำนักงานสาธารณสุข อำเภอห้วยราช จังหวัดบุรีรัมย์</p>
@@ -868,98 +683,6 @@
         let startX, startY;
         let translateX = 0,
             translateY = 0;
-
-        function openLightbox(imageSrc, imageArray, index) {
-            currentImageIndex = index;
-            images = imageArray;
-            const lightboxImg = document.getElementById('lightbox-img');
-            lightboxImg.src = imageSrc;
-            document.getElementById('lightbox').style.display = 'flex';
-            resetZoomAndPosition(); // รีเซ็ตซูมและตำแหน่งทุกครั้งที่เปิด
-        }
-
-        function closeLightbox() {
-            document.getElementById('lightbox').style.display = 'none';
-        }
-
-        function changeImage(direction) {
-            currentImageIndex += direction;
-            if (currentImageIndex >= images.length) {
-                currentImageIndex = 0;
-            } else if (currentImageIndex < 0) {
-                currentImageIndex = images.length - 1;
-            }
-            const lightboxImg = document.getElementById('lightbox-img');
-            lightboxImg.src = images[currentImageIndex];
-            resetZoomAndPosition(); // รีเซ็ตซูมและตำแหน่งเมื่อเปลี่ยนภาพ
-        }
-
-        function resetZoomAndPosition() {
-            zoomLevel = 1;
-            translateX = 0;
-            translateY = 0;
-            applyTransform();
-        }
-
-        function applyTransform() {
-            const img = document.getElementById('lightbox-img');
-            img.style.transform = `translate(${translateX}px, ${translateY}px) scale(${zoomLevel})`;
-        }
-
-        document.getElementById('lightbox-img').addEventListener('click', function() {
-            zoomLevel = zoomLevel === 1 ? 2 : 1;
-            if (zoomLevel === 1) {
-                translateX = 0;
-                translateY = 0;
-            }
-            applyTransform();
-        });
-
-        document.getElementById('lightbox-img').addEventListener('wheel', function(event) {
-            event.preventDefault();
-            const delta = event.deltaY < 0 ? 0.1 : -0.1;
-            zoomLevel = Math.min(Math.max(zoomLevel + delta, 1), 5);
-            applyTransform();
-        });
-
-        document.getElementById('lightbox-img').addEventListener('mousedown', function(event) {
-            if (zoomLevel > 1) {
-                isDragging = true;
-                startX = event.clientX - translateX;
-                startY = event.clientY - translateY;
-                this.classList.add('grabbing');
-            }
-        });
-
-        document.addEventListener('mousemove', function(event) {
-            if (isDragging) {
-                const lightboxImg = document.getElementById('lightbox-img');
-                translateX = event.clientX - startX;
-                translateY = event.clientY - startY;
-
-                const maxTranslateX = ((zoomLevel - 1) * lightboxImg.width) / 2;
-                const maxTranslateY = ((zoomLevel - 1) * lightboxImg.height) / 2;
-
-                translateX = Math.max(Math.min(translateX, maxTranslateX), -maxTranslateX);
-                translateY = Math.max(Math.min(translateY, maxTranslateY), -maxTranslateY);
-
-                applyTransform();
-            }
-        });
-
-        document.addEventListener('mouseup', function() {
-            if (isDragging) {
-                isDragging = false;
-                document.getElementById('lightbox-img').classList.remove('grabbing');
-            }
-        });
-
-        document.addEventListener('mouseleave', function() {
-            if (isDragging) {
-                isDragging = false;
-                document.getElementById('lightbox-img').classList.remove('grabbing');
-            }
-        });
 
         let slideIndex = 0;
         const slides = document.querySelector('.slides');
@@ -1024,25 +747,42 @@
             $('#imageModal').modal('show');
         }
 
-        function toggleContent(event, element) {
-            event.preventDefault();
-
-            const newsItem = element.closest('.news-item');
-            const shortContent = newsItem.querySelector('.short-content');
-            const fullContent = newsItem.querySelector('.full-content');
-
-            // สลับการแสดงผลของเนื้อหา
-            if (shortContent.style.display === 'none') {
-                shortContent.style.display = 'block';
-                fullContent.style.display = 'none';
-            } else {
-                shortContent.style.display = 'none';
-                fullContent.style.display = 'block';
-            }
+        function confirmDeleteNews(newsId) {
+            Swal.fire({
+                title: 'คุณแน่ใจหรือไม่?',
+                text: "คุณจะไม่สามารถย้อนกลับได้หลังจากลบ!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'ยืนยัน',
+                cancelButtonText: 'ยกเลิก'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('delete-news-form-' + newsId).submit();
+                }
+            });
         }
 
+        function confirmDeleteSlider(sliderId) {
+            Swal.fire({
+                title: 'คุณแน่ใจหรือไม่?',
+                text: "คุณจะไม่สามารถย้อนกลับได้หลังจากลบ!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'ยืนยัน',
+                cancelButtonText: 'ยกเลิก'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('delete-slider-form-' + sliderId).submit();
+                }
+            });
+        }
     </script>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 </body>
