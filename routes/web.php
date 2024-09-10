@@ -151,8 +151,8 @@ Route::middleware(['CheckLogin', 'IsStaff'])->group(function () {
     Route::delete('adl-destroy/{id}', [ADLController::class, 'destroy'])->name('adl.destroy');
     Route::get('adl-elderly', [ADLController::class, 'create'])->name('adl.create');
     Route::post('/adl/submit', [ADLController::class,  'submitADL'])->name('adl.submit');
-    Route::get('report-all-adl', [ADLController::class, 'ReportADLAll'])->name('report.all.adl');
-    Route::get('report-adl/{id}', [ADLController::class, 'ReportADL'])->name('report.adl');
+    Route::get('/report-all-adl', [ADLController::class, 'ReportADLAll'])->name('report.all.adl');
+    Route::get('/report-adl/{id}', [ADLController::class, 'ReportADL'])->name('report.adl');
 
     Route::get('cg-show', [CGController::class, 'index'])->name('cg.index');
     Route::get('cg-edit/{id}', [CGController::class, 'edit'])->name('cg.edit');

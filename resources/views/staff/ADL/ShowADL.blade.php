@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
     <!-- Include Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+        {{--  pdf  --}}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
     <style>
         .modal-xl {
             max-width: 75% !important;
@@ -29,12 +31,14 @@
                     <div class="card mb-4">
                         <div class="card-header pb-0 d-flex justify-content-between align-items-center">
                             <h6>ประเมินความสามารถในการดำเนินชีวิตประจำวัน (ADL)</h6>
-                            <a href="{{ route('report.all.adl') }}" class="btn btn-success ml-2">
-                                <i class="fas fa-file-pdf"></i> ออกรายงาน ADL
-                            </a>
+                            <div class="d-flex gap-2">
                             <a href="{{ route('adl.create') }}" class="btn btn-primary">
                                 <i class="fas fa-plus"></i> เพิ่ม ADL
                             </a>
+                            <button id="generate-pdf" class="btn btn-success">
+                                <i class="fas fa-print"></i>
+                            </button>
+                            </div>
                         </div>
                         <div class="card-body px-0 pt-0 pb-2">
                             <div class="table-responsive p-0">
@@ -56,8 +60,9 @@
                                                 <td class="text-center">{{ $adl->Score_ADL }}</td>
                                                 <td class="text-center">{{ $adl->Group_ADL }}</td>
                                                 <td class="text-center">
-                                                    <a href="{{ route('report.adl', ['id' => $adl->ID_ADL]) }}"
-                                                        class="btn btn-success btn-sm">ออกรายงาน</a>
+                                                    <a href="{{ route('report.adl', ['id' => $adl->ID_ADL]) }}" class="btn btn-success btn-sm generate-pdf2">
+                                                        ออกรายงาน
+                                                    </a>
                                                     <button class="btn btn-info btn-sm" data-bs-toggle="modal"
                                                         data-bs-target="#adlModal-{{ $adl->ID_ADL }}">ดูข้อมูล</button>
                                                     <a href="{{ route('adl.edit', ['id' => $adl->ID_ADL]) }}"
@@ -178,6 +183,159 @@
                 }
             });
         }
+
+        document.getElementById('generate-pdf').addEventListener('click', function () {
+            // Fetch the content from the /report-all-adl URL
+            fetch('/report-all-adl')
+                .then(response => response.text()) // Fetch HTML as text
+                .then(data => {
+                    // Convert the fetched HTML into a DOM object
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(data, 'text/html');
+                    const element = doc.querySelector('.container'); // Get the content
+
+                    // Add CSS to set the font back to the template's original font
+                    const style = document.createElement('style');
+                    style.innerHTML = `
+                        * {
+                            font-family: 'Open Sans', Arial, sans-serif !important;
+                            color: black !important;
+                            background-color: white !important;
+                        }
+                        <style>
+
+                            h5 {
+                                font-size: 20px;
+                                margin: 0;
+                            }
+
+                            img {
+                                height: 80px;
+                                margin-right: 10px;
+                            }
+
+                            /* กำหนดความกว้างของตาราง */
+                            table {
+                                width: 103%; /* เพิ่มความกว้างของตาราง */
+                                border-collapse: collapse;
+                                margin-bottom: 20px;
+                                font-size: 14px; /* เพิ่มขนาดฟอนต์ในตาราง */
+                            }
+
+                            /* กำหนดสไตล์สำหรับ th และ td */
+                            th, td {
+                                padding: 8px; /* เพิ่ม padding ให้ดูใหญ่ขึ้น */
+                                text-align: center;
+                                border: 1px solid black;
+                            }
+
+                            /* ขนาดฟอนต์ใน td */
+                            td {
+                                font-size: 12px;
+                                text-align: center;
+                            }
+
+                            /* คำแนะนำการดูแล */
+                            .care-instructions {
+                                font-size: 11px;
+                                text-align: left;
+                                white-space: normal;
+                                overflow-wrap: wrap;
+                                padding: 14px;
+                            }
+
+                            .page-break {
+                                page-break-before: always; /* บังคับขึ้นหน้าใหม่ */
+                            }
+                        </style>
+
+
+                    `;
+                    element.appendChild(style);
+
+                    // Configure options for generating the PDF
+                    var opt = {
+                        margin: 0.5,
+                        filename: 'รายงานข้อมูล_ADL.pdf',
+                        image: { type: 'jpeg', quality: 0.98 },
+                        html2canvas: { scale: 2 },
+                        jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+                    };
+
+                    // สร้าง PDF และเปิดในหน้าต่างใหม่
+                    html2pdf().set(opt).from(element).output('blob').then(function (pdfBlob) {
+                        var pdfUrl = URL.createObjectURL(pdfBlob);
+                        var pdfWindow = window.open();
+                        pdfWindow.location.href = pdfUrl;
+                    });
+                })
+                .catch(error => console.error('Error fetching report data:', error));
+        });
+
+
+        document.querySelectorAll('.generate-pdf2').forEach(button => {
+            button.addEventListener('click', function (event) {
+                event.preventDefault();
+
+                const url = this.href; // Get the URL to fetch the report by ID
+
+                fetch(url)
+                    .then(response => response.text()) // Fetch HTML content as text
+                    .then(data => {
+                        // Convert the fetched HTML into a DOM object
+                        const parser = new DOMParser();
+                        const doc = parser.parseFromString(data, 'text/html');
+                        const element = doc.querySelector('.container'); // Get the content
+
+                        // Add inline CSS for PDF styling
+                        const style = document.createElement('style');
+                        style.innerHTML = `
+                            * {
+                                font-family: 'Arial', sans-serif !important;
+                                color: black !important;
+                                background-color: white !important;
+                            }
+                            h1 {
+                                font-size: 24px;
+                                text-align: center;
+                            }
+                            table {
+                                width: 100%;
+                                border-collapse: collapse;
+                                margin-bottom: 20px;
+                            }
+                            th, td {
+                                padding: 8px;
+                                text-align: left;
+                                border: 1px solid black;
+                            }
+                            .page-break {
+                                page-break-before: always;
+                            }
+                        `;
+                        doc.head.appendChild(style);
+
+                        // Configure PDF options
+                        const opt = {
+                            margin: 0.5,
+                            filename: 'รายงาน_ADL.pdf',
+                            image: { type: 'jpeg', quality: 0.98 },
+                            html2canvas: { scale: 2 },
+                            jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
+                        };
+
+                        // Create the PDF and open it in a new window
+                        html2pdf().set(opt).from(element).output('blob').then(function (pdfBlob) {
+                            const pdfUrl = URL.createObjectURL(pdfBlob);
+                            const pdfWindow = window.open();
+                            pdfWindow.location.href = pdfUrl;
+                        });
+                    })
+                    .catch(error => console.error('Error fetching report data:', error));
+            });
+        });
+
+
     </script>
 </body>
 

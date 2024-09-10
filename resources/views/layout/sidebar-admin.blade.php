@@ -32,14 +32,14 @@
                     <span class="nav-link-text ms-1">จัดการข่าวสาร</span>
                 </a>
             </li>
-            <li class="nav-item">
+            {{--  <li class="nav-item">
                 <a class="nav-link text-white {{ Request::is('/admin/report-user-pdf') ? 'active bg-gradient-primary' : '' }}" href="/admin/report-user-pdf">
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="material-icons opacity-10">article</i>
                     </div>
                     <span class="nav-link-text ms-1">รายงานผู้ใช้</span>
                 </a>
-            </li>
+            </li>  --}}
         </ul>
     </div>
 </aside>

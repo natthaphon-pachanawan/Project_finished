@@ -145,15 +145,6 @@
             </table>
         </div>
     </div>
-    <script>
-        window.onafterprint = function() {
-            window.history.back();
-        };
-
-        setTimeout(function() {
-            window.print();
-        }, 1000);
-    </script>
 </body>
 
 </html>

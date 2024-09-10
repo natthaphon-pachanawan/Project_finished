@@ -9,6 +9,12 @@
     <link href="{{ asset('assets/css/nucleo-svg.css') }}" rel="stylesheet"/>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
+        * {
+            font-family: 'Open Sans', Arial, sans-serif !important;
+            color: black !important;
+            background-color: white !important;
+        }
+
         body {
             width: 210mm;
             height: 297mm;
@@ -22,14 +28,17 @@
             padding: 10mm;
         }
 
+        h5 {
+            padding: 6px;
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
             margin-bottom: 10mm;
-            page-break-after: always;
         }
 
-        table, th, td {
+        th, td {
             border: 1px solid black;
         }
 
@@ -38,11 +47,24 @@
             text-align: left;
         }
 
+        /* สำหรับการบังคับแบ่งหน้า */
+        @media print {
+            .page-break {
+                display: block;
+                page-break-before: always;
+                padding-top: 20mm; /* ปรับระยะห่างจากหัวกระดาษ */
+            }
+
+            .charts{
+                page-break-before: always;
+                padding-top: 20mm;
+            }
+        }
+
         .charts {
             display: flex;
             flex-wrap: wrap;
             justify-content: space-between;
-            page-break-before: always;
         }
 
         .chart-container {
@@ -50,23 +72,44 @@
             height: 300px;
             margin-bottom: 10mm;
         }
+
+        img.logo {
+            width: 80px;  /* ปรับความกว้าง */
+            height: auto; /* ให้คงสัดส่วนเดิม */
+            margin-right: 10px;
+        }
     </style>
+
 </head>
 <body>
 
     <div class="container">
-        <h1>รายงานข้อมูลผู้สูงอายุ</h1>
-        <table class="table">
+        <h5>
+            <img src="{{ asset('images/Logo.png') }}" alt="Logo" class="logo">
+            รายงานข้อมูลผู้สูงอายุ
+        </h5>
+        <table>
             <thead>
+
+            </thead>
+            <tbody id="table-body">
                 <tr>
                     <th>รูป</th>
                     <th>ชื่อ</th>
                     <th>ที่อยู่</th>
                     <th>เบอร์โทร</th>
                 </tr>
-            </thead>
-            <tbody>
-                @foreach($elderlies as $elderly)
+                @foreach($elderlies as $index => $elderly)
+                @if($index % 12 == 0 && $index != 0)
+                <tr class="page-break">
+                </tr>
+                <tr>
+                    <th>รูป</th>
+                    <th>ชื่อ</th>
+                    <th>ที่อยู่</th>
+                    <th>เบอร์โทร</th>
+                </tr>
+                @endif
                 <tr>
                     <td>
                         @if($elderly->Image_Elderly)
@@ -82,6 +125,7 @@
                 @endforeach
             </tbody>
         </table>
+
 
         <div class="charts">
             <div class="chart-container">
@@ -100,7 +144,9 @@
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+
+
+            // Charts setup
             var ageGroups = @json($ageGroups);
             var adlGroups = @json($adlGroups);
 
@@ -121,7 +167,7 @@
                     scales: {
                         y: {
                             beginAtZero: true,
-                            display: false // เอาเส้นพื้นหลังออก
+                            display: false
                         }
                     }
                 }
@@ -162,7 +208,7 @@
 
             var adlBarChartCtx = document.getElementById('adlBarChart').getContext('2d');
             new Chart(adlBarChartCtx, {
-                type: 'bar', // ใช้ type 'bar'
+                type: 'bar',
                 data: {
                     labels: Object.keys(adlGroups),
                     datasets: [{
@@ -174,17 +220,17 @@
                     }]
                 },
                 options: {
-                    indexAxis: 'y', // ทำให้กราฟแท่งเป็นแนวนอน
+                    indexAxis: 'y',
                     scales: {
-                        x: { // แกน x จะเป็นค่าจำนวน
+                        x: {
                             beginAtZero: true,
                             grid: {
-                                display: false // เอาเส้นพื้นหลังออก
+                                display: false
                             }
                         },
                         y: {
                             grid: {
-                                display: false // เอาเส้นพื้นหลังออก
+                                display: false
                             }
                         }
                     }
@@ -193,7 +239,7 @@
 
             var adlDoughnutChartCtx = document.getElementById('adlPieChart').getContext('2d');
             new Chart(adlDoughnutChartCtx, {
-                type: 'doughnut', // เปลี่ยนจาก 'pie' เป็น 'doughnut'
+                type: 'doughnut',
                 data: {
                     labels: Object.keys(adlGroups),
                     datasets: [{
@@ -231,7 +277,7 @@
             setTimeout(function() {
                 window.print();
             }, 1000);
-        });
+
     </script>
 </body>
 </html>
