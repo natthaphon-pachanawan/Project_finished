@@ -5,102 +5,39 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>รายงาน ADL</title>
-    <link href="{{ asset('assets/css/argon-dashboard.css') }}" rel="stylesheet" />
-    <link href="{{ asset('assets/css/nucleo-icons.css') }}" rel="stylesheet" />
-    <link href="{{ asset('assets/css/nucleo-svg.css') }}" rel="stylesheet" />
-    <style>
-        body {
-            width: 210mm;
-            height: 297mm;
-            margin: 0;
-            padding: 10mm;
-            font-family: Arial, sans-serif;
-            font-size: 12px;
-            box-sizing: border-box;
-        }
 
-        .container {
-            padding: 10mm;
-            border: 1px solid #000;
-            border-radius: 5px;
-        }
-
-        h1 {
-            text-align: center;
-            margin-bottom: 20px;
-            font-size: 24px;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-            page-break-inside: avoid;
-        }
-
-        table,
-        th,
-        td {
-            border: 1px solid black;
-        }
-
-        th,
-        td {
-            padding: 8px;
-            text-align: left;
-        }
-
-        .questions {
-            margin-top: 20px;
-            page-break-inside: avoid;
-        }
-
-        .questions table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        .questions th,
-        .questions td {
-            border: 1px solid black;
-            padding: 8px;
-        }
-
-        .questions th {
-            background-color: #f2f2f2;
-        }
-
-        .page-break {
-            page-break-after: always;
-        }
-    </style>
 </head>
 
 <body>
 
     <div class="container">
-        <h1>รายงาน ADL</h1>
+
+        <div style="text-align: center;">
+            <img src="{{ asset('images/Logo.png') }}" alt="Logo" style="width: 100px; height: auto; padding-bottom: 15px;">
+        </div>
+
+        <h5>รายงาน ADL</h5>
         <table>
             <tr>
-                <th>ชื่อผู้สูงอายุ</th>
-                <td>{{ $adl->elderly ? $adl->elderly->Name_Elderly : 'ไม่มีข้อมูล' }}</td>
+                <th style="width: 50%;">ชื่อผู้สูงอายุ</th>
+                <td style="width: 50%;">{{ $adl->elderly ? $adl->elderly->Name_Elderly : 'ไม่มีข้อมูล' }}</td>
             </tr>
             <tr>
-                <th>ชื่อเจ้าหน้าที่ผู้รับผิดชอบ</th>
-                <td>{{ $adl->Name_User ?: 'ไม่มีข้อมูล' }}</td>
+                <th style="width: 50%;">ชื่อเจ้าหน้าที่ผู้รับผิดชอบ</th>
+                <td style="width: 50%;">{{ $adl->Name_User ?: 'ไม่มีข้อมูล' }}</td>
             </tr>
             <tr>
-                <th>กลุ่ม ADL</th>
-                <td>{{ $adl->Group_ADL ?: 'ไม่มีข้อมูล' }}</td>
+                <th style="width: 50%;">กลุ่ม ADL</th>
+                <td style="width: 50%;">{{ $adl->Group_ADL ?: 'ไม่มีข้อมูล' }}</td>
             </tr>
         </table>
 
         <div class="questions">
-            <h3>โจทย์และคำตอบของแบบประเมิน ADL</h3>
+            <h5>โจทย์และคำตอบของแบบประเมิน ADL</h5>
             <table>
                 <tr>
-                    <th>ข้อคำถาม</th>
-                    <th>คำตอบ</th>
+                    <th style="width: 30%;">ข้อคำถาม</th>
+                    <th style="width: 70%;">คำตอบ</th>
                 </tr>
                 <tr>
                     <td>การรับประทานอาหาร</td>
@@ -145,15 +82,6 @@
             </table>
         </div>
     </div>
-    <script>
-        window.onafterprint = function() {
-            window.history.back();
-        };
-
-        setTimeout(function() {
-            window.print();
-        }, 1000);
-    </script>
 </body>
 
 </html>

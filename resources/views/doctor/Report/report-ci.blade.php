@@ -29,7 +29,7 @@
             <tbody>
                 @foreach($careInstructions as $index => $ci)
                 <!-- แบ่งตารางทุก 12 แถวขึ้นหน้าใหม่ -->
-                    @if($index % 2 == 0 && $index != 0)
+                    @if($index % 12 == 0 && $index != 0)
                     <tr class="page-break">
                         <th style="width: 13%;";>วันที่</th>
                         <th style="width: 17%;">ชื่อผู้สูงอายุ</th>

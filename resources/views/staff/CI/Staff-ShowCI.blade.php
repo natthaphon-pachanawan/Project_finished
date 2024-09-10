@@ -24,7 +24,7 @@
                 <div class="col-12">
                     <div class="card mb-4" >
                         <div class="card-header pb-0 d-flex justify-content-between align-items-center">
-                            <h6>คำแนะนำการดูแลที่ยังไม่ได้ยืนยัน</h6>
+                            <h5>คำแนะนำการดูแลที่ยังไม่ได้ยืนยัน</h5>
                         </div>
                         <div class="card-body px-3 pt-3 pb-2">
                             <div class="table-responsive p-0">
@@ -70,59 +70,6 @@
                 </div>
             </div>
 
-            <!-- Confirmed Care Instructions Card -->
-            <div class="row">
-                <div class="col-12">
-                    <div class="card mb-4">
-                        <div class="card-header pb-0 d-flex justify-content-between align-items-center">
-                            <h6>คำแนะนำการดูแลที่ยืนยันแล้ว</h6>
-                            <a href="{{ route('report.ci.confirm') }}" class="btn btn-success ml-2">
-                                <i class="fas fa-file-pdf"></i> ออกรายงาน CG
-                            </a>
-                        </div>
-                        <div class="card-body px-3 pt-3 pb-2">
-                            <div class="table-responsive p-0">
-                                <table id="ciTableConfirmed" class="table align-items-center mb-0">
-                                    <thead>
-                                        <tr>
-                                            <th class="text-center">วันที่</th>
-                                            <th class="text-center">ชื่อผู้สูงอายุ</th>
-                                            <th class="text-center">ที่อยู่</th>
-                                            <th class="text-center">เบอร์โทร</th>
-                                            <th class="text-center">ชื่อแพทย์</th>
-                                            <th class="text-center">คำแนะนำ</th>
-                                            <th class="text-center">Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach($careInstructions as $ci)
-                                            @if(!empty($ci->Confirm))
-                                                <tr>
-                                                    <td class="text-center">{{ $ci->Date_CI }}</td>
-                                                    <td class="text-center">{{ $ci->Name_Elderly }}</td>
-                                                    <td class="text-center">{{ $ci->elderly->Address }}</td>
-                                                    <td class="text-center">{{ $ci->elderly->Phone_Elderly }}</td>
-                                                    <td class="text-center">{{ $ci->Name_Doctor }}</td>
-                                                    <td class="text-center">{{ $ci->Care_instructions }}</td>
-                                                    <td class="text-center">
-                                                        <a href="{{ route('search-location', ['id' => $ci->elderly->ID_Elderly]) }}" target="_blank" class="btn btn-info btn-sm">ค้นหาที่อยู่</a>
-                                                        <form action="{{ route('ci.unconfirm', ['id' => $ci->ID_CI]) }}" method="POST" style="display:inline-block;">
-                                                            @csrf
-                                                            @method('PUT')
-                                                            <button type="submit" class="btn btn-warning btn-sm">ยกเลิกยืนยัน</button>
-                                                        </form>
-                                                    </td>
-                                                </tr>
-                                            @endif
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
         </div>
     </main>
 
@@ -144,17 +91,6 @@
     <script>
         $(document).ready(function() {
             $('#ciTableUnconfirmed').DataTable({
-                "language": {
-                    "paginate": {
-                        "previous": "ก่อนหน้า",
-                        "next": "ถัดไป"
-                    }
-                },
-                "dom": '<"row"<"col-sm-12 col-md-12"l><"col-sm-12 col-md-12"f>>t<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-2 d-flex justify-content-center"p>>'
-             });
-        });
-        $(document).ready(function() {
-            $('#ciTableConfirmed').DataTable({
                 "language": {
                     "paginate": {
                         "previous": "ก่อนหน้า",

@@ -15,6 +15,12 @@ class CIController extends Controller
         return view('staff.CI.Staff-ShowCI', compact('careInstructions'));
     }
 
+    public function ShowUnconfirmCI()
+    {
+        $careInstructions = CareInstruction::where('Name_Staff', Auth::user()->Name_User)->with('elderly')->get();
+        return view('staff.CI.unconfirmCI', compact('careInstructions'));
+    }
+
     // Method to confirm the CI
     public function confirmCI($id)
     {
@@ -30,7 +36,7 @@ class CIController extends Controller
         $careInstruction = CareInstruction::findOrFail($id);
         $careInstruction->update(['Confirm' => null]);
 
-        return redirect()->route('staff.ci.index')->with('success', 'คำแนะนำการดูแลไม่ได้รับการยืนยันสำเร็จ');
+        return redirect()->route('staff.ci.unconfirm')->with('success', 'คำแนะนำการดูแลไม่ได้รับการยืนยันสำเร็จ');
     }
 
     public function ReportCIConfirm()

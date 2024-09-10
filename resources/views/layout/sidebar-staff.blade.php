@@ -57,27 +57,11 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-white {{ Request::is('report-all-adl') ? 'active bg-gradient-primary' : '' }}" href="/report-all-adl">
+                <a class="nav-link text-white {{ Request::is('staff-unconfirm') ? 'active bg-gradient-primary' : '' }}" href="/staff-unconfirm">
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="material-icons opacity-10">description</i>
+                        <i class="material-icons opacity-10">announcement</i>
                     </div>
-                    <span class="nav-link-text ms-1">ออกรายงาน ADL</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link text-white {{ Request::is('report-all-cg') ? 'active bg-gradient-primary' : '' }}" href="/report-all-cg">
-                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="material-icons opacity-10">description</i>
-                    </div>
-                    <span class="nav-link-text ms-1">ออกรายงาน CG</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link text-white {{ Request::is('report-all-acg') ? 'active bg-gradient-primary' : '' }}" href="/report-all-acg">
-                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="material-icons opacity-10">description</i>
-                    </div>
-                    <span class="nav-link-text ms-1">ออกรายงาน ACG</span>
+                    <span class="nav-link-text ms-1">จัดการข้อมูลคำแนะนำที่ยืนยัน</span>
                 </a>
             </li>
         </ul>
