@@ -187,7 +187,7 @@
 
 
                     setTimeout(function () {
-                        // Configure options for generating the PDF
+
                         var opt = {
                             margin: 0.5,
                             image: { type: 'jpeg', quality: 0.98 },
@@ -195,7 +195,7 @@
                             jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
                         };
 
-                        // Create the PDF and open it in a new window
+                        
                         html2pdf().set(opt).from(element).outputPdf('blob').then(function (pdfBlob) {
                             var pdfUrl = URL.createObjectURL(pdfBlob);
                             var pdfWindow = window.open();
