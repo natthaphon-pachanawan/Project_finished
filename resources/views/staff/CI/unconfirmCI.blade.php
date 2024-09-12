@@ -49,6 +49,9 @@
                                                     <td class="text-center">{{ $ci->Care_instructions }}</td>
                                                     <td class="text-center">
                                                         <a href="{{ route('search-location', ['id' => $ci->elderly->ID_Elderly]) }}" target="_blank" class="btn btn-info btn-sm">ค้นหาที่อยู่</a>
+                                                        <button class="generate-single-report btn btn-primary" data-id="{{ $ci->ID_CI }}">
+                                                            ออกรายงานรายคน
+                                                        </button>
                                                         <form action="{{ route('ci.unconfirm', ['id' => $ci->ID_CI]) }}" method="POST" style="display:inline-block;">
                                                             @csrf
                                                             @method('PUT')
@@ -202,6 +205,46 @@
                         });
                     })
                     .catch(error => console.error('Error fetching report data:', error));
+            });
+
+            document.querySelectorAll('.generate-single-report').forEach(button => {
+                button.addEventListener('click', function() {
+                    const ciId = this.dataset.id;
+                    fetch(`/report-ci-single/${ciId}`)
+                        .then(response => response.text())
+                        .then(data => {
+                            const parser = new DOMParser();
+                            const doc = parser.parseFromString(data, 'text/html');
+                            const element = doc.getElementById('report-content'); // Your report HTML content
+
+                            // Add styles for the PDF
+                            const style = document.createElement('style');
+                            style.innerHTML = `
+                                * {
+                                    font-family: 'Open Sans', Arial, sans-serif !important;
+                                    color: black !important;
+                                    background-color: white !important;
+                                }
+                            `;
+                            element.appendChild(style);
+
+                            // Configure options for generating the PDF
+                            var opt = {
+                                margin: 0.5,
+                                image: { type: 'jpeg', quality: 0.98 },
+                                html2canvas: { scale: 2 },
+                                jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+                            };
+
+                            // Generate and open the PDF
+                            html2pdf().set(opt).from(element).outputPdf('blob').then(function (pdfBlob) {
+                                var pdfUrl = URL.createObjectURL(pdfBlob);
+                                var pdfWindow = window.open();
+                                pdfWindow.location.href = pdfUrl;
+                            });
+                        })
+                        .catch(error => console.error('Error generating PDF:', error));
+                });
             });
 
     </script>

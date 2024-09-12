@@ -7,6 +7,8 @@
     <title>{{ $newsItem->title }}</title>
     <link href="{{ asset('assets/css/argon-dashboard.css') }}" rel="stylesheet" />
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
     <style>
         body {
             font-family: 'Open Sans', sans-serif;
@@ -89,7 +91,9 @@
     <!-- News Content -->
     <div class="container">
         <div class="news-content">
-            <p>{{ $newsItem->content }}</p>
+            <div id="editor-container">
+                {!! $newsItem->content !!}
+            </div>
         </div>
 
         <!-- Image Grid -->
@@ -111,5 +115,13 @@
     </footer>
 
 </body>
+
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+    <script>
+        var quill = new Quill('#editor-container', {
+
+            readOnly: true,  // Set to true to make it display-only
+        });
+    </script>
 
 </html>

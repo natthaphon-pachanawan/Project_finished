@@ -130,7 +130,6 @@ Route::middleware(['CheckLogin', 'IsAdmin'])->group(function () {
 
     // News routes
     Route::post('news/store', [AdminController::class, 'storeNews'])->name('admin.news.store');
-    Route::get('news/{id}/edit', [AdminController::class, 'editNews']);
     Route::put('news/{id}', [AdminController::class, 'updateNews'])->name('admin.news.update'); // Add this line
     Route::delete('news/{id}', [AdminController::class, 'destroyNews'])->name('admin.news.destroy');
 
@@ -179,6 +178,9 @@ Route::middleware(['CheckLogin', 'IsStaff'])->group(function () {
     Route::put('ci/{id}/unconfirm', [CIController::class, 'unconfirmCI'])->name('ci.unconfirm');
     Route::get('report-ci-confirm', [CIController::class, 'ReportCIConfirm'])->name('report.ci.confirm');
 
+    Route::get('/report-ci-single/{id}', [CIController::class, 'generateSingleReport'])->name('report.ci.single');
+
+    
     Route::get('search-location/{id}', [ElderlyController::class, 'searchLocation'])->name('search-location');
 });
 

@@ -62,7 +62,7 @@
                                     <thead>
                                         <tr>
                                             <th class="text-center">รูป</th>
-                                            <th class="text-center">ชื่อ</th>
+                                            <th class="text-center">ชื่อ-นามสกุล</th>
                                             <th class="text-center">อายุ</th>
                                             <th class="text-center">ที่อยู่</th>
                                             <th class="text-center">เบอร์โทร</th>

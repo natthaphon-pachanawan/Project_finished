@@ -90,12 +90,12 @@
 
     <div class="profile-container">
         <img src="{{ asset($user->Image_User ?? 'path/to/default/image.png') }}" alt="Profile Image">
-        <h1>{{ $user->Name_User }}</h1>
+        <h3>{{ $user->Name_User }}</h3>
         <p>
             @if($user->Type_Personnel === 'Staff')
                 เจ้าหน้าที่
             @elseif($user->Type_Personnel === 'Doctor')
-                แพทย์
+                นายแพทย์
             @else
                 {{ $user->Type_Personnel }}
             @endif

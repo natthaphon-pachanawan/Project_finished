@@ -111,11 +111,11 @@
     @include('layout.nav')
 
     <div class="container mt-5">
-        <h2>แก้ไขโปรไฟล์</h2>
+        <h4>แก้ไขโปรไฟล์</h4>
         <form action="{{ route('update-profile') }}" method="POST" enctype="multipart/form-data" onsubmit="concatenateAddress()">
             @csrf
             <div class="form-group">
-                <label for="Name_User">ชื่อ</label>
+                <label for="Name_User">ชื่อ-สกุล</label>
                 <input type="text" id="Name_User" name="Name_User" value="{{ $user->Name_User }}" required>
             </div>
             <div class="form-group">
