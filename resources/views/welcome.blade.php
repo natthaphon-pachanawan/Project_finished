@@ -274,7 +274,7 @@
                                     <div class="news-item">
                                         <a href="{{ route('news.show', ['id' => $newsItem->id]) }}">
                                             <img src="{{ $newsItem->images->first() ? asset('storage/' . $newsItem->images->first()->image_path) : asset('path/to/default/image.jpg') }}"
-             alt="ไม่มีรูปภาพ" class="card-img-top" style="height: 180px; object-fit: cover;">
+                                            alt="ไม่มีรูปภาพ" class="card-img-top" style="height: 180px; object-fit: cover;">
                                         </a>
                                         <h5 class="mt-2">
                                             <a href="{{ route('news.show', ['id' => $newsItem->id]) }}">{{ $newsItem->title }}</a>
@@ -354,9 +354,9 @@
         setInterval(showSlides, 3000);
 
         const adlChartContext = document.getElementById('adlChart').getContext('2d');
-const adlData = {
-    labels: ['กลุ่มติดสังคม', 'กลุ่มติดบ้าน', 'กลุ่มติดเตียง'],
-    datasets: [{
+        const adlData = {
+        labels: ['กลุ่มติดสังคม', 'กลุ่มติดบ้าน', 'กลุ่มติดเตียง'],
+        datasets: [{
         label: 'จำนวนการประเมิน ADL',
         data: [
             {{ $adlGroupCounts['กลุ่มติดสังคม'] }},
