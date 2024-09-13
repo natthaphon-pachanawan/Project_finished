@@ -22,7 +22,7 @@
                 <div class="col-12">
                     <div class="card mb-4" style="max-width: 600px; margin: auto;">
                         <div class="card-header pb-0">
-                            <h6>แก้ไขคำแนะนำ</h6>
+                            <h4>แก้ไขคำแนะนำการดูแล</h4>
                         </div>
                         <div class="card-body px-3 pt-3 pb-2">
                             <form action="{{ route('ci.update', $careInstruction->ID_CI) }}" method="POST">
@@ -46,11 +46,11 @@
                                     <input type="text" id="Name_Staff" name="Name_Staff" class="form-control" value="{{ $careInstruction->Name_Staff }}" readonly>
                                 </div>
                                 <div class="form-group">
-                                    <label for="Care_instructions">ข้อมูลคำแนะนำ</label>
+                                    <label for="Care_instructions">ข้อมูลคำแนะนำการดูแล</label>
                                     <textarea id="Care_instructions" name="Care_instructions" class="form-control" rows="4" required>{{ $careInstruction->Care_instructions }}</textarea>
                                 </div>
-                                <button type="submit" class="btn btn-primary">บันทึกการเปลี่ยนแปลง</button>
-                                <a href="{{ url()->previous() }}" class="btn btn-secondary">ยกเลิก</a>
+                                <button type="submit" class="btn btn-success">บันทึกการเปลี่ยนแปลง</button>
+                                <a href="{{ url()->previous() }}" class="btn btn-danger">ยกเลิก</a>
                             </form>
                         </div>
                     </div>

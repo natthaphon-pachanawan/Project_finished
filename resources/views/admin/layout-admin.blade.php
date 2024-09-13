@@ -83,36 +83,6 @@
             background-color: #ea3005;
         }
 
-        footer {
-            background-color: #344767;
-            color: #fff;
-            text-align: center;
-            padding: 10px 0;
-            margin-top: 20px;
-        }
-
-        footer ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-        }
-
-        footer ul li {
-            display: inline;
-        }
-
-        footer ul li a {
-            color: #fff;
-            text-decoration: none;
-        }
-
-        footer ul li a:hover {
-            text-decoration: underline;
-        }
-
         .slider {
             position: relative;
             overflow: hidden;
@@ -311,7 +281,9 @@
         .full-content {
             display: none;
         }
-
+        .custom-modal-size {
+            max-width: 90%; /* ปรับตามที่ต้องการ */
+          }
 
     </style>
 </head>
@@ -390,7 +362,7 @@
     <!-- Modal for Create News -->
     <div class="modal fade" id="createNewsModal" tabindex="-1" role="dialog" aria-labelledby="createNewsModalLabel"
         aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="createNewsModalLabel">เพิ่มข่าวสาร</h5>
@@ -416,13 +388,13 @@
                         <div class="form-group">
                             <input type="file" id="customFile" name="images[]" class="form-control-file" multiple
                                 onchange="previewImages(event)" style="display: none;">
-                            <button type="button" class="btn btn-secondary"
+                            <button type="button" class="btn btn-login"
                                 onclick="document.getElementById('customFile').click()">เลือกไฟล์รูป</button>
                         </div>
                         <div class="form-group">
                             <div id="imagePreview" style="display: flex; flex-wrap: wrap; gap: 10px;"></div>
                         </div>
-                        <button type="submit" class="btn btn-primary">บันทึก</button>
+                        <button type="submit" class="btn btn-success">บันทึก</button>
                     </form>
                 </div>
             </div>
@@ -458,7 +430,7 @@
     @isset($newsItem)
     <div class="modal fade" id="editNewsModal" tabindex="-1" role="dialog" aria-labelledby="editNewsModalLabel"
         aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="editNewsModalLabel">แก้ไขข่าวสาร</h5>
@@ -493,13 +465,13 @@
                             <label for="edit-images">อัปโหลดรูปภาพใหม่:</label>
                             <input type="file" id="edit-images" name="images[]" class="form-control-file"
                                 multiple style="display: none;">
-                            <button type="button" class="btn btn-secondary"
+                            <button type="button" class="btn btn-login"
                                 onclick="document.getElementById('edit-images').click()">เลือกไฟล์รูป</button>
                         </div>
                         <div class="form-group">
                             <div id="editImagePreview" style="display: flex; flex-wrap: wrap; gap: 10px;"></div>
                         </div>
-                        <button type="submit" class="btn btn-primary">บันทึก</button>
+                        <button type="submit" class="btn btn-success">บันทึก</button>
                     </form>
                 </div>
             </div>
@@ -549,13 +521,13 @@
                         <div class="form-group">
                             <input type="file" id="sliderImageFile" name="image" class="form-control-file"
                                 style="display: none;" required>
-                            <button type="button" class="btn btn-secondary"
+                            <button type="button" class="btn btn-login"
                                 onclick="document.getElementById('sliderImageFile').click()">เลือกไฟล์รูป</button>
                         </div>
                         <div class="form-group">
                             <div id="sliderImagePreview" style="display: flex; flex-wrap: wrap; gap: 10px;"></div>
                         </div>
-                        <button type="submit" class="btn btn-primary">บันทึก</button>
+                        <button type="submit" class="btn btn-success">บันทึก</button>
                     </form>
                 </div>
             </div>
@@ -648,19 +620,20 @@
                         <div class="form-group">
                             <input type="file" id="editSliderImageFile" name="image" class="form-control-file"
                                 style="display: none;">
-                            <button type="button" class="btn btn-secondary"
+                            <button type="button" class="btn btn-login"
                                 onclick="document.getElementById('editSliderImageFile').click()">เลือกไฟล์รูป</button>
                         </div>
                         <div class="form-group">
                             <div id="editSliderImagePreview" style="display: flex; flex-wrap: wrap; gap: 10px;"></div>
                         </div>
-                        <button type="submit" class="btn btn-primary">บันทึก</button>
+                        <button type="submit" class="btn btn-success">บันทึก</button>
                     </form>
                 </div>
             </div>
         </div>
     </div>
 
+    @include('layout.footer')
     <script>
         document.getElementById('editSliderImageFile').addEventListener('change', function(event) {
             let imagePreview = document.getElementById('editSliderImagePreview');
@@ -684,12 +657,6 @@
             }
         });
     </script>
-
-    <!-- Footer -->
-    <footer>
-        <p>&copy; 2024 สำนักงานสาธารณสุข อำเภอห้วยราช จังหวัดบุรีรัมย์</p>
-    </footer>
-
     <script>
         let currentImageIndex = 0;
         let images = [];
@@ -725,12 +692,38 @@
         setInterval(showSlides, 3000);
 
         var quillContent = new Quill('#content-editor', {
-            theme: 'snow'
-        });
+            theme: 'snow',
+            modules: {
+              toolbar: [
+                [{ header: [1, 2, 3, 4, 5, 6, false] }],
+                ['bold', 'italic', 'underline'],
+                [{ list: 'ordered' }, { list: 'bullet' }],
+                [{ script: 'sub' }, { script: 'super' }],
+                [{ indent: '-1' }, { indent: '+1' }],
+                [{ color: [] }, { background: [] }],
+                [{ font: [] }],
+                [{ align: [] }],
+                ['clean']
+              ]
+            }
+          });
 
         var quillEditContent = new Quill('#edit-content-editor', {
-            theme: 'snow'
-        });
+            theme: 'snow',
+            modules: {
+              toolbar: [
+                [{ header: [1, 2, 3, 4, 5, 6, false] }],
+                ['bold', 'italic', 'underline'],
+                [{ list: 'ordered' }, { list: 'bullet' }],
+                [{ script: 'sub' }, { script: 'super' }],
+                [{ indent: '-1' }, { indent: '+1' }],
+                [{ color: [] }, { background: [] }],
+                [{ font: [] }],
+                [{ align: [] }],
+                ['clean']
+              ]
+            }
+          });
 
         //ตัวนี้ไม่ได้ใช้งานแต่ใส่ไว้เพื่อได้เอาไปใช้งาน
         document.querySelector('#createNewsModal form').onsubmit = function() {

@@ -86,13 +86,13 @@
             display: inline-block;
             padding: 6px 12px;
             cursor: pointer;
-            background-color: #fb6340;
+            background-color: #1084ff;
             color: white;
             border-radius: 5px;
         }
 
         .custom-file-upload:hover {
-            background-color: #ea3005;
+            background-color: #1084ff;
         }
 
         #image-preview {
@@ -151,7 +151,7 @@
 
             <div class="form-group">
                 <label for="Postal_Code">รหัสไปรษณีย์:</label>
-                <input type="number" id="Postal_Code" name="Postal_Code" class="form-control" value="{{ $user->Postal_Code }}">
+                <input type="text" id="Postal_Code" name="Postal_Code" class="form-control" value="{{ $user->Postal_Code }}" readonly>
             </div>
 
             <div class="form-group">
@@ -171,6 +171,7 @@
 
 
             <button type="submit" class="edit-button">อัพเดท</button>
+            
         </form>
     </div>
 
@@ -191,7 +192,6 @@
             extractAddressParts("{{ $user->Address }}");
         });
 
-        // Extract address parts and set them in the form fields
         function extractAddressParts(address) {
             const provinceSelect = $('#Province');
             const districtSelect = $('#District');
@@ -209,7 +209,10 @@
                 const detailedAddress = parts[4]; // This is the part that includes the house number, street, etc.
                 const postalCode = parts[5];
 
-                // Set province, district, subdistrict, and postal code
+                // Set detailed address (house number, street, etc.)
+                addressField.val(detailedAddress.trim());
+
+                // Set province, district, subdistrict dropdowns
                 const province = provincesData.find(prov => prov.name_th === provinceName.trim());
                 if (province) {
                     provinceSelect.val(province.id).trigger('change');
@@ -221,17 +224,14 @@
                                 const subdistrict = district.tambon.find(subdist => subdist.name_th === subdistrictName.trim());
                                 if (subdistrict) {
                                     subdistrictSelect.val(subdistrict.id);
+
+                                    // Set postal code after subdistrict is set
+                                    postalCodeField.val(subdistrict.zip_code); // Set postal code based on selected subdistrict
                                 }
-                            }, 500); // Wait for the district dropdown to populate
+                            }, ); //ตั้งการหน่วงเวลาในการทำงาน
                         }
-                    }, 500); // Wait for the province dropdown to populate
+                    }, ); // ตั้งการหน่วงเวลาในการทำงาน
                 }
-
-                // Set postal code
-                postalCodeField.val(postalCode);
-
-                // Set detailed address (house number, street, etc.)
-                addressField.val(detailedAddress.trim());
             }
         }
 
@@ -256,15 +256,29 @@
             let districtId = $(this).val();
             let subdistrictSelect = $('#Subdistrict');
             subdistrictSelect.empty().append('<option value="">เลือกตำบล</option>');
+            let postalCodeField = $('#Postal_Code'); // Select postal code field
+            postalCodeField.val(''); // Clear the postal code
 
             let selectedProvince = provincesData.find(prov => prov.id == $('#Province').val());
             let selectedDistrict = selectedProvince.amphure.find(dist => dist.id == districtId);
             if (selectedDistrict) {
                 selectedDistrict.tambon.forEach(function (subdistrict) {
-                    subdistrictSelect.append(`<option value="${subdistrict.id}">${subdistrict.name_th}</option>`);
+                    subdistrictSelect.append(`<option value="${subdistrict.id}" data-zipcode="${subdistrict.zip_code}">${subdistrict.name_th}</option>`);
                 });
             }
         });
+
+        // Handle subdistrict (Tambon) selection and set postal code
+$('#Subdistrict').change(function () {
+    let selectedZipCode = $(this).find(':selected').data('zipcode');
+
+    // Set the postal code automatically after subdistrict is selected
+    if (selectedZipCode) {
+        $('#Postal_Code').val(selectedZipCode);
+    }
+});
+
+
 
         // Function to concatenate address parts before form submission
         function concatenateAddress() {

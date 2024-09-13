@@ -27,7 +27,7 @@
             font-size: 18px;
             line-height: 1.6;
         }
-        
+
         .navbar-brand, .nav-link {
             color: white !important;
         }
@@ -54,7 +54,7 @@
             </div>
         </div>
     </section>
-
+    @include('layout.footer')
     <!-- Bootstrap JS and dependencies -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>

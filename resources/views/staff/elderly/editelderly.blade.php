@@ -99,7 +99,7 @@
 
                     <div class="form-group">
                         <label for="Postal_Code">รหัสไปรษณีย์:</label>
-                        <input type="text" id="Postal_Code" name="Postal_Code" class="form-control">
+                        <input type="text" id="Postal_Code" name="Postal_Code" class="form-control" readonly>
                     </div>
 
                     <div class="form-group">
@@ -109,7 +109,7 @@
 
                     <div class="form-group">
                         <label for="Image_Elderly">รูปภาพ:</label>
-                        <label for="Image_Elderly" class="custom-file-upload">
+                        <label for="Image_Elderly" class="btn btn-login">
                             เลือกรูปภาพ
                         </label>
                         <input type="file" id="Image_Elderly" name="Image_Elderly" class="form-control" accept="image/*" style="display: none;" onchange="previewImage(event)">
@@ -141,8 +141,8 @@
                     </div>
 
                     <div class="form-group">
-                        <button type="submit" class="btn btn-primary">อัพเดต</button>
-                        <a href="{{ route('staff-dashboard') }}" class="btn btn-secondary">กลับไปหน้าหลัก</a>
+                        <button type="submit" class="btn btn-success">อัพเดต</button>
+                        <a href="{{ route('staff-dashboard') }}" class="btn btn-danger">ยกเลิก</a>
                     </div>
                 </form>
             </div>
@@ -184,7 +184,13 @@
                 const detailedAddress = parts[4]; // This is the part that includes the house number, street, etc.
                 const postalCode = parts[5];
 
-                // Set province, district, subdistrict, and postal code
+                // Set detailed address (house number, street, etc.)
+                addressField.val(detailedAddress.trim());
+
+                // Set postal code
+                postalCodeField.val(postalCode);
+
+                // Set province, district, subdistrict dropdowns
                 const province = provincesData.find(prov => prov.name_th === provinceName.trim());
                 if (province) {
                     provinceSelect.val(province.id).trigger('change');
@@ -196,17 +202,14 @@
                                 const subdistrict = district.tambon.find(subdist => subdist.name_th === subdistrictName.trim());
                                 if (subdistrict) {
                                     subdistrictSelect.val(subdistrict.id);
+
+                                    // Set postal code based on selected subdistrict
+                                    postalCodeField.val(subdistrict.zip_code);
                                 }
-                            }, 500); // Wait for the district dropdown to populate
+                            }, ); // Wait for the district dropdown to populate
                         }
-                    }, 500); // Wait for the province dropdown to populate
+                    }, ); // Wait for the province dropdown to populate
                 }
-
-                // Set postal code
-                postalCodeField.val(postalCode);
-
-                // Set detailed address (house number, street, etc.)
-                addressField.val(detailedAddress.trim());
             }
         }
 
@@ -231,15 +234,56 @@
             let districtId = $(this).val();
             let subdistrictSelect = $('#Subdistrict');
             subdistrictSelect.empty().append('<option value="">เลือกตำบล</option>');
+            let postalCodeField = $('#Postal_Code'); // Select postal code field
+            postalCodeField.val(''); // Clear the postal code
 
             let selectedProvince = provincesData.find(prov => prov.id == $('#Province').val());
             let selectedDistrict = selectedProvince.amphure.find(dist => dist.id == districtId);
             if (selectedDistrict) {
                 selectedDistrict.tambon.forEach(function (subdistrict) {
-                    subdistrictSelect.append(`<option value="${subdistrict.id}">${subdistrict.name_th}</option>`);
+                    subdistrictSelect.append(`<option value="${subdistrict.id}" data-zipcode="${subdistrict.zip_code}">${subdistrict.name_th}</option>`);
                 });
             }
         });
+
+        // Handle subdistrict (Tambon) selection and set postal code
+        $('#Subdistrict').change(function () {
+            let selectedZipCode = $(this).find(':selected').data('zipcode');
+            $('#Postal_Code').val(selectedZipCode); // Set the postal code automatically after subdistrict is selected
+        });
+
+        // Function to concatenate address parts before form submission
+        function concatenateAddress() {
+            let province = $('#Province option:selected').text();
+            let district = $('#District option:selected').text();
+            let subdistrict = $('#Subdistrict option:selected').text();
+            let postalCode = $('#Postal_Code').val();
+            let detailedAddress = $('#Address').val();
+
+            let fullAddress = `จังหวัด${province} อำเภอ${district} ตำบล${subdistrict} ${detailedAddress} รหัสไปรษณีย์ ${postalCode}`;
+            $('#Address').val(fullAddress);
+        }
+
+        // Function to preview image before uploading
+        function previewImage(event) {
+            const imagePreview = document.getElementById('image-preview');
+            const newImageContainer = document.getElementById('new-image-container');
+            const currentImageContainer = document.getElementById('current-image-container');
+            const file = event.target.files[0];
+
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    imagePreview.src = e.target.result;
+                    newImageContainer.style.display = 'block';
+                    currentImageContainer.style.display = 'none'; // Hide the current image if a new one is selected
+                }
+                reader.readAsDataURL(file);
+            } else {
+                newImageContainer.style.display = 'none';
+                currentImageContainer.style.display = 'block'; // Show the current image if no new image is selected
+            }
+        }
 
         // Leaflet Map for selecting location
         var initialPosition = [{{ $addressElderly->Latitude_position ?? 14.971004543091427}}, {{ $addressElderly->Longitude_position ?? 103.18498849868776 }}]; // Initial map position set to the elderly's current location or default to Buriram, Thailand

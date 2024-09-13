@@ -195,7 +195,7 @@ Route::middleware(['CheckLogin', 'IsDoctor'])->group(function () {
         Route::post('/ci-store', 'storeCI')->name('ci.store');
         Route::delete('/ci/{id}', 'DestroyCI')->name('ci.destroy');
         Route::get('ci/{id}/edit', 'editCI')->name('ci.edit');
-        Route::put('/ci/{id}', 'updateCI')->name('ci.update');
+        Route::put('/ci/{id}', 'updateCI')->name('ci.update'); 
         Route::get('/care-instructions/report', 'ReportCI')->name('report.ci');
     });
 });

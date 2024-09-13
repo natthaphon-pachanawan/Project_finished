@@ -75,8 +75,8 @@
                             <option value="กลุ่มติดเตียง">ติดเตียง</option>
                         </select>
                     </div>
-                    <button type="submit" class="btn btn-primary">สมัครสมาชิก</button>
-                    <a href="{{ route('admin.dashboard') }}" class="btn btn-secondary">กลับหน้าหลัก</a>
+                    <button type="submit" class="btn btn-success">ยืนยัน</button>
+                    <a href="{{ route('admin.dashboard') }}" class="btn btn-danger">ยกเลิก</a>
                 </form>
             </div>
         </div>
@@ -100,7 +100,7 @@
             const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
             passwordField.setAttribute('type', type);
 
-            
+
             this.classList.toggle('fa-eye');
             this.classList.toggle('fa-eye-slash');
         });

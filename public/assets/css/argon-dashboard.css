@@ -3461,6 +3461,17 @@ textarea.form-control-lg {
   opacity: 0.65;
 }
 
+.btn-login {
+    background-color: #1084ff; /* สีฟ้าตามมาตรฐาน */
+    border-color: #007bff;
+    color: white;
+}
+.btn-login:hover {
+    background-color: #1084ff; /* สีฟ้าตามมาตรฐาน */
+    border-color: #007bff;
+    color: white;
+}
+
 .btn-primary {
   color: #000;
   background-color: #fb6340;
@@ -4433,7 +4444,7 @@ textarea.form-control-lg {
 .nav-link {
   display: block;
   padding: 0.5rem 1rem;
-  color: #fb6340;
+  color: #32820d;
   transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
 }
 @media (prefers-reduced-motion: reduce) {

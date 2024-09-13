@@ -52,6 +52,7 @@
         </p>
 
     </div>
-
+    @include('layout.footer')
 </body>
+
 </html>

@@ -208,9 +208,15 @@
                     "paginate": {
                         "previous": "ก่อนหน้า",
                         "next": "ถัดไป"
-                    }
+                    },
+                    "search": "ค้นหา : ",
+                    "lengthMenu": "แสดง _MENU_ รายการ",
+                    "zeroRecords": "ไม่พบข้อมูล",
+                    "info": "กำลังแสดงรายการ _START_ ถึง _END_ จากทั้งหมด _TOTAL_ รายการ",
+                    "infoEmpty": "ไม่พบข้อมูล",
+                    "infoFiltered": "(filtered from _MAX_ total records)"
                 },
-                "dom": '<"row"<"col-sm-12 col-md-12"l><"col-sm-12 col-md-12"f>>t<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-2 d-flex justify-content-center"p>>'
+                "dom": '<"row"<"col-sm-12 col-md-12"l><"col-sm-12 col-md-12"f>>t<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-3 d-flex justify-content-center"p>>'
              });
         });
 
@@ -331,16 +337,23 @@
             });
         });
 
+        @php
+            $elderlyLocations = [];
+            foreach ($elderlies as $elderly) {
+                if ($elderly->addressElderly && $elderly->addressElderly->Latitude_position && $elderly->addressElderly->Longitude_position) {
+                    $elderlyLocations[] = [
+                        'latitude' => $elderly->addressElderly->Latitude_position,
+                        'longitude' => $elderly->addressElderly->Longitude_position,
+                        'name' => $elderly->Name_Elderly,
+                        'address' => $elderly->Address
+                    ];
+                }
+            }
+        @endphp
+
         document.addEventListener('DOMContentLoaded', function() {
             // ข้อมูลตำแหน่งของผู้สูงอายุ
-            var elderlyLocations = @json(
-                $elderlies->map(function ($elderly) {
-                    return [
-                        $elderly->addressElderly->Latitude_position,
-                        $elderly->addressElderly->Longitude_position,
-                        $elderly->Name_Elderly
-                    ];
-                }));
+            var elderlyLocations = @json($elderlyLocations);
 
             // ตรวจสอบว่ามีข้อมูลพิกัดหรือไม่
             if (elderlyLocations.length > 0) {
@@ -354,15 +367,18 @@
 
                 // เพิ่ม Marker สำหรับผู้สูงอายุแต่ละคน
                 elderlyLocations.forEach(function(location) {
-                    if (location[0] && location[1]) { // ตรวจสอบว่าค่าละติจูดและลองจิจูดไม่ใช่ null
-                        var marker = L.marker([location[0], location[1]]).addTo(map);
-                        marker.bindPopup("<b>" + location[2] + "</b>").openPopup();
+                    if (location.latitude && location.longitude) { // ตรวจสอบว่าค่าละติจูดและลองจิจูดไม่ใช่ null
+                        var marker = L.marker([location.latitude, location.longitude]).addTo(map);
+
+                        // เพิ่มการแสดงที่อยู่ใน popup
+                        marker.bindPopup("<b>" + location.name + "</b><br>ที่อยู่: " + location.address);
                     }
                 });
             } else {
                 console.error("ไม่มีข้อมูลตำแหน่งที่จะแสดงบนแผนที่");
             }
         });
+
 
         document.addEventListener('DOMContentLoaded', function() {
             // กราฟของ ADL

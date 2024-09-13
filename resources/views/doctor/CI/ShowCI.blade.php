@@ -35,9 +35,9 @@
                                         <tr>
                                             <th class="text-center">วันที่</th>
                                             <th class="text-center">ชื่อผู้สูงอายุ</th>
-                                            <th class="text-center">ชื่อหมอ</th>
+                                            <th class="text-center">ชื่อแพทย์</th>
                                             <th class="text-center">ชื่อเจ้าหน้าที่</th>
-                                            <th class="text-center">คำแนะนำ</th>
+                                            <th class="text-center">คำแนะนำการดูแล</th>
                                             <th class="text-center">Actions</th>
                                         </tr>
                                     </thead>
@@ -110,7 +110,13 @@
                     "paginate": {
                         "previous": "ก่อนหน้า",
                         "next": "ถัดไป"
-                    }
+                    },
+                    "search": "ค้นหา : ",
+                    "lengthMenu": "แสดง _MENU_ รายการ",
+                    "zeroRecords": "ไม่พบข้อมูล",
+                    "info": "กำลังแสดงรายการ _START_ ถึง _END_ จากทั้งหมด _TOTAL_ รายการ",
+                    "infoEmpty": "ไม่พบข้อมูล",
+                    "infoFiltered": "(filtered from _MAX_ total records)"
                 },
                 "dom": '<"row"<"col-sm-12 col-md-12"l><"col-sm-12 col-md-12"f>>t<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-2 d-flex justify-content-center"p>>'
             });

@@ -30,7 +30,7 @@
                 <div class="col-12">
                     <div class="card card-custom mb-4">
                         <div class="card-header pb-0">
-                            <h6>เพิ่มคำแนะนำ</h6>
+                            <h4>เพิ่มคำแนะนำการดูแล</h4>
                         </div>
                         <div class="card-body px-3 pt-3 pb-2">
                             <form action="{{ route('ci.store') }}" method="POST">
@@ -45,7 +45,7 @@
                                     <input type="hidden" name="ID_Elderly" value="{{ $elderly->ID_Elderly }}">
                                 </div>
                                 <div class="form-group">
-                                    <label for="Name_Doctor">ชื่อของหมอ</label>
+                                    <label for="Name_Doctor">ชื่อของนายแพทย์</label>
                                     <input type="text" id="Name_Doctor" name="Name_Doctor" class="form-control" value="{{ Auth::user()->Name_User }}" readonly>
                                 </div>
                                 <div class="form-group">
@@ -53,11 +53,11 @@
                                     <input type="text" id="Name_Staff" name="Name_Staff" class="form-control" value="{{ $reporter }}" readonly>
                                 </div>
                                 <div class="form-group">
-                                    <label for="Care_instructions">ข้อมูลคำแนะนำ</label>
+                                    <label for="Care_instructions">ข้อมูลคำแนะนำการดูแล</label>
                                     <textarea id="Care_instructions" name="Care_instructions" class="form-control" rows="4" required></textarea>
                                 </div>
-                                <button type="submit" class="btn btn-primary">บันทึก</button>
-                                <a href="{{ url()->previous() }}" class="btn btn-secondary">ยกเลิก</a>
+                                <button type="submit" class="btn btn-success">บันทึก</button>
+                                <a href="{{ url()->previous() }}" class="btn btn-danger">ยกเลิก</a>
                             </form>
                         </div>
                     </div>

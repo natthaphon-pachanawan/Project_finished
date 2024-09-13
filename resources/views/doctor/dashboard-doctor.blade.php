@@ -28,6 +28,18 @@
         .modal-xl {
             max-width: 75% !important;
         }
+
+        .align-items-center .btn-adl {
+            background-color: #17a2b8; /* สีฟ้าอ่อน */
+            border-color: #17a2b8;
+            color: white;
+        }
+
+        .align-items-center .btn-cg {
+            background-color: rgb(65, 220, 255); /* สีเขียว */
+            border-color: rgb(65, 220, 255);
+            color: white;
+        }
     </style>
 </head>
 
@@ -97,9 +109,9 @@
                             <td>{{ $elderly->Address }}</td>
                             <td>{{ $elderly->Phone_Elderly }}</td>
                             <td>
-                                <button class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#adlModal-{{ $elderly->ID_Elderly }}">ข้อมูล ADL</button>
-                                <button class="btn btn-secondary btn-sm" data-bs-toggle="modal"
+                                <button class="btn btn-adl btn-sm" data-bs-toggle="modal"
+    data-bs-target="#adlModal-{{ $elderly->ID_Elderly }}">ข้อมูล ADL</button>
+                                    <button class="btn btn-cg btn-sm" data-bs-toggle="modal"
                                     data-bs-target="#cgDatesModal-{{ $elderly->ID_Elderly }}">ข้อมูล CG</button>
                                 <button class="btn btn-info btn-sm" data-bs-toggle="modal"
                                     data-bs-target="#acgDatesModal-{{ $elderly->ID_Elderly }}">ข้อมูล ACG</button>
@@ -121,7 +133,7 @@
             <div class="modal-dialog modal-xl">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="adlModalLabel-{{ $elderly->ID_Elderly }}">ข้อมูล ADL ของ
+                        <h5 class="modal-title" id="adlModalLabel-{{ $elderly->ID_Elderly }}">ข้อมูลประเมินความสามารถในการดำเนินกิจวัตรประจำวันของคุณ
                             {{ $elderly->Name_Elderly }}</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
@@ -184,7 +196,7 @@
                         @endif
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ปิด</button>
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">ปิด</button>
                     </div>
                 </div>
             </div>
@@ -195,11 +207,10 @@
     @foreach ($elderlys as $elderly)
         <div class="modal fade" id="cgDatesModal-{{ $elderly->ID_Elderly }}" tabindex="-1"
             aria-labelledby="cgDatesModalLabel-{{ $elderly->ID_Elderly }}" aria-hidden="true">
-            <div class="modal-dialog">
+            <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="cgDatesModalLabel-{{ $elderly->ID_Elderly }}">เลือกวันที่สำหรับ CG
-                            ของ {{ $elderly->Name_Elderly }}</h5>
+                        <h5 class="modal-title" id="cgDatesModalLabel-{{ $elderly->ID_Elderly }}">เลือกวันที่สำหรับข้อมูลรายงานผลการปฏิบัติงานผู้ดูแลคุณ {{ $elderly->Name_Elderly }}</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
@@ -218,7 +229,7 @@
                         @endif
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ปิด</button>
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">ปิด</button>
                     </div>
                 </div>
             </div>
@@ -238,7 +249,7 @@
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="cgDetailsModalLabel-{{ $caregiver->ID_CG }}">ข้อมูล CG ของ
+                            <h5 class="modal-title" id="cgDetailsModalLabel-{{ $caregiver->ID_CG }}">รายงานผลการปฏิบัติงานผู้ดูแลของคุณ
                                 {{ $elderly->Name_Elderly }} ({{ $caregiver->Date_CG }})</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                 aria-label="Close"></button>
@@ -384,7 +395,7 @@
                             </table>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ปิด</button>
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">ปิด</button>
                         </div>
                     </div>
                 </div>
@@ -396,11 +407,10 @@
     @foreach ($elderlys as $elderly)
         <div class="modal fade" id="acgDatesModal-{{ $elderly->ID_Elderly }}" tabindex="-1"
             aria-labelledby="acgDatesModalLabel-{{ $elderly->ID_Elderly }}" aria-hidden="true">
-            <div class="modal-dialog">
+            <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="acgDatesModalLabel-{{ $elderly->ID_Elderly }}">เลือกวันที่สำหรับ
-                            CG ของ {{ $elderly->Name_Elderly }}</h5>
+                        <h5 class="modal-title" id="acgDatesModalLabel-{{ $elderly->ID_Elderly }}">เลือกวันที่สำหรับข้อมูลรายงานผลการปฏิบัติงานผู้ดูแลคุณ {{ $elderly->Name_Elderly }}</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                             aria-label="Close"></button>
                     </div>
@@ -420,7 +430,7 @@
                         @endif
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ปิด</button>
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">ปิด</button>
                     </div>
                 </div>
             </div>
@@ -437,11 +447,10 @@
         @foreach ($caregivers as $caregiver)
             <div class="modal fade" id="cgForACGModal-{{ $caregiver->ID_CG }}" tabindex="-1"
                 aria-labelledby="cgForACGModalLabel-{{ $caregiver->ID_CG }}" aria-hidden="true">
-                <div class="modal-dialog">
+                <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="cgForACGModalLabel-{{ $caregiver->ID_CG }}">เลือกวันที่สำหรับ
-                                ACG ของ {{ $elderly->Name_Elderly }} ({{ $caregiver->Date_CG }})</h5>
+                            <h5 class="modal-title" id="cgForACGModalLabel-{{ $caregiver->ID_CG }}">เลือกวันที่สำหรับกิจกรรมที่ให้การช่วยเหลือของคุณ {{ $elderly->Name_Elderly }} ({{ $caregiver->Date_CG }})</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                 aria-label="Close"></button>
                         </div>
@@ -461,7 +470,7 @@
                             @endif
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ปิด</button>
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">ปิด</button>
                         </div>
                     </div>
                 </div>
@@ -488,8 +497,7 @@
                     <div class="modal-dialog modal-lg">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="acgDetailsModalLabel-{{ $activity->ID_ACG }}">ข้อมูล ACG
-                                    ของ {{ $elderly->Name_Elderly }} ({{ $activity->Date_ACG }})</h5>
+                                <h5 class="modal-title" id="acgDetailsModalLabel-{{ $activity->ID_ACG }}">ข้อมูลกิจกรรมที่ให้การช่วยเหลือของคุณ {{ $elderly->Name_Elderly }} ({{ $activity->Date_ACG }})</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                     aria-label="Close"></button>
                             </div>
@@ -578,7 +586,7 @@
                                 </table>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ปิด</button>
+                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">ปิด</button>
                             </div>
                         </div>
                     </div>
@@ -597,7 +605,13 @@
                     "paginate": {
                         "previous": "ก่อนหน้า",
                         "next": "ถัดไป"
-                    }
+                    },
+                    "search": "ค้นหา : ",
+                    "lengthMenu": "แสดง _MENU_ รายการ",
+                    "zeroRecords": "ไม่พบข้อมูล",
+                    "info": "กำลังแสดงรายการ _START_ ถึง _END_ จากทั้งหมด _TOTAL_ รายการ",
+                    "infoEmpty": "ไม่พบข้อมูล",
+                    "infoFiltered": "(filtered from _MAX_ total records)"
                 },
                 "dom": '<"row"<"col-sm-12 col-md-12"l><"col-sm-12 col-md-12"f>>t<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-3 d-flex justify-content-center"p>>'
             });
