@@ -88,14 +88,14 @@
     </main>
 
     <!-- Include Argon Dashboard JS -->
-    <script src="{{ asset('assets/js/argon-dashboard.js') }}"></script>
-    <script src="{{ asset('assets/js/bootstrap.bundle.min.js') }}"></script>
-    <script src="{{ asset('assets/js/popper.min.js') }}"></script>
-    <script src="{{ asset('assets/js/bootstrap-notify.js') }}"></script>
-    <script src="{{ asset('assets/js/chartjs.min.js') }}"></script>
-    <script src="{{ asset('assets/js/Chart.extension.js') }}"></script>
-    <script src="{{ asset('assets/js/perfect-scrollbar.min.js') }}"></script>
-    <script src="{{ asset('assets/js/smooth-scrollbar.min.js') }}"></script>
+    <script src="{{ url('assets/js/argon-dashboard.js') }}"></script>
+    <script src="{{ url('assets/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ url('assets/js/popper.min.js') }}"></script>
+    <script src="{{ url('assets/js/bootstrap-notify.js') }}"></script>
+    <script src="{{ url('assets/js/chartjs.min.js') }}"></script>
+    <script src="{{ url('assets/js/Chart.extension.js') }}"></script>
+    <script src="{{ url('assets/js/perfect-scrollbar.min.js') }}"></script>
+    <script src="{{ url('assets/js/smooth-scrollbar.min.js') }}"></script>
 
     <!-- Include jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

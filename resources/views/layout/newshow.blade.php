@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ $newsItem->title }}</title>
-    <link href="{{ asset('assets/css/argon-dashboard.css') }}" rel="stylesheet" />
+    <link href="{{ url('assets/css/argon-dashboard.css') }}" rel="stylesheet" />
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
 
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
@@ -100,7 +100,7 @@
         <div class="image-grid">
             @foreach ($newsItem->images as $image)
                 <div class="image-item">
-                    <img src="{{ asset('storage/' . $image->image_path) }}" alt="{{ $newsItem->title }}">
+                    <img src="{{ url('storage/' . $image->image_path) }}" alt="{{ $newsItem->title }}">
                 </div>
             @endforeach
         </div>

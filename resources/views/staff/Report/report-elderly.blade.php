@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>รายงานข้อมูลผู้สูงอายุ</title>
-    <link href="{{ asset('assets/css/argon-dashboard.css') }}" rel="stylesheet"/>
-    <link href="{{ asset('assets/css/nucleo-icons.css') }}" rel="stylesheet"/>
-    <link href="{{ asset('assets/css/nucleo-svg.css') }}" rel="stylesheet"/>
+    <link href="{{ url('assets/css/argon-dashboard.css') }}" rel="stylesheet"/>
+    <link href="{{ url('assets/css/nucleo-icons.css') }}" rel="stylesheet"/>
+    <link href="{{ url('assets/css/nucleo-svg.css') }}" rel="stylesheet"/>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         * {
@@ -85,7 +85,7 @@
 
     <div class="container">
         <h5>
-            <img src="{{ asset('images/Logo.png') }}" alt="Logo" class="logo">
+            <img src="{{ url('images/Logo.png') }}" alt="Logo" class="logo">
             รายงานข้อมูลผู้สูงอายุ
         </h5>
         <table>
@@ -113,9 +113,9 @@
                 <tr>
                     <td>
                         @if($elderly->Image_Elderly)
-                            <img src="{{ asset('storage/'.$elderly->Image_Elderly) }}" alt="Elderly Image" width="50">
+                            <img src="{{ url('storage/'.$elderly->Image_Elderly) }}" alt="Elderly Image" width="50">
                         @else
-                            <img src="{{ asset('storage/default.png') }}" alt="Elderly Image" width="50">
+                            <img src="{{ url('storage/default.png') }}" alt="Elderly Image" width="50">
                         @endif
                     </td>
                     <td>{{ $elderly->Name_Elderly }}</td>

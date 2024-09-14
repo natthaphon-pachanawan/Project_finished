@@ -8,9 +8,9 @@
     <title>Login</title>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link href="{{ asset('assets/css/argon-dashboard.css') }}" rel="stylesheet"/>
-    <link href="{{ asset('assets/css/nucleo-icons.css') }}" rel="stylesheet"/>
-    <link href="{{ asset('assets/css/nucleo-svg.css') }}" rel="stylesheet"/>
+    <link href="{{ url('assets/css/argon-dashboard.css') }}" rel="stylesheet"/>
+    <link href="{{ url('assets/css/nucleo-icons.css') }}" rel="stylesheet"/>
+    <link href="{{ url('assets/css/nucleo-svg.css') }}" rel="stylesheet"/>
     <style>
         body {
             background-color: #f8f9fa;
@@ -198,10 +198,10 @@
     <footer>
         <p>&copy; 2024 สำนักงานสาธารณสุข อำเภอห้วยราช จังหวัดบุรีรัมย์</p>
     </footer>
-    <script src="{{ asset('assets/js/core/popper.min.js') }}"></script>
-    <script src="{{ asset('assets/js/core/bootstrap.min.js') }}"></script>
-    <script src="{{ asset('assets/js/plugins/perfect-scrollbar.min.js') }}"></script>
-    <script src="{{ asset('assets/js/plugins/smooth-scrollbar.min.js') }}"></script>
+    <script src="{{ url('assets/js/core/popper.min.js') }}"></script>
+    <script src="{{ url('assets/js/core/bootstrap.min.js') }}"></script>
+    <script src="{{ url('assets/js/plugins/perfect-scrollbar.min.js') }}"></script>
+    <script src="{{ url('assets/js/plugins/smooth-scrollbar.min.js') }}"></script>
     <script>
         var win = navigator.platform.indexOf('Win') > -1;
         if (win && document.querySelector('#sidenav-scrollbar')) {

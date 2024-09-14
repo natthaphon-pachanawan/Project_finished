@@ -12,7 +12,7 @@
 
     <div class="container">
         <h5>
-            <img src="{{ asset('images/Logo.png') }}" alt="Logo">
+            <img src="{{ url('images/Logo.png') }}" alt="Logo">
             รายงานการปฏิบัติงานของผู้ดูแลผู้สูงอายุทั้งหมด
         </h5>
         <table>

@@ -5,9 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>จัดการคำแนะนํา</title>
-    <link href="{{ asset('assets/css/argon-dashboard.css') }}" rel="stylesheet" />
-    <link href="{{ asset('assets/css/nucleo-icons.css') }}" rel="stylesheet" />
-    <link href="{{ asset('assets/css/nucleo-svg.css') }}" rel="stylesheet" />
+    <link href="{{ url('assets/css/argon-dashboard.css') }}" rel="stylesheet" />
+    <link href="{{ url('assets/css/nucleo-icons.css') }}" rel="stylesheet" />
+    <link href="{{ url('assets/css/nucleo-svg.css') }}" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
     <style>
@@ -98,10 +98,10 @@
                         <tr>
                             <td>
                                 @if ($elderly->Image_Elderly)
-                                    <img src="{{ asset('storage/' . $elderly->Image_Elderly) }}" alt="Elderly Image"
+                                    <img src="{{ url('storage/' . $elderly->Image_Elderly) }}" alt="Elderly Image"
                                         width="50">
                                 @else
-                                    <img src="{{ asset('storage/default.png') }}" alt="Elderly Image" width="50">
+                                    <img src="{{ url('storage/default.png') }}" alt="Elderly Image" width="50">
                                 @endif
                             </td>
                             <td>{{ $elderly->Name_Elderly }}</td>

@@ -7,9 +7,9 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link href="{{ asset('assets/css/argon-dashboard.css') }}" rel="stylesheet" />
-    <link href="{{ asset('assets/css/nucleo-icons.css') }}" rel="stylesheet" />
-    <link href="{{ asset('assets/css/nucleo-svg.css') }}" rel="stylesheet" />
+    <link href="{{ url('assets/css/argon-dashboard.css') }}" rel="stylesheet" />
+    <link href="{{ url('assets/css/nucleo-icons.css') }}" rel="stylesheet" />
+    <link href="{{ url('assets/css/nucleo-svg.css') }}" rel="stylesheet" />
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <style>

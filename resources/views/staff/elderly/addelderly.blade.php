@@ -5,9 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Elderly</title>
-    <link href="{{ asset('assets/css/argon-dashboard.css') }}" rel="stylesheet" />
-    <link href="{{ asset('assets/css/nucleo-icons.css') }}" rel="stylesheet" />
-    <link href="{{ asset('assets/css/nucleo-svg.css') }}" rel="stylesheet" />
+    <link href="{{ url('assets/css/argon-dashboard.css') }}" rel="stylesheet" />
+    <link href="{{ url('assets/css/nucleo-icons.css') }}" rel="stylesheet" />
+    <link href="{{ url('assets/css/nucleo-svg.css') }}" rel="stylesheet" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <style>
         #map {
@@ -155,8 +155,8 @@
     <script>
         let provincesData;
 
-        // Load provinces data from the asset path
-        $.getJSON("{{ asset('API/api_province_with_amphure_tambon.json') }}", function (data) {
+        // Load provinces data from the url path
+        $.getJSON("{{ url('API/api_province_with_amphure_tambon.json') }}", function (data) {
             provincesData = data;
             let provinceSelect = $('#Province');
 

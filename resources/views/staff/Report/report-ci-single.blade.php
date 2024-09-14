@@ -8,7 +8,7 @@
 <body>
     <div id="report-content">
         <h5 style="font-size: 20px;">
-            <img src="{{ asset('images/Logo.png') }}" alt="Logo" style="height: 80px; vertical-align: middle;">
+            <img src="{{ url('images/Logo.png') }}" alt="Logo" style="height: 80px; vertical-align: middle;">
             รายงานคำแนะนำการดูแล
         </h5>
 

@@ -5,8 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ระบบประเมินความสามารถในการดำเนินกิจวัตรประจำวันของผู้สูงอายุ</title>
-    <link href="{{ asset('assets/css/argon-dashboard.css') }}" rel="stylesheet" />
-    <link href="{{ asset('assets/css/nucleo-icons.css') }}" rel="stylesheet" />
+    <link href="{{ url('assets/css/argon-dashboard.css') }}" rel="stylesheet" />
+    <link href="{{ url('assets/css/nucleo-icons.css') }}" rel="stylesheet" />
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
@@ -185,7 +185,7 @@
 
         .office-info {
             position: relative;
-            background-image: url('{{ asset('images/ooff.jpg') }}');
+            background-image: url('{{ url('images/ooff.jpg') }}');
             background-size: cover;
             background-position: center;
             padding: 100px 0;
@@ -253,7 +253,7 @@
         <section class="slider">
             <div class="slides">
                 @foreach ($sliders as $slider)
-                    <img src="{{ asset('storage/' . $slider->image) }}" alt="Slider Image">
+                    <img src="{{ url('storage/' . $slider->image) }}" alt="Slider Image">
                 @endforeach
             </div>
             <button class="prev" onclick="plusSlides(-1)">&#10094;</button>
@@ -273,7 +273,7 @@
                                 <div class="news-container">
                                     <div class="news-item">
                                         <a href="{{ route('news.show', ['id' => $newsItem->id]) }}">
-                                            <img src="{{ $newsItem->images->first() ? asset('storage/' . $newsItem->images->first()->image_path) : asset('path/to/default/image.jpg') }}"
+                                            <img src="{{ $newsItem->images->first() ? url('storage/' . $newsItem->images->first()->image_path) : url('path/to/default/image.jpg') }}"
                                             alt="ไม่มีรูปภาพ" class="card-img-top" style="height: 180px; object-fit: cover;">
                                         </a>
                                         <h5 class="mt-2">
@@ -308,7 +308,7 @@
             <div class="overlay"></div>
             <div class="container">
                 <div class="info-content">
-                    <img src="{{ asset('images/logo.png') }}" alt="Logo" class="office-logo">
+                    <img src="{{ url('images/logo.png') }}" alt="Logo" class="office-logo">
                     <h4 style="color: #1BAE70;">สำนักงานสาธารณสุข อำเภอห้วยราช</h4>
                 </div>
                 <p>สำนักงานสาธารณสุขอำเภอห้วยราช หมู่ที่ 3 ถนนสุขาภิบาล</p>

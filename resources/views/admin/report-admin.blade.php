@@ -12,7 +12,7 @@
     <div id="report-content">
 
         <h5>
-            <img src="{{ asset('images/Logo.png') }}" alt="Logo">
+            <img src="{{ url('images/Logo.png') }}" alt="Logo">
             รายงานข้อมูลผู้ใช้
         </h5>
 
@@ -40,7 +40,7 @@
                     @endif
                     <tr>
                         <td>
-                            <img src="{{ asset($user->Image_User) }}" alt="User Image" class="user-image">
+                            <img src="{{ url($user->Image_User) }}" alt="User Image" class="user-image">
                         </td>
                         <td>{{ $user->Name_User ?: 'ไม่มีข้อมูล' }}</td>
                         <td style="text-align: center;">{{ $user->Type_Personnel }}</td>

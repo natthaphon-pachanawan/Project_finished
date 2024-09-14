@@ -5,9 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>จัดการข่าวสาร</title>
-    <link href="{{ asset('assets/css/argon-dashboard.css') }}" rel="stylesheet" />
-    <link href="{{ asset('assets/css/nucleo-icons.css') }}" rel="stylesheet" />
-    <link href="{{ asset('assets/css/nucleo-svg.css') }}" rel="stylesheet" />
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
     <!-- SweetAlert2 CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
@@ -296,7 +293,7 @@
     <section class="slider">
         <div class="slides">
             @foreach ($sliders as $slider)
-                <img src="{{ asset('storage/' . $slider->image) }}" alt="Slider Image">
+                <img src="{{ url('storage/' . $slider->image) }}" alt="Slider Image">
             @endforeach
         </div>
         <button class="prev" onclick="plusSlides(-1)">&#10094;</button>
@@ -323,7 +320,7 @@
                     @foreach ($news as $newsItem)
                         <div class="col-md-6 col-lg-4 mb-4">
                             <div class="card h-100">
-                                <img src="{{ $newsItem->images->first() ? asset('storage/' . $newsItem->images->first()->image_path) : asset('path/to/default/image.jpg') }}"
+                                <img src="{{ $newsItem->images->first() ? url('storage/' . $newsItem->images->first()->image_path) : url('path/to/default/image.jpg') }}"
      alt="ไม่มีรูปภาพ" class="card-img-top" style="height: 180px; object-fit: cover;">
 
                                 <div class="card-body">
@@ -331,7 +328,7 @@
                                 </div>
                                 <div class="card-footer d-flex justify-content-end">
                                     <button class="btn btn-warning btn-sm" style="margin-right: 10px;"
-                                        onclick="showEditModal('{{ $newsItem->id }}', '{{ $newsItem->title }}', '{{ $newsItem->content }}', [@foreach ($newsItem->images as $image) '{{ asset('storage/' . $image->image_path) }}', @endforeach])">แก้ไข</button>
+                                        onclick="showEditModal('{{ $newsItem->id }}', '{{ $newsItem->title }}', '{{ $newsItem->content }}', [@foreach ($newsItem->images as $image) '{{ url('storage/' . $image->image_path) }}', @endforeach])">แก้ไข</button>
                                     <form action="{{ route('admin.news.destroy', $newsItem->id) }}" method="POST"
                                         id="delete-news-form-{{ $newsItem->id }}" style="display:inline;">
                                         @csrf
@@ -575,7 +572,7 @@
                         @foreach ($sliders as $slider)
                             <tr>
                                 <td>
-                                    <img src="{{ asset('storage/' . $slider->image) }}" alt="Slider Image"
+                                    <img src="{{ url('storage/' . $slider->image) }}" alt="Slider Image"
                                         width="100">
                                 </td>
                                 <td>

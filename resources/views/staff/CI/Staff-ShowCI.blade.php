@@ -7,9 +7,9 @@
     <title>Staff CI Information</title>
     <!-- Include DataTables CSS -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
-    <link href="{{ asset('assets/css/argon-dashboard.css') }}" rel="stylesheet">
-    <link href="{{ asset('assets/css/nucleo-icons.css') }}" rel="stylesheet">
-    <link href="{{ asset('assets/css/nucleo-svg.css') }}" rel="stylesheet">
+    <link href="{{ url('assets/css/argon-dashboard.css') }}" rel="stylesheet">
+    <link href="{{ url('assets/css/nucleo-icons.css') }}" rel="stylesheet">
+    <link href="{{ url('assets/css/nucleo-svg.css') }}" rel="stylesheet">
 </head>
 
 <body class="g-sidenav-show bg-gray-100">
@@ -74,14 +74,14 @@
     </main>
 
     <!-- Include Argon Dashboard JS -->
-    <script src="{{ asset('assets/js/argon-dashboard.js') }}"></script>
-    <script src="{{ asset('assets/js/bootstrap.bundle.min.js') }}"></script>
-    <script src="{{ asset('assets/js/popper.min.js') }}"></script>
-    <script src="{{ asset('assets/js/bootstrap-notify.js') }}"></script>
-    <script src="{{ asset('assets/js/chartjs.min.js') }}"></script>
-    <script src="{{ asset('assets/js/Chart.extension.js') }}"></script>
-    <script src="{{ asset('assets/js/perfect-scrollbar.min.js') }}"></script>
-    <script src="{{ asset('assets/js/smooth-scrollbar.min.js') }}"></script>
+    <script src="{{ url('assets/js/argon-dashboard.js') }}"></script>
+    <script src="{{ url('assets/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ url('assets/js/popper.min.js') }}"></script>
+    <script src="{{ url('assets/js/bootstrap-notify.js') }}"></script>
+    <script src="{{ url('assets/js/chartjs.min.js') }}"></script>
+    <script src="{{ url('assets/js/Chart.extension.js') }}"></script>
+    <script src="{{ url('assets/js/perfect-scrollbar.min.js') }}"></script>
+    <script src="{{ url('assets/js/smooth-scrollbar.min.js') }}"></script>
 
     <!-- Include jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

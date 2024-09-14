@@ -76,10 +76,10 @@
                                             <tr>
                                                 <td class="text-center">
                                                     @if ($elderly->Image_Elderly)
-                                                        <img src="{{ asset('storage/' . $elderly->Image_Elderly) }}"
+                                                        <img src="{{ url('storage/' . $elderly->Image_Elderly) }}"
                                                             alt="Elderly Image" width="50">
                                                     @else
-                                                        <img src="{{ asset('storage/default.png') }}"
+                                                        <img src="{{ url('storage/default.png') }}"
                                                             alt="Elderly Image" width="50">
                                                     @endif
                                                 </td>
@@ -190,13 +190,13 @@
     </main>
 
     <!-- Argon Dashboard JS -->
-    <script src="{{ asset('assets/js/argon-dashboard.js') }}"></script>
-    <script src="{{ asset('assets/js/core/bootstrap.bundle.min.js') }}"></script>
-    <script src="{{ asset('assets/js/core/popper.min.js') }}"></script>
-    <script src="{{ asset('assets/js/core/bootstrap.min.js') }}"></script>
-    <script src="{{ asset('assets/js/plugins/bootstrap-notify.js') }}"></script>
-    <script src="{{ asset('assets/js/plugins/perfect-scrollbar.min.js') }}"></script>
-    <script src="{{ asset('assets/js/plugins/smooth-scrollbar.min.js') }}"></script>
+    <script src="{{ url('assets/js/argon-dashboard.js') }}"></script>
+    <script src="{{ url('assets/js/core/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ url('assets/js/core/popper.min.js') }}"></script>
+    <script src="{{ url('assets/js/core/bootstrap.min.js') }}"></script>
+    <script src="{{ url('assets/js/plugins/bootstrap-notify.js') }}"></script>
+    <script src="{{ url('assets/js/plugins/perfect-scrollbar.min.js') }}"></script>
+    <script src="{{ url('assets/js/plugins/smooth-scrollbar.min.js') }}"></script>
     <!-- Include jQuery -->
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <!-- Include DataTables JS -->

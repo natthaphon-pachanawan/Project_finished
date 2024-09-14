@@ -5,9 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>เพิ่มคำแนะนำ</title>
-    <link href="{{ asset('assets/css/argon-dashboard.css') }}" rel="stylesheet">
-    <link href="{{ asset('assets/css/nucleo-icons.css') }}" rel="stylesheet">
-    <link href="{{ asset('assets/css/nucleo-svg.css') }}" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         .container {
@@ -66,14 +63,14 @@
         </div>
     </main>
 
-    <script src="{{ asset('assets/js/argon-dashboard.js') }}"></script>
-    <script src="{{ asset('assets/js/bootstrap.bundle.min.js') }}"></script>
-    <script src="{{ asset('assets/js/popper.min.js') }}"></script>
-    <script src="{{ asset('assets/js/bootstrap-notify.js') }}"></script>
-    <script src="{{ asset('assets/js/chartjs.min.js') }}"></script>
-    <script src="{{ asset('assets/js/Chart.extension.js') }}"></script>
-    <script src="{{ asset('assets/js/perfect-scrollbar.min.js') }}"></script>
-    <script src="{{ asset('assets/js/smooth-scrollbar.min.js') }}"></script>
+    <script src="{{ url('assets/js/argon-dashboard.js') }}"></script>
+    <script src="{{ url('assets/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ url('assets/js/popper.min.js') }}"></script>
+    <script src="{{ url('assets/js/bootstrap-notify.js') }}"></script>
+    <script src="{{ url('assets/js/chartjs.min.js') }}"></script>
+    <script src="{{ url('assets/js/Chart.extension.js') }}"></script>
+    <script src="{{ url('assets/js/perfect-scrollbar.min.js') }}"></script>
+    <script src="{{ url('assets/js/smooth-scrollbar.min.js') }}"></script>
 </body>
 
 </html>
