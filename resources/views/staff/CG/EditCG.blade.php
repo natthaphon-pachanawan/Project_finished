@@ -5,9 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Care Giver</title>
-    <link href="{{ asset('assets/css/argon-dashboard.css') }}" rel="stylesheet" />
-    <link href="{{ asset('assets/css/nucleo-icons.css') }}" rel="stylesheet" />
-    <link href="{{ asset('assets/css/nucleo-svg.css') }}" rel="stylesheet" />
+    <link href="{{ url('assets/css/argon-dashboard.css') }}" rel="stylesheet" />
+    <link href="{{ url('assets/css/nucleo-icons.css') }}" rel="stylesheet" />
+    <link href="{{ url('assets/css/nucleo-svg.css') }}" rel="stylesheet" />
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -119,7 +119,7 @@
     <div class="container mt-5">
         <div class="card">
             <div class="card-header">
-                <h1>แก้ไขแบบฟอร์มรายงานผลการปฏิบัติงานผู้ดูแลผู้สูงอายุ (CG)</h1>
+                <h4>แก้ไขรายงานผลการปฏิบัติงานผู้ดูแลผู้สูงอายุ (CG)</h4>
                 <div class="card-body">
                     @if ($errors->any())
                         <div class="alert alert-danger">
@@ -188,7 +188,7 @@
                                 value="{{ $caregiver->Waist }}" required>
                         </div>
                         <div class="form-group">
-                            <label for="Group_ADL">ประเภทผู้สูงอายุ</label>
+                            <label for="Group_ADL">กลุ่มประเภทผู้สูงอายุ</label>
                             <input type="text" id="Group_ADL" name="Group_ADL" class="form-control"
                                 value="{{ $caregiver->Group_ADL }}" readonly required>
                         </div>
@@ -212,9 +212,9 @@
                         <input type="hidden" id="Name_Elderly_hidden" name="Name_Elderly"
                             value="{{ $caregiver->Name_Elderly }}">
 
-                        <button class="btn btn-primary" type="button"
+                        <button class="btn btn-success" type="button"
                             onclick="transferValues(); showAssessmentForm();">ถัดไป</button>
-                        <a href="{{ route('cg.index') }}" class="btn btn-secondary">กลับไปหน้าหลัก</a>
+                        <a href="{{ route('cg.index') }}" class="btn btn-danger">ยกเลิก</a>
                     </form>
 
                     <!-- Assessment Form -->
@@ -441,8 +441,8 @@
                             <input type="text" id="Reporter" name="Reporter" class="form-control"
                                 value="{{ Auth::user()->Name_User }}" readonly required>
                         </div>
-                        <button class="btn btn-primary" type="submit">บันทึก</button>
-                        <button class="btn btn-secondary" type="button" onclick="showCareGiverForm()">กลับ</button>
+                        <button class="btn btn-success" type="submit">บันทึก</button>
+                        <button class="btn btn-danger" type="button" onclick="showCareGiverForm()">กลับ</button>
                     </form>
                 </div>
             </div>

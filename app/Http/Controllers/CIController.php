@@ -44,4 +44,11 @@ class CIController extends Controller
         $careInstructions = CareInstruction::whereNotNull('Confirm')->get();
         return view('staff.Report.report-ci-confirm', compact('careInstructions'));
     }
+
+    public function generateSingleReport($id)
+{
+    $careInstruction = CareInstruction::with('elderly')->findOrFail($id);
+    return view('Staff.Report.report-ci-single', compact('careInstruction'));
+}
+
 }

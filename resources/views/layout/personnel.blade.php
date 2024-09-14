@@ -22,7 +22,7 @@
             text-align: center;
         }
         h3 {
-            
+
             margin-bottom: 30px;
             font-size: 24px;
         }
@@ -89,6 +89,6 @@
             <p>จำนวนบุคลากรรวม: {{ $adminCount + $doctorCount + $staffCount }} คน</p>
         </div>
     </div>
-
+    @include('layout.footer')
 </body>
 </html>

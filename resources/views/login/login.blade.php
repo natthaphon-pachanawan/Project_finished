@@ -8,9 +8,9 @@
     <title>Login</title>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link href="{{ asset('assets/css/argon-dashboard.css') }}" rel="stylesheet"/>
-    <link href="{{ asset('assets/css/nucleo-icons.css') }}" rel="stylesheet"/>
-    <link href="{{ asset('assets/css/nucleo-svg.css') }}" rel="stylesheet"/>
+    <link href="{{ url('assets/css/argon-dashboard.css') }}" rel="stylesheet"/>
+    <link href="{{ url('assets/css/nucleo-icons.css') }}" rel="stylesheet"/>
+    <link href="{{ url('assets/css/nucleo-svg.css') }}" rel="stylesheet"/>
     <style>
         body {
             background-color: #f8f9fa;
@@ -20,7 +20,7 @@
         }
 
         .login-container {
-            min-height: 100vh;
+            min-height: 85vh;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -70,7 +70,7 @@
         }
 
         .login-form .btn {
-            background: #fb6340;
+            background: #2dce89;
             color: white;
             padding: 0.75rem;
             border: none;
@@ -81,7 +81,7 @@
         }
 
         .login-form .btn:hover {
-            background: #ea3005;
+            background: #2dce89;
         }
 
         .login-footer {
@@ -90,7 +90,7 @@
         }
 
         .login-footer a {
-            color: #fb6340;
+            color: #2dce89;
             text-decoration: none;
             transition: color 0.3s ease;
         }
@@ -128,6 +128,35 @@
             transform: translateY(-50%);
             cursor: pointer;
         }
+
+        footer {
+            background-color: #344767;
+            color: #fff;
+            text-align: center;
+            padding: 10px 0;
+        }
+
+        footer ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        footer ul li {
+            display: inline;
+        }
+
+        footer ul li a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        footer ul li a:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 
@@ -155,7 +184,7 @@
                     <span class="fas fa-eye toggle-password" id="togglePassword"></span>
                 </div>
                 <div class="form-group">
-                    <button type="submit" class="btn btn-primary btn-block">เข้าสู่ระบบ</button>
+                    <button type="submit" class="btn btn-login">เข้าสู่ระบบ</button>
                 </div>
             </form>
             {{--  <div class="login-footer">
@@ -163,13 +192,16 @@
                     หากลืมรหัสผ่าน? <a href="{{ route('password.request') }}">กดที่นี่เพื่อรีเซ็ทรหัสผ่าน</a>
                 </p>
             </div>  --}}
+
         </div>
     </div>
-
-    <script src="{{ asset('assets/js/core/popper.min.js') }}"></script>
-    <script src="{{ asset('assets/js/core/bootstrap.min.js') }}"></script>
-    <script src="{{ asset('assets/js/plugins/perfect-scrollbar.min.js') }}"></script>
-    <script src="{{ asset('assets/js/plugins/smooth-scrollbar.min.js') }}"></script>
+    <footer>
+        <p>&copy; 2024 สำนักงานสาธารณสุข อำเภอห้วยราช จังหวัดบุรีรัมย์</p>
+    </footer>
+    <script src="{{ url('assets/js/core/popper.min.js') }}"></script>
+    <script src="{{ url('assets/js/core/bootstrap.min.js') }}"></script>
+    <script src="{{ url('assets/js/plugins/perfect-scrollbar.min.js') }}"></script>
+    <script src="{{ url('assets/js/plugins/smooth-scrollbar.min.js') }}"></script>
     <script>
         var win = navigator.platform.indexOf('Win') > -1;
         if (win && document.querySelector('#sidenav-scrollbar')) {

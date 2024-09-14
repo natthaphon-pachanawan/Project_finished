@@ -6,9 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CG Information</title>
     <!-- Argon Dashboard CSS -->
-    <link href="{{ asset('assets/css/argon-dashboard.css') }}" rel="stylesheet">
-    <link href="{{ asset('assets/css/nucleo-icons.css') }}" rel="stylesheet">
-    <link href="{{ asset('assets/css/nucleo-svg.css') }}" rel="stylesheet">
+    <link href="{{ url('assets/css/argon-dashboard.css') }}" rel="stylesheet">
+    <link href="{{ url('assets/css/nucleo-icons.css') }}" rel="stylesheet">
+    <link href="{{ url('assets/css/nucleo-svg.css') }}" rel="stylesheet">
     <!-- DataTables CSS -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
     {{--  pdf  --}}
@@ -37,7 +37,7 @@
                 <div class="col-12">
                     <div class="card mb-4">
                         <div class="card-header pb-0 d-flex justify-content-between align-items-center">
-                            <h5>แบบฟอร์มรายงานผลการปฏิบัติงานผู้ดูแลผู้สูงอายุ (CG)</h5>
+                            <h4>รายงานผลการปฏิบัติงานผู้ดูแลผู้สูงอายุ (CG)</h4>
                             <div class="d-flex gap-2">
                             <a href="{{ route('cg.create') }}" class="btn btn-primary">
                                 <i class="fas fa-plus"></i> เพิ่ม CG
@@ -55,7 +55,7 @@
                                             <th class="text-center">วันที่</th>
                                             <th class="text-center">ชื่อผู้สูงอายุ</th>
                                             <th class="text-center">ชื่อผู้ดูแลผู้สูงอายุ</th>
-                                            <th class="text-center">กลุ่ม ADL</th>
+                                            <th class="text-center">ประเภทกลุ่มผู้สูงอายุ</th>
                                             <th class="text-center">Actions</th>
                                         </tr>
                                     </thead>
@@ -92,14 +92,14 @@
     </main>
 
     <!-- Argon Dashboard JS -->
-    <script src="{{ asset('assets/js/argon-dashboard.js') }}"></script>
-    <script src="{{ asset('assets/js/bootstrap.bundle.min.js') }}"></script>
-    <script src="{{ asset('assets/js/popper.min.js') }}"></script>
-    <script src="{{ asset('assets/js/bootstrap-notify.js') }}"></script>
-    <script src="{{ asset('assets/js/chartjs.min.js') }}"></script>
-    <script src="{{ asset('assets/js/Chart.extension.js') }}"></script>
-    <script src="{{ asset('assets/js/perfect-scrollbar.min.js') }}"></script>
-    <script src="{{ asset('assets/js/smooth-scrollbar.min.js') }}"></script>
+    <script src="{{ url('assets/js/argon-dashboard.js') }}"></script>
+    <script src="{{ url('assets/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ url('assets/js/popper.min.js') }}"></script>
+    <script src="{{ url('assets/js/bootstrap-notify.js') }}"></script>
+    <script src="{{ url('assets/js/chartjs.min.js') }}"></script>
+    <script src="{{ url('assets/js/Chart.extension.js') }}"></script>
+    <script src="{{ url('assets/js/perfect-scrollbar.min.js') }}"></script>
+    <script src="{{ url('assets/js/smooth-scrollbar.min.js') }}"></script>
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- DataTables JS -->
@@ -111,7 +111,13 @@
                     "paginate": {
                         "previous": "ก่อนหน้า",
                         "next": "ถัดไป"
-                    }
+                    },
+                    "search": "ค้นหา : ",
+                    "lengthMenu": "แสดง _MENU_ รายการ",
+                    "zeroRecords": "ไม่พบข้อมูล",
+                    "info": "กำลังแสดงรายการ _START_ ถึง _END_ จากทั้งหมด _TOTAL_ รายการ",
+                    "infoEmpty": "ไม่พบข้อมูล",
+                    "infoFiltered": "(filtered from _MAX_ total records)"
                 },
                 "dom": '<"row"<"col-sm-12 col-md-12"l><"col-sm-12 col-md-12"f>>t<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-2 d-flex justify-content-center"p>>'
             });

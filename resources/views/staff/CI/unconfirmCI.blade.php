@@ -18,7 +18,7 @@
                 <div class="col-12">
                     <div class="card mb-4">
                         <div class="card-header pb-0 d-flex justify-content-between align-items-center">
-                            <h5>คำแนะนำการดูแลที่ยืนยันแล้ว</h5>
+                            <h4>คำแนะนำการดูแลที่ยืนยันแล้ว</h4>
                             <a href="javascript:void(0);" id="generate-pdf" class="btn btn-success ml-2">
                                 <i class="fas fa-print"></i>
                             </a>
@@ -49,10 +49,13 @@
                                                     <td class="text-center">{{ $ci->Care_instructions }}</td>
                                                     <td class="text-center">
                                                         <a href="{{ route('search-location', ['id' => $ci->elderly->ID_Elderly]) }}" target="_blank" class="btn btn-info btn-sm">ค้นหาที่อยู่</a>
+                                                        <button class="generate-single-report btn btn-success btn-sm" data-id="{{ $ci->ID_CI }}">
+                                                            ออกรายงาน
+                                                        </button>
                                                         <form action="{{ route('ci.unconfirm', ['id' => $ci->ID_CI]) }}" method="POST" style="display:inline-block;">
                                                             @csrf
                                                             @method('PUT')
-                                                            <button type="submit" class="btn btn-warning btn-sm">ยกเลิกยืนยัน</button>
+                                                            <button type="submit" class="btn btn-danger btn-sm">ยกเลิกยืนยัน</button>
                                                         </form>
                                                     </td>
                                                 </tr>
@@ -78,7 +81,13 @@
                     "paginate": {
                         "previous": "ก่อนหน้า",
                         "next": "ถัดไป"
-                    }
+                    },
+                    "search": "ค้นหา : ",
+                    "lengthMenu": "แสดง _MENU_ รายการ",
+                    "zeroRecords": "ไม่พบข้อมูล",
+                    "info": "กำลังแสดงรายการ _START_ ถึง _END_ จากทั้งหมด _TOTAL_ รายการ",
+                    "infoEmpty": "ไม่พบข้อมูล",
+                    "infoFiltered": "(filtered from _MAX_ total records)"
                 },
                 "dom": '<"row"<"col-sm-12 col-md-12"l><"col-sm-12 col-md-12"f>>t<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-2 d-flex justify-content-center"p>>'
             });
@@ -202,6 +211,46 @@
                         });
                     })
                     .catch(error => console.error('Error fetching report data:', error));
+            });
+
+            document.querySelectorAll('.generate-single-report').forEach(button => {
+                button.addEventListener('click', function() {
+                    const ciId = this.dataset.id;
+                    fetch(`/report-ci-single/${ciId}`)
+                        .then(response => response.text())
+                        .then(data => {
+                            const parser = new DOMParser();
+                            const doc = parser.parseFromString(data, 'text/html');
+                            const element = doc.getElementById('report-content'); // Your report HTML content
+
+                            // Add styles for the PDF
+                            const style = document.createElement('style');
+                            style.innerHTML = `
+                                * {
+                                    font-family: 'Open Sans', Arial, sans-serif !important;
+                                    color: black !important;
+                                    background-color: white !important;
+                                }
+                            `;
+                            element.appendChild(style);
+
+                            // Configure options for generating the PDF
+                            var opt = {
+                                margin: 0.5,
+                                image: { type: 'jpeg', quality: 0.98 },
+                                html2canvas: { scale: 2 },
+                                jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+                            };
+
+                            // Generate and open the PDF
+                            html2pdf().set(opt).from(element).outputPdf('blob').then(function (pdfBlob) {
+                                var pdfUrl = URL.createObjectURL(pdfBlob);
+                                var pdfWindow = window.open();
+                                pdfWindow.location.href = pdfUrl;
+                            });
+                        })
+                        .catch(error => console.error('Error generating PDF:', error));
+                });
             });
 
     </script>

@@ -53,22 +53,22 @@ class ElderlyController extends Controller
         $elderlies = Elderly::with('addressElderly')->get();
 
         $ageGroups = [
-            '60-69' => 0,
-            '70-79' => 0,
-            '80-89' => 0,
-            '90+' => 0,
+            'ช่วงอายุ 60-69' => 0,
+            'ช่วงอายุ 70-79' => 0,
+            'ช่วงอายุ 80-89' => 0,
+            'ช่วงอายุ 90+' => 0,
         ];
 
         foreach ($elderlies as $elderly) {
             $age = Carbon::parse($elderly->Birthday)->age;
             if ($age >= 60 && $age <= 69) {
-                $ageGroups['60-69']++;
+                $ageGroups['ช่วงอายุ 60-69']++;
             } elseif ($age >= 70 && $age <= 79) {
-                $ageGroups['70-79']++;
+                $ageGroups['ช่วงอายุ 70-79']++;
             } elseif ($age >= 80 && $age <= 89) {
-                $ageGroups['80-89']++;
+                $ageGroups['ช่วงอายุ 80-89']++;
             } elseif ($age >= 90) {
-                $ageGroups['90+']++;
+                $ageGroups['ช่วงอายุ 90+']++;
             }
         }
 
@@ -156,22 +156,22 @@ class ElderlyController extends Controller
         $elderlies = Elderly::all();
 
         $ageGroups = [
-            '60-69' => 0,
-            '70-79' => 0,
-            '80-89' => 0,
-            '90+' => 0,
+            'ช่วงอายุ 60-69' => 0,
+            'ช่วงอายุ 70-79' => 0,
+            'ช่วงอายุ 80-89' => 0,
+            'ช่วงอายุ 90+' => 0,
         ];
 
         foreach ($elderlies as $elderly) {
             $age = \Carbon\Carbon::parse($elderly->Birthday)->age;
             if ($age >= 60 && $age <= 69) {
-                $ageGroups['60-69']++;
+                $ageGroups['ช่วงอายุ 60-69']++;
             } elseif ($age >= 70 && $age <= 79) {
-                $ageGroups['70-79']++;
+                $ageGroups['ช่วงอายุ 70-79']++;
             } elseif ($age >= 80 && $age <= 89) {
-                $ageGroups['80-89']++;
+                $ageGroups['ช่วงอายุ 80-89']++;
             } elseif ($age >= 90) {
-                $ageGroups['90+']++;
+                $ageGroups['ช่วงอายุ 90+']++;
             }
         }
         // ดึงข้อมูล ADL group counts

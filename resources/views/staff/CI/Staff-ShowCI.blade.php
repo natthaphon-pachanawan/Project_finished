@@ -7,9 +7,9 @@
     <title>Staff CI Information</title>
     <!-- Include DataTables CSS -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
-    <link href="{{ asset('assets/css/argon-dashboard.css') }}" rel="stylesheet">
-    <link href="{{ asset('assets/css/nucleo-icons.css') }}" rel="stylesheet">
-    <link href="{{ asset('assets/css/nucleo-svg.css') }}" rel="stylesheet">
+    <link href="{{ url('assets/css/argon-dashboard.css') }}" rel="stylesheet">
+    <link href="{{ url('assets/css/nucleo-icons.css') }}" rel="stylesheet">
+    <link href="{{ url('assets/css/nucleo-svg.css') }}" rel="stylesheet">
 </head>
 
 <body class="g-sidenav-show bg-gray-100">
@@ -24,7 +24,7 @@
                 <div class="col-12">
                     <div class="card mb-4" >
                         <div class="card-header pb-0 d-flex justify-content-between align-items-center">
-                            <h5>คำแนะนำการดูแลที่ยังไม่ได้ยืนยัน</h5>
+                            <h4>คำแนะนำการดูแลที่ยังไม่ได้ยืนยัน</h4>
                         </div>
                         <div class="card-body px-3 pt-3 pb-2">
                             <div class="table-responsive p-0">
@@ -74,14 +74,14 @@
     </main>
 
     <!-- Include Argon Dashboard JS -->
-    <script src="{{ asset('assets/js/argon-dashboard.js') }}"></script>
-    <script src="{{ asset('assets/js/bootstrap.bundle.min.js') }}"></script>
-    <script src="{{ asset('assets/js/popper.min.js') }}"></script>
-    <script src="{{ asset('assets/js/bootstrap-notify.js') }}"></script>
-    <script src="{{ asset('assets/js/chartjs.min.js') }}"></script>
-    <script src="{{ asset('assets/js/Chart.extension.js') }}"></script>
-    <script src="{{ asset('assets/js/perfect-scrollbar.min.js') }}"></script>
-    <script src="{{ asset('assets/js/smooth-scrollbar.min.js') }}"></script>
+    <script src="{{ url('assets/js/argon-dashboard.js') }}"></script>
+    <script src="{{ url('assets/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ url('assets/js/popper.min.js') }}"></script>
+    <script src="{{ url('assets/js/bootstrap-notify.js') }}"></script>
+    <script src="{{ url('assets/js/chartjs.min.js') }}"></script>
+    <script src="{{ url('assets/js/Chart.extension.js') }}"></script>
+    <script src="{{ url('assets/js/perfect-scrollbar.min.js') }}"></script>
+    <script src="{{ url('assets/js/smooth-scrollbar.min.js') }}"></script>
 
     <!-- Include jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -95,7 +95,13 @@
                     "paginate": {
                         "previous": "ก่อนหน้า",
                         "next": "ถัดไป"
-                    }
+                    },
+                    "search": "ค้นหา : ",
+                    "lengthMenu": "แสดง _MENU_ รายการ",
+                    "zeroRecords": "ไม่พบข้อมูล",
+                    "info": "กำลังแสดงรายการ _START_ ถึง _END_ จากทั้งหมด _TOTAL_ รายการ",
+                    "infoEmpty": "ไม่พบข้อมูล",
+                    "infoFiltered": "(filtered from _MAX_ total records)"
                 },
                 "dom": '<"row"<"col-sm-12 col-md-12"l><"col-sm-12 col-md-12"f>>t<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-2 d-flex justify-content-center"p>>'
              });

@@ -5,12 +5,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>จัดการข่าวสาร</title>
-    <link href="{{ asset('assets/css/argon-dashboard.css') }}" rel="stylesheet" />
-    <link href="{{ asset('assets/css/nucleo-icons.css') }}" rel="stylesheet" />
-    <link href="{{ asset('assets/css/nucleo-svg.css') }}" rel="stylesheet" />
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
     <!-- SweetAlert2 CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+
+    <!-- Quill CSS -->
+<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+<!-- Quill JS -->
+<script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
     <style>
         body {
             font-family: 'Open Sans', sans-serif;
@@ -76,36 +78,6 @@
 
         .contact-form button:hover {
             background-color: #ea3005;
-        }
-
-        footer {
-            background-color: #344767;
-            color: #fff;
-            text-align: center;
-            padding: 10px 0;
-            margin-top: 20px;
-        }
-
-        footer ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-        }
-
-        footer ul li {
-            display: inline;
-        }
-
-        footer ul li a {
-            color: #fff;
-            text-decoration: none;
-        }
-
-        footer ul li a:hover {
-            text-decoration: underline;
         }
 
         .slider {
@@ -306,7 +278,9 @@
         .full-content {
             display: none;
         }
-
+        .custom-modal-size {
+            max-width: 90%; /* ปรับตามที่ต้องการ */
+          }
 
     </style>
 </head>
@@ -319,7 +293,7 @@
     <section class="slider">
         <div class="slides">
             @foreach ($sliders as $slider)
-                <img src="{{ asset('storage/' . $slider->image) }}" alt="Slider Image">
+                <img src="{{ url('storage/' . $slider->image) }}" alt="Slider Image">
             @endforeach
         </div>
         <button class="prev" onclick="plusSlides(-1)">&#10094;</button>
@@ -346,7 +320,7 @@
                     @foreach ($news as $newsItem)
                         <div class="col-md-6 col-lg-4 mb-4">
                             <div class="card h-100">
-                                <img src="{{ $newsItem->images->first() ? asset('storage/' . $newsItem->images->first()->image_path) : asset('path/to/default/image.jpg') }}"
+                                <img src="{{ $newsItem->images->first() ? url('storage/' . $newsItem->images->first()->image_path) : url('path/to/default/image.jpg') }}"
      alt="ไม่มีรูปภาพ" class="card-img-top" style="height: 180px; object-fit: cover;">
 
                                 <div class="card-body">
@@ -354,7 +328,7 @@
                                 </div>
                                 <div class="card-footer d-flex justify-content-end">
                                     <button class="btn btn-warning btn-sm" style="margin-right: 10px;"
-                                        onclick="showEditModal('{{ $newsItem->id }}', '{{ $newsItem->title }}', '{{ $newsItem->content }}', [@foreach ($newsItem->images as $image) '{{ asset('storage/' . $image->image_path) }}', @endforeach])">แก้ไข</button>
+                                        onclick="showEditModal('{{ $newsItem->id }}', '{{ $newsItem->title }}', '{{ $newsItem->content }}', [@foreach ($newsItem->images as $image) '{{ url('storage/' . $image->image_path) }}', @endforeach])">แก้ไข</button>
                                     <form action="{{ route('admin.news.destroy', $newsItem->id) }}" method="POST"
                                         id="delete-news-form-{{ $newsItem->id }}" style="display:inline;">
                                         @csrf
@@ -385,7 +359,7 @@
     <!-- Modal for Create News -->
     <div class="modal fade" id="createNewsModal" tabindex="-1" role="dialog" aria-labelledby="createNewsModalLabel"
         aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="createNewsModalLabel">เพิ่มข่าวสาร</h5>
@@ -402,18 +376,22 @@
                         </div>
                         <div class="form-group">
                             <label for="content">เนื้อหา:</label>
-                            <textarea id="content" name="content" class="form-control" rows="5" required></textarea>
+                            <!-- Quill Editor Container -->
+                            <div id="content-editor" style="height: 200px;"></div>
+                            <!-- Hidden input to store Quill content -->
+                            <input type="hidden" name="content" id="content">
+                            {{--  <textarea id="content" name="content" class="form-control" rows="5" required></textarea>  --}}
                         </div>
                         <div class="form-group">
                             <input type="file" id="customFile" name="images[]" class="form-control-file" multiple
                                 onchange="previewImages(event)" style="display: none;">
-                            <button type="button" class="btn btn-secondary"
+                            <button type="button" class="btn btn-login"
                                 onclick="document.getElementById('customFile').click()">เลือกไฟล์รูป</button>
                         </div>
                         <div class="form-group">
                             <div id="imagePreview" style="display: flex; flex-wrap: wrap; gap: 10px;"></div>
                         </div>
-                        <button type="submit" class="btn btn-primary">บันทึก</button>
+                        <button type="submit" class="btn btn-success">บันทึก</button>
                     </form>
                 </div>
             </div>
@@ -446,9 +424,10 @@
 
 
     <!-- Modal for Edit News -->
+    @isset($newsItem)
     <div class="modal fade" id="editNewsModal" tabindex="-1" role="dialog" aria-labelledby="editNewsModalLabel"
         aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="editNewsModalLabel">แก้ไขข่าวสาร</h5>
@@ -457,7 +436,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form id="editNewsForm" method="POST" enctype="multipart/form-data">
+                    <form id="editNewsForm" method="POST" action="{{ route('admin.news.update', $newsItem->id) }}" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
                         <div class="form-group">
@@ -466,7 +445,11 @@
                         </div>
                         <div class="form-group">
                             <label for="content">เนื้อหา:</label>
-                            <textarea id="edit-content" name="content" class="form-control" rows="5" required></textarea>
+                            <div id="edit-content-editor" style="height: 200px;"></div>
+                            <!-- Hidden input to store Quill content -->
+                            <input type="hidden" name="content" id="edit-content">
+
+                            {{--  <textarea id="edit-content" name="content" class="form-control" rows="5" required></textarea>  --}}
                         </div>
                         <div class="form-group">
                             <label for="currentNewsImages">รูปภาพปัจจุบัน:</label>
@@ -479,13 +462,13 @@
                             <label for="edit-images">อัปโหลดรูปภาพใหม่:</label>
                             <input type="file" id="edit-images" name="images[]" class="form-control-file"
                                 multiple style="display: none;">
-                            <button type="button" class="btn btn-secondary"
+                            <button type="button" class="btn btn-login"
                                 onclick="document.getElementById('edit-images').click()">เลือกไฟล์รูป</button>
                         </div>
                         <div class="form-group">
                             <div id="editImagePreview" style="display: flex; flex-wrap: wrap; gap: 10px;"></div>
                         </div>
-                        <button type="submit" class="btn btn-primary">บันทึก</button>
+                        <button type="submit" class="btn btn-success">บันทึก</button>
                     </form>
                 </div>
             </div>
@@ -515,6 +498,7 @@
             }
         });
     </script>
+    @endisset
 
 
     <!-- Modal for Create Slider -->
@@ -534,13 +518,13 @@
                         <div class="form-group">
                             <input type="file" id="sliderImageFile" name="image" class="form-control-file"
                                 style="display: none;" required>
-                            <button type="button" class="btn btn-secondary"
+                            <button type="button" class="btn btn-login"
                                 onclick="document.getElementById('sliderImageFile').click()">เลือกไฟล์รูป</button>
                         </div>
                         <div class="form-group">
                             <div id="sliderImagePreview" style="display: flex; flex-wrap: wrap; gap: 10px;"></div>
                         </div>
-                        <button type="submit" class="btn btn-primary">บันทึก</button>
+                        <button type="submit" class="btn btn-success">บันทึก</button>
                     </form>
                 </div>
             </div>
@@ -588,7 +572,7 @@
                         @foreach ($sliders as $slider)
                             <tr>
                                 <td>
-                                    <img src="{{ asset('storage/' . $slider->image) }}" alt="Slider Image"
+                                    <img src="{{ url('storage/' . $slider->image) }}" alt="Slider Image"
                                         width="100">
                                 </td>
                                 <td>
@@ -633,19 +617,20 @@
                         <div class="form-group">
                             <input type="file" id="editSliderImageFile" name="image" class="form-control-file"
                                 style="display: none;">
-                            <button type="button" class="btn btn-secondary"
+                            <button type="button" class="btn btn-login"
                                 onclick="document.getElementById('editSliderImageFile').click()">เลือกไฟล์รูป</button>
                         </div>
                         <div class="form-group">
                             <div id="editSliderImagePreview" style="display: flex; flex-wrap: wrap; gap: 10px;"></div>
                         </div>
-                        <button type="submit" class="btn btn-primary">บันทึก</button>
+                        <button type="submit" class="btn btn-success">บันทึก</button>
                     </form>
                 </div>
             </div>
         </div>
     </div>
 
+    @include('layout.footer')
     <script>
         document.getElementById('editSliderImageFile').addEventListener('change', function(event) {
             let imagePreview = document.getElementById('editSliderImagePreview');
@@ -669,12 +654,6 @@
             }
         });
     </script>
-
-    <!-- Footer -->
-    <footer>
-        <p>&copy; 2024 สำนักงานสาธารณสุข อำเภอห้วยราช จังหวัดบุรีรัมย์</p>
-    </footer>
-
     <script>
         let currentImageIndex = 0;
         let images = [];
@@ -709,30 +688,72 @@
 
         setInterval(showSlides, 3000);
 
-        function showEditModal(id, title, content, images) {
-            // ตั้งค่า URL ในฟอร์มสำหรับอัปเดตข้อมูลข่าวสาร
-            document.getElementById('editNewsForm').action = '/news/' + id;
-            document.getElementById('edit-title').value = title;
-            document.getElementById('edit-content').value = content;
+        var quillContent = new Quill('#content-editor', {
+            theme: 'snow',
+            modules: {
+              toolbar: [
+                [{ header: [1, 2, 3, 4, 5, 6, false] }],
+                ['bold', 'italic', 'underline'],
+                [{ list: 'ordered' }, { list: 'bullet' }],
+                [{ script: 'sub' }, { script: 'super' }],
+                [{ indent: '-1' }, { indent: '+1' }],
+                [{ color: [] }, { background: [] }],
+                [{ font: [] }],
+                [{ align: [] }],
+                ['clean']
+              ]
+            }
+          });
 
-            // ล้างรูปภาพปัจจุบันที่แสดงอยู่ก่อนหน้า
-            let imageContainer = document.getElementById('currentNewsImages');
-            imageContainer.innerHTML = '';
+        var quillEditContent = new Quill('#edit-content-editor', {
+            theme: 'snow',
+            modules: {
+              toolbar: [
+                [{ header: [1, 2, 3, 4, 5, 6, false] }],
+                ['bold', 'italic', 'underline'],
+                [{ list: 'ordered' }, { list: 'bullet' }],
+                [{ script: 'sub' }, { script: 'super' }],
+                [{ indent: '-1' }, { indent: '+1' }],
+                [{ color: [] }, { background: [] }],
+                [{ font: [] }],
+                [{ align: [] }],
+                ['clean']
+              ]
+            }
+          });
 
-            // แสดงรูปภาพที่มีอยู่แล้วถ้ามี
-            images.forEach(function(imagePath) {
-                let img = document.createElement('img');
-                img.src = imagePath; // ตั้งค่าลิงก์ของรูปภาพ
-                img.alt = 'Current News Image';
-                img.className = 'img-thumbnail'; // เพิ่มคลาส img-thumbnail เพื่อใช้ Bootstrap class
-                img.style.width = '100px'; // ปรับขนาดความกว้างของรูปภาพ
-                img.style.height = '100px'; // ให้ความสูงอัตโนมัติตามสัดส่วน
-                imageContainer.appendChild(img);
-            });
+        //ตัวนี้ไม่ได้ใช้งานแต่ใส่ไว้เพื่อได้เอาไปใช้งาน
+        document.querySelector('#createNewsModal form').onsubmit = function() {
+            document.getElementById('content').value = quillContent.root.innerHTML;
+        };
 
-            // เปิด Modal
-            $('#editNewsModal').modal('show');
-        }
+        document.querySelector('#editNewsForm').onsubmit = function() {
+            document.getElementById('edit-content').value = quillEditContent.root.innerHTML;
+        };
+
+
+
+    function showEditModal(id, title, content, images) {
+
+        document.getElementById('editNewsForm').action = '/news/' + id;
+        document.getElementById('edit-title').value = title;
+
+        quillEditContent.root.innerHTML = content;
+
+        let imageContainer = document.getElementById('currentNewsImages');
+        imageContainer.innerHTML = '';
+        images.forEach(function(imagePath) {
+            let img = document.createElement('img');
+            img.src = imagePath;
+            img.alt = 'Current News Image';
+            img.className = 'img-thumbnail';
+            img.style.width = '100px';
+            img.style.height = '100px';
+            imageContainer.appendChild(img);
+        });
+
+        $('#editNewsModal').modal('show');
+    }
 
         function setSliderData(id, image) {
             const form = document.getElementById('editSliderForm');

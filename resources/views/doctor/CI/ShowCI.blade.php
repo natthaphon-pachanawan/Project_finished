@@ -23,7 +23,7 @@
                 <div class="col-12">
                     <div class="card mb-4" >
                         <div class="card-header pb-0 d-flex justify-content-between align-items-center">
-                            <h4>คำแนะนำการดูแล</h4>
+                            <h4>ข้อมูลคำแนะนำการดูแล</h4>
                             <button id="generate-pdf" class="btn btn-success">
                                 <i class="fas fa-print"></i>
                             </button>
@@ -35,9 +35,9 @@
                                         <tr>
                                             <th class="text-center">วันที่</th>
                                             <th class="text-center">ชื่อผู้สูงอายุ</th>
-                                            <th class="text-center">ชื่อหมอ</th>
+                                            <th class="text-center">ชื่อแพทย์</th>
                                             <th class="text-center">ชื่อเจ้าหน้าที่</th>
-                                            <th class="text-center">คำแนะนำ</th>
+                                            <th class="text-center">คำแนะนำการดูแล</th>
                                             <th class="text-center">Actions</th>
                                         </tr>
                                     </thead>
@@ -88,14 +88,14 @@
     </main>
 
     <!-- Include Argon Dashboard JS -->
-    <script src="{{ asset('assets/js/argon-dashboard.js') }}"></script>
-    <script src="{{ asset('assets/js/bootstrap.bundle.min.js') }}"></script>
-    <script src="{{ asset('assets/js/popper.min.js') }}"></script>
-    <script src="{{ asset('assets/js/bootstrap-notify.js') }}"></script>
-    <script src="{{ asset('assets/js/chartjs.min.js') }}"></script>
-    <script src="{{ asset('assets/js/Chart.extension.js') }}"></script>
-    <script src="{{ asset('assets/js/perfect-scrollbar.min.js') }}"></script>
-    <script src="{{ asset('assets/js/smooth-scrollbar.min.js') }}"></script>
+    <script src="{{ url('assets/js/argon-dashboard.js') }}"></script>
+    <script src="{{ url('assets/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ url('assets/js/popper.min.js') }}"></script>
+    <script src="{{ url('assets/js/bootstrap-notify.js') }}"></script>
+    <script src="{{ url('assets/js/chartjs.min.js') }}"></script>
+    <script src="{{ url('assets/js/Chart.extension.js') }}"></script>
+    <script src="{{ url('assets/js/perfect-scrollbar.min.js') }}"></script>
+    <script src="{{ url('assets/js/smooth-scrollbar.min.js') }}"></script>
 
     <!-- Include jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -110,7 +110,13 @@
                     "paginate": {
                         "previous": "ก่อนหน้า",
                         "next": "ถัดไป"
-                    }
+                    },
+                    "search": "ค้นหา : ",
+                    "lengthMenu": "แสดง _MENU_ รายการ",
+                    "zeroRecords": "ไม่พบข้อมูล",
+                    "info": "กำลังแสดงรายการ _START_ ถึง _END_ จากทั้งหมด _TOTAL_ รายการ",
+                    "infoEmpty": "ไม่พบข้อมูล",
+                    "infoFiltered": "(filtered from _MAX_ total records)"
                 },
                 "dom": '<"row"<"col-sm-12 col-md-12"l><"col-sm-12 col-md-12"f>>t<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-2 d-flex justify-content-center"p>>'
             });

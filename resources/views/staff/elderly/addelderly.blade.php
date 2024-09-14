@@ -5,9 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Elderly</title>
-    <link href="{{ asset('assets/css/argon-dashboard.css') }}" rel="stylesheet" />
-    <link href="{{ asset('assets/css/nucleo-icons.css') }}" rel="stylesheet" />
-    <link href="{{ asset('assets/css/nucleo-svg.css') }}" rel="stylesheet" />
+    <link href="{{ url('assets/css/argon-dashboard.css') }}" rel="stylesheet" />
+    <link href="{{ url('assets/css/nucleo-icons.css') }}" rel="stylesheet" />
+    <link href="{{ url('assets/css/nucleo-svg.css') }}" rel="stylesheet" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <style>
         #map {
@@ -64,7 +64,7 @@
     <div class="container mt-5">
         <div class="card">
             <div class="card-header">
-                <h2>เพิ่มข้อมูลผู้สูงอายุ</h2>
+                <h4>เพิ่มข้อมูลผู้สูงอายุ</h4>
             </div>
             <div class="card-body">
                 @if(session('success'))
@@ -113,7 +113,7 @@
 
                     <div class="form-group">
                         <label for="Postal_Code">รหัสไปรษณีย์:</label>
-                        <input type="number" id="Postal_Code" name="Postal_Code" class="form-control">
+                        <input type="text" id="Postal_Code" name="Postal_Code" class="form-control" readonly>
                     </div>
 
                     <div class="form-group">
@@ -123,7 +123,7 @@
 
                     <div class="form-group">
                         <label for="Image_Elderly">รูปภาพ:</label>
-                        <label for="Image_Elderly" class="custom-file-upload">
+                        <label for="Image_Elderly" class="btn btn-login">
                             เลือกรูปภาพ
                         </label>
                         <input type="file" id="Image_Elderly" name="Image_Elderly" class="form-control" accept="image/*" style="display: none;" onchange="previewImage(event)">
@@ -144,8 +144,8 @@
                     </div>
 
                     <div class="form-group">
-                        <button type="submit" class="btn btn-primary">ยืนยัน</button>
-                        <a href="{{ route('staff-dashboard') }}" class="btn btn-secondary">กลับไปหน้าหลัก</a>
+                        <button type="submit" class="btn btn-success">ยืนยัน</button>
+                        <a href="{{ route('staff-dashboard') }}" class="btn btn-danger">ยกเลิก</a>
                     </div>
                 </form>
             </div>
@@ -155,8 +155,8 @@
     <script>
         let provincesData;
 
-        // Load provinces data from the asset path
-        $.getJSON("{{ asset('API/api_province_with_amphure_tambon.json') }}", function (data) {
+        // Load provinces data from the url path
+        $.getJSON("{{ url('API/api_province_with_amphure_tambon.json') }}", function (data) {
             provincesData = data;
             let provinceSelect = $('#Province');
 
@@ -173,6 +173,7 @@
             let subdistrictSelect = $('#Subdistrict');
             districtSelect.empty().append('<option value="">เลือกอำเภอ</option>');
             subdistrictSelect.empty().append('<option value="">เลือกตำบล</option>');
+            $('#Postal_Code').val(''); // Clear the postal code
 
             let selectedProvince = provincesData.find(prov => prov.id == provinceId);
             if (selectedProvince) {
@@ -187,14 +188,21 @@
             let districtId = $(this).val();
             let subdistrictSelect = $('#Subdistrict');
             subdistrictSelect.empty().append('<option value="">เลือกตำบล</option>');
+            $('#Postal_Code').val(''); // Clear the postal code
 
             let selectedProvince = provincesData.find(prov => prov.id == $('#Province').val());
             let selectedDistrict = selectedProvince.amphure.find(dist => dist.id == districtId);
             if (selectedDistrict) {
                 selectedDistrict.tambon.forEach(function (subdistrict) {
-                    subdistrictSelect.append(`<option value="${subdistrict.id}">${subdistrict.name_th}</option>`);
+                    subdistrictSelect.append(`<option value="${subdistrict.id}" data-zipcode="${subdistrict.zip_code}">${subdistrict.name_th}</option>`);
                 });
             }
+        });
+
+        // Handle subdistrict (Tambon) selection and set postal code
+        $('#Subdistrict').change(function () {
+            let selectedZipCode = $(this).find(':selected').data('zipcode');
+            $('#Postal_Code').val(selectedZipCode); // Set the postal code automatically
         });
 
         // Leaflet Map for selecting location

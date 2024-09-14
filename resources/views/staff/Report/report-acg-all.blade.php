@@ -5,9 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>รายงานกิจกรรมผู้ดูแลผู้สูงอายุทั้งหมด</title>
-    <link href="{{ asset('assets/css/argon-dashboard.css') }}" rel="stylesheet" />
-    <link href="{{ asset('assets/css/nucleo-icons.css') }}" rel="stylesheet" />
-    <link href="{{ asset('assets/css/nucleo-svg.css') }}" rel="stylesheet" />
+    <link href="{{ url('assets/css/argon-dashboard.css') }}" rel="stylesheet" />
+    <link href="{{ url('assets/css/nucleo-icons.css') }}" rel="stylesheet" />
+    <link href="{{ url('assets/css/nucleo-svg.css') }}" rel="stylesheet" />
 
 </head>
 
@@ -15,7 +15,7 @@
 
     <div class="container">
         <h5>
-            <img src="{{ asset('images/Logo.png') }}" alt="Logo">
+            <img src="{{ url('images/Logo.png') }}" alt="Logo">
             รายงานกิจกรรมผู้ดูแลผู้สูงอายุทั้งหมด
         </h5>
         <table>

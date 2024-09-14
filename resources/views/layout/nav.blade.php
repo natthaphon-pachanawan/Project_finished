@@ -7,12 +7,53 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link href="{{ asset('assets/css/argon-dashboard.css') }}" rel="stylesheet" />
-    <link href="{{ asset('assets/css/nucleo-icons.css') }}" rel="stylesheet" />
-    <link href="{{ asset('assets/css/nucleo-svg.css') }}" rel="stylesheet" />
+    <link href="{{ url('assets/css/argon-dashboard.css') }}" rel="stylesheet" />
+    <link href="{{ url('assets/css/nucleo-icons.css') }}" rel="stylesheet" />
+    <link href="{{ url('assets/css/nucleo-svg.css') }}" rel="stylesheet" />
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <style>
+
+        /* General mobile styles */
+@media only screen and (max-width: 767px) {
+    /* Sidebar adjustments */
+    .sidebar {
+        width: 100%; /* Full width on mobile */
+        position: relative;
+        display: none; /* You can use display:block if you want to show it */
+    }
+
+    /* Nav adjustments */
+    .nav {
+        font-size: 14px; /* Adjust font size for mobile */
+        padding: 10px;
+    }
+
+    /* Content adjustments */
+    .content {
+        margin-left: 0; /* Remove margins for mobile view */
+    }
+
+    /* Any additional mobile-specific styles */
+}
+
+/* Tablet styles */
+@media only screen and (min-width: 768px) and (max-width: 1024px) {
+    .sidebar {
+        width: 250px; /* Adjust width for tablet */
+        position: relative;
+    }
+
+    .nav {
+        font-size: 16px; /* Adjust font size for tablets */
+        padding: 15px;
+    }
+
+    .content {
+        margin-left: 250px; /* Adjust margin to account for sidebar width */
+    }
+}
+
 
         .dataTables_wrapper .dataTables_paginate {
             display: flex;
@@ -222,13 +263,15 @@
             position: relative;
         }
 
+
+
     </style>
 </head>
 
 <body>
     <div class="navbar">
         <div class="logo">
-            <img src="{{ asset('images/Logo.png') }}" alt="Logo">
+            <img src="{{ url('images/Logo.png') }}" alt="Logo">
             <div>
                 <span style="font-size: 18px; font-weight: 500; color: #fff;">ระบบประเมินความสามารถในการดำเนินกิจวัตรประจำวันของผู้สูงอายุ</span>
                 <br>
@@ -252,7 +295,7 @@
         @if (Auth::check())
             <div class="user-info">
                 <a href="{{ url('profile-user') }}">
-                    <img src="{{ asset(Auth::user()->Image_User) }}" alt="Profile Image">
+                    <img src="{{ url(Auth::user()->Image_User) }}" alt="Profile Image">
                     <span>{{ Auth::user()->Name_User }}</span>
                 </a>
                 <div class="notifications">
@@ -289,7 +332,7 @@
 
             </div>
         @else
-            <a href="{{ url('login') }}" class="btn btn-primary">เข้าสู่ระบบ</a>
+            <a href="{{ url('login') }}" class="btn btn-success">เข้าสู่ระบบ</a>
         @endif
     </div>
 

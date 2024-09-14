@@ -11,7 +11,7 @@
 
     <div class="container">
         <div style="text-align: center;">
-            <img src="{{ asset('images/Logo.png') }}" alt="Logo" style="width: 100px; height: auto; padding-bottom: 15px;">
+            <img src="{{ url('images/Logo.png') }}" alt="Logo" style="width: 100px; height: auto; padding-bottom: 15px;">
         </div>
         <h5>รายงาน Care Giver รายบุคคล</h5>
         <div class="info-section">

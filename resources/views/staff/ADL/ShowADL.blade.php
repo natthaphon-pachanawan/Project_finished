@@ -30,7 +30,7 @@
                 <div class="col-12">
                     <div class="card mb-4">
                         <div class="card-header pb-0 d-flex justify-content-between align-items-center">
-                            <h6>ประเมินความสามารถในการดำเนินชีวิตประจำวัน (ADL)</h6>
+                            <h4>ประเมินความสามารถในการดำเนินชีวิตประจำวัน (ADL)</h4>
                             <div class="d-flex gap-2">
                             <a href="{{ route('adl.create') }}" class="btn btn-primary">
                                 <i class="fas fa-plus"></i> เพิ่ม ADL
@@ -47,8 +47,8 @@
                                         <tr>
                                             <th class="text-center">ชื่อผู้สูงอายุ</th>
                                             <th class="text-center">ชื่อเจ้าหน้าที่</th>
-                                            <th class="text-center">คะแนน ADL</th>
-                                            <th class="text-center">กลุ่ม ADL</th>
+                                            <th class="text-center">คะแนนการประเมิน ADL</th>
+                                            <th class="text-center">ประเภทกลุ่ม ADL</th>
                                             <th class="text-center">Actions</th>
                                         </tr>
                                     </thead>
@@ -161,7 +161,13 @@
                     "paginate": {
                         "previous": "ก่อนหน้า",
                         "next": "ถัดไป"
-                    }
+                    },
+                    "search": "ค้นหา : ",
+                    "lengthMenu": "แสดง _MENU_ รายการ",
+                    "zeroRecords": "ไม่พบข้อมูล",
+                    "info": "กำลังแสดงรายการ _START_ ถึง _END_ จากทั้งหมด _TOTAL_ รายการ",
+                    "infoEmpty": "ไม่พบข้อมูล",
+                    "infoFiltered": "(filtered from _MAX_ total records)"
                 },
                 "dom": '<"row"<"col-sm-12 col-md-12"l><"col-sm-12 col-md-12"f>>t<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-2 d-flex justify-content-center"p>>'
              });
