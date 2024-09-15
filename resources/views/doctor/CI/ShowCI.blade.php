@@ -142,7 +142,7 @@
 
         document.getElementById('generate-pdf').addEventListener('click', function () {
             // Fetch the content from the Care Instructions report page
-            fetch('/care-instructions/report')
+            fetch("{{ route('report.ci') }}")
                 .then(response => response.text()) // Fetch HTML as text
                 .then(data => {
                     // Convert the fetched HTML into a DOM object

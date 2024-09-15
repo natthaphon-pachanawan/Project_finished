@@ -95,7 +95,7 @@
 
             document.getElementById('generate-pdf').addEventListener('click', function () {
                 // Fetch the content from the /report-ci-confirm URL
-                fetch('report-ci-confirm')
+                fetch(`{{ route('report.ci.confirm') }}`)
                     .then(response => response.text()) // Fetch HTML as text
                     .then(data => {
                         // Convert the fetched HTML into a DOM object
@@ -216,7 +216,7 @@
             document.querySelectorAll('.generate-single-report').forEach(button => {
                 button.addEventListener('click', function() {
                     const ciId = this.dataset.id;
-                    fetch(`/report-ci-single/${ciId}`)
+                    fetch(`{{ route('report.ci.single', ['id' => '${ciId}']) }}`)
                         .then(response => response.text())
                         .then(data => {
                             const parser = new DOMParser();

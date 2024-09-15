@@ -70,17 +70,7 @@ Route::controller(AuthController::class)->group(function () {
 
 
 
-Route::controller(ElderlyController::class)->group(function () {
 
-    Route::get('add-elderly', 'Addelderly');
-    Route::post('/store-elderly', 'Storeelderly')->name('store-elderly');
-    Route::get('edit-elderly/{id}', 'Editelderly')->name('edit-elderly');
-    Route::put('/update-elderly/{id}', 'Updateelderly')->name('update-elderly');
-    Route::delete('/delete-elderly/{id}', 'Deleteelderly')->name('delete-elderly');
-
-    Route::get('elderly-report', 'showReport')->name('elderly-report');
-    Route::get('/search-location/{id}', 'searchLocation')->name('search-location');
-});
 
 
 Route::get('/contact', function () {
@@ -92,7 +82,7 @@ Route::get('/about/history', function () {
 Route::get('/about/vision', function () {
     return view('layout.vision');})->name('vision');
 
-Route::get('/about/personnel', [PersonnelController::class, 'showPersonnel']);
+Route::get('/about/personnel', [PersonnelController::class, 'showPersonnel'])->name('personnel');
 
 
 
@@ -141,7 +131,7 @@ Route::middleware(['CheckLogin', 'IsAdmin'])->group(function () {
 
 Route::middleware(['CheckLogin', 'IsStaff'])->group(function () {
 
-    Route::get('get-elderly-details/{elderlyId}', [CGController::class, 'getElderlyDetails']);
+    Route::get('get-elderly-details/{elderlyId}', [CGController::class, 'getElderlyDetails'])->name('get-elderly-details');
 
     Route::get('staff-dashboard', [ElderlyController::class, 'Showelderly'])->name('staff-dashboard');
     Route::get('adl-show', [ADLController::class, 'index'])->name('adl.index');
@@ -180,8 +170,19 @@ Route::middleware(['CheckLogin', 'IsStaff'])->group(function () {
 
     Route::get('/report-ci-single/{id}', [CIController::class, 'generateSingleReport'])->name('report.ci.single');
 
-    
+
     Route::get('search-location/{id}', [ElderlyController::class, 'searchLocation'])->name('search-location');
+
+    Route::controller(ElderlyController::class)->group(function () {
+
+        Route::get('add-elderly', 'Addelderly');
+        Route::post('/store-elderly', 'Storeelderly')->name('store-elderly');
+        Route::get('edit-elderly/{id}', 'Editelderly')->name('edit-elderly');
+        Route::put('/update-elderly/{id}', 'Updateelderly')->name('update-elderly');
+        Route::delete('/delete-elderly/{id}', 'Deleteelderly')->name('delete-elderly');
+
+        Route::get('elderly-report', 'showReport')->name('elderly-report');
+    });
 });
 
 
@@ -195,7 +196,7 @@ Route::middleware(['CheckLogin', 'IsDoctor'])->group(function () {
         Route::post('/ci-store', 'storeCI')->name('ci.store');
         Route::delete('/ci/{id}', 'DestroyCI')->name('ci.destroy');
         Route::get('ci/{id}/edit', 'editCI')->name('ci.edit');
-        Route::put('/ci/{id}', 'updateCI')->name('ci.update'); 
+        Route::put('/ci/{id}', 'updateCI')->name('ci.update');
         Route::get('/care-instructions/report', 'ReportCI')->name('report.ci');
     });
 });

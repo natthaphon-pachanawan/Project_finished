@@ -144,7 +144,7 @@
 
         document.getElementById('generate-pdf').addEventListener('click', function() {
             // Fetch the content from the /report-all-cg URL
-            fetch('/report-all-cg')
+            fetch("{{ route('report-all-cg') }}")
                 .then(response => response.text()) // Fetch HTML as text
                 .then(data => {
                     // Convert the fetched HTML into a DOM object
@@ -235,7 +235,7 @@
 
             function generatePdf(id) {
                 // Fetch the content from the specific report-cg/{id} URL
-                fetch(`/report-cg/${id}`)
+                fetch(`{{ route('report.cg', ':id') }}`.replace(':id', id))
                     .then(response => response.text()) // Fetch HTML as text
                     .then(data => {
                         // Convert the fetched HTML into a DOM object

@@ -85,7 +85,7 @@
         function fetchElderlyDetails() {
             var elderlyId = document.getElementById('ID_Elderly').value;
             if (elderlyId) {
-                fetch(`/get-elderly-details/${elderlyId}`)
+                fetch(`{{ route('get-elderly-details', ':elderlyId') }}`.replace(':elderlyId', elderlyId))
                     .then(response => response.json())
                     .then(data => {
                         document.getElementById('Age').value = data.Age;

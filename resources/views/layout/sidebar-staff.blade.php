@@ -9,7 +9,7 @@
     <div class="collapse navbar-collapse w-auto" id="sidenav-collapse-main">
         <ul class="navbar-nav">
             <li class="nav-item">
-                <a class="nav-link text-white {{ Request::is('/') ? 'active bg-gradient-primary' : '' }}" href="/">
+                <a class="nav-link text-white {{ Request::is('/') ? 'active bg-gradient-primary' : '' }}" href="{{ url('/') }}">
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="material-icons opacity-10">home</i>
                     </div>
@@ -17,7 +17,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-white {{ Request::is('staff-dashboard') ? 'active bg-gradient-primary' : '' }}" href="/staff-dashboard">
+                <a class="nav-link text-white {{ Request::is('staff-dashboard') ? 'active bg-gradient-primary' : '' }}" href="{{ route('staff-dashboard') }}">
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="material-icons opacity-10">person</i>
                     </div>
@@ -25,7 +25,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-white {{ Request::is('adl-show') ? 'active bg-gradient-primary' : '' }}" href="/adl-show">
+                <a class="nav-link text-white {{ Request::is('adl-show') ? 'active bg-gradient-primary' : '' }}" href="{{ route('adl.index') }}">
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="material-icons opacity-10">assessment</i>
                     </div>
@@ -33,7 +33,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-white {{ Request::is('cg-show') ? 'active bg-gradient-primary' : '' }}" href="/cg-show">
+                <a class="nav-link text-white {{ Request::is('cg-show') ? 'active bg-gradient-primary' : '' }}" href="{{ route('cg.index') }}">
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="material-icons opacity-10">assignment</i>
                     </div>
@@ -41,7 +41,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-white {{ Request::is('acg-show') ? 'active bg-gradient-primary' : '' }}" href="/acg-show">
+                <a class="nav-link text-white {{ Request::is('acg-show') ? 'active bg-gradient-primary' : '' }}" href="{{ route('acg.index') }}">
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="material-icons opacity-10">elderly</i>
                     </div>
@@ -49,7 +49,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-white {{ Request::is('staff-ci') ? 'active bg-gradient-primary' : '' }}" href="/staff-ci">
+                <a class="nav-link text-white {{ Request::is('staff-ci') ? 'active bg-gradient-primary' : '' }}" href="{{ route('staff.ci.index') }}">
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="material-icons opacity-10">announcement</i>
                     </div>
@@ -57,7 +57,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-white {{ Request::is('staff-unconfirm') ? 'active bg-gradient-primary' : '' }}" href="/staff-unconfirm">
+                <a class="nav-link text-white {{ Request::is('staff-unconfirm') ? 'active bg-gradient-primary' : '' }}" href="{{ route('staff.ci.unconfirm') }}">
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="material-icons opacity-10">announcement</i>
                     </div>

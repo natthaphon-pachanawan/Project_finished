@@ -282,14 +282,14 @@
         <div class="nav-links">
             <a href="/">หน้าหลัก</a>
         <div class="dropdown">
-            <a href="/about">เกี่ยวกับ</a>
+            <a href="{{ route('about') }}">เกี่ยวกับ</a>
             <div class="dropdown-content">
-                <a href="/about/history">ประวัติสำนักงาน</a>
-                <a href="/about/personnel">คณะบุคลากร</a>
-                <a href="/about/vision">วิสัยทัศน์/พันธกิจ</a>
+                <a href="{{ route('history') }}">ประวัติสำนักงาน</a>
+                <a href="{{ route('personnel') }}">คณะบุคลากร</a>
+                <a href="{{ route('vision') }}">วิสัยทัศน์/พันธกิจ</a>
             </div>
         </div>
-        <a href="/contact">ติดต่อเรา</a>
+        <a href="{{ route('contact') }}">ติดต่อเรา</a>
     </div>
 
         @if (Auth::check())

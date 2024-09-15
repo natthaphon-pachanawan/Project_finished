@@ -9,7 +9,7 @@
     <div class="collapse navbar-collapse w-auto" id="sidenav-collapse-main">
         <ul class="navbar-nav">
             <li class="nav-item">
-                <a class="nav-link text-white {{ Request::is('/') ? 'active bg-gradient-primary' : '' }}" href="/">
+                <a class="nav-link text-white {{ Request::is('/') ? 'active bg-gradient-primary' : '' }}" href="{{ url('/') }}">
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="material-icons opacity-10">home</i>
                     </div>
@@ -17,7 +17,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-white {{ Request::is('doctor-dashboard') ? 'active bg-gradient-primary' : '' }}" href="/doctor-dashboard">
+                <a class="nav-link text-white {{ Request::is('doctor-dashboard') ? 'active bg-gradient-primary' : '' }}" href="{{ route('doctor.dashboard') }}">
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="material-icons opacity-10">person</i>
                     </div>
@@ -25,7 +25,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-white {{ Request::is('ci-show') ? 'active bg-gradient-primary' : '' }}" href="/ci-show">
+                <a class="nav-link text-white {{ Request::is('ci-show') ? 'active bg-gradient-primary' : '' }}" href="{{ route('ci.index') }}">
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="material-icons opacity-10">person</i>
                     </div>

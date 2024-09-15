@@ -735,7 +735,7 @@
 
     function showEditModal(id, title, content, images) {
 
-        document.getElementById('editNewsForm').action = '/news/' + id;
+        document.getElementById('editNewsForm').action = '{{ route("admin.news.update", ":id") }}'.replace(':id', id);
         document.getElementById('edit-title').value = title;
 
         quillEditContent.root.innerHTML = content;
@@ -757,7 +757,7 @@
 
         function setSliderData(id, image) {
             const form = document.getElementById('editSliderForm');
-            form.action = `/sliders/${id}`;
+            form.action = '{{ route("admin.sliders.update", ":id") }}'.replace(':id', id);
             document.getElementById('currentImage').src = `/storage/${image}`;
         }
 
