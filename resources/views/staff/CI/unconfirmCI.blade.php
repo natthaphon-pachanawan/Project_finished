@@ -216,14 +216,18 @@
             document.querySelectorAll('.generate-single-report').forEach(button => {
                 button.addEventListener('click', function() {
                     const ciId = this.dataset.id;
-                    fetch(`{{ route('report.ci.single', ['id' => '${ciId}']) }}`)
+
+                    // ปรับให้การส่งค่า id ถูกต้อง
+                    const url = `{{ route('report.ci.single', ':id') }}`.replace(':id', ciId);
+
+                    fetch(url)
                         .then(response => response.text())
                         .then(data => {
                             const parser = new DOMParser();
                             const doc = parser.parseFromString(data, 'text/html');
-                            const element = doc.getElementById('report-content'); // Your report HTML content
+                            const element = doc.getElementById('report-content'); // ดึงเนื้อหาของรายงาน
 
-                            // Add styles for the PDF
+                            // เพิ่ม CSS สำหรับจัดรูปแบบ PDF
                             const style = document.createElement('style');
                             style.innerHTML = `
                                 * {
@@ -234,7 +238,7 @@
                             `;
                             element.appendChild(style);
 
-                            // Configure options for generating the PDF
+                            // ตั้งค่า options สำหรับการสร้าง PDF
                             var opt = {
                                 margin: 0.5,
                                 image: { type: 'jpeg', quality: 0.98 },
@@ -242,7 +246,7 @@
                                 jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
                             };
 
-                            // Generate and open the PDF
+                            // สร้าง PDF และเปิดในหน้าต่างใหม่
                             html2pdf().set(opt).from(element).outputPdf('blob').then(function (pdfBlob) {
                                 var pdfUrl = URL.createObjectURL(pdfBlob);
                                 var pdfWindow = window.open();
@@ -252,6 +256,8 @@
                         .catch(error => console.error('Error generating PDF:', error));
                 });
             });
+
+
 
     </script>
 </html>

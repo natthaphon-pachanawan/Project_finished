@@ -144,7 +144,7 @@
 
         document.getElementById('generate-pdf').addEventListener('click', function() {
             // Fetch the content from the /report-all-cg URL
-            fetch("{{ route('report-all-cg') }}")
+            fetch("{{ route('report.all.cg') }}")
                 .then(response => response.text()) // Fetch HTML as text
                 .then(data => {
                     // Convert the fetched HTML into a DOM object
@@ -173,7 +173,6 @@
 
                                     .container {
                                         padding: 10mm;
-                                        border: 1px solid #000;
                                         border-radius: 5px;
                                     }
 
@@ -189,7 +188,6 @@
 
                                     table {
                                         width: 100%;
-                                        border-collapse: collapse;
                                         margin-bottom: 20px;
                                     }
 
