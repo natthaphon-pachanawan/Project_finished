@@ -280,7 +280,7 @@
         </div>
 
         <div class="nav-links">
-            <a href="/">หน้าหลัก</a>
+            <a href="{{ url('/') }}">หน้าหลัก</a>
         <div class="dropdown">
             <a href="{{ route('about') }}">เกี่ยวกับ</a>
             <div class="dropdown-content">

@@ -293,7 +293,7 @@
     <section class="slider">
         <div class="slides">
             @foreach ($sliders as $slider)
-                <img src="{{ url('storage/' . $slider->image) }}" alt="Slider Image">
+            <img src="{{ url('storage/' . $slider->image) }}" alt="Slider Image">
             @endforeach
         </div>
         <button class="prev" onclick="plusSlides(-1)">&#10094;</button>
@@ -744,7 +744,7 @@
         imageContainer.innerHTML = '';
         images.forEach(function(imagePath) {
             let img = document.createElement('img');
-            img.src = imagePath;
+            img.src = `{{ url('storage') }}/${imagePath}`;
             img.alt = 'Current News Image';
             img.className = 'img-thumbnail';
             img.style.width = '100px';
@@ -758,7 +758,7 @@
         function setSliderData(id, image) {
             const form = document.getElementById('editSliderForm');
             form.action = '{{ route("admin.sliders.update", ":id") }}'.replace(':id', id);
-            document.getElementById('currentImage').src = `/storage/${image}`;
+            document.getElementById('currentImage').src = `{{ url('storage') }}/${image}`;
         }
 
         function showModal(image, title, content) {
