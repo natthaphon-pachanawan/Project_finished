@@ -89,7 +89,7 @@
                     <div class="modal-dialog modal-xl">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="adlModalLabel-{{ $adl->ID_ADL }}">ข้อมูล ADL ของ {{ $adl->Name_Elderly }}</h5>
+                                <h5 class="modal-title" id="adlModalLabel-{{ $adl->ID_ADL }}">ข้อมูลประเมินความสามารถในการดำเนินชีวิตประจำวัน (ADL) ของ {{ $adl->Name_Elderly }}</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
@@ -137,7 +137,7 @@
                                 </table>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ปิด</button>
+                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">ปิด</button>
                             </div>
                         </div>
                     </div>
@@ -192,7 +192,7 @@
 
         document.getElementById('generate-pdf').addEventListener('click', function () {
             // Fetch the content from the /report-all-adl URL
-            fetch('/report-all-adl')
+            fetch("{{ route('report.all.adl') }}")
                 .then(response => response.text()) // Fetch HTML as text
                 .then(data => {
                     // Convert the fetched HTML into a DOM object

@@ -62,7 +62,7 @@
                                         @foreach ($users as $user)
                                             <tr>
                                                 <td class="text-center">
-                                                    <img src="{{ asset($user->Image_User) }}" alt="User Image" class="img-fluid" style="max-width: 50px;">
+                                                    <img src="{{ url($user->Image_User) }}" alt="User Image" class="img-fluid" style="max-width: 50px;">
                                                 </td>
                                                 <td class="text-center">{{ $user->Name_User ?: 'ไม่มีข้อมูล' }}</td>
                                                 <td class="text-center">{{ $user->Username ?: 'ไม่มีข้อมูล' }}</td>
@@ -116,7 +116,7 @@
 
         document.getElementById('generate-pdf').addEventListener('click', function () {
             // Fetch the content from report-admin.blade.php
-            fetch('/admin/report-user-pdf')
+            fetch("{{ route('admin.report-user') }}")
                 .then(response => response.text()) // Fetch HTML as text
                 .then(data => {
                     // Convert the fetched HTML into a DOM object
@@ -236,7 +236,7 @@
                     "zeroRecords": "ไม่พบข้อมูล",
                     "info": "กำลังแสดงรายการ _START_ ถึง _END_ จากทั้งหมด _TOTAL_ รายการ",
                     "infoEmpty": "ไม่พบข้อมูล",
-                    "infoFiltered": "(filtered from _MAX_ total records)"
+                    "infoFiltered": "(กรองจากทั้งหมด _MAX_ รายการ)"
                 },
                 "dom": '<"row"<"col-sm-12 col-md-12"l><"col-sm-12 col-md-12"f>>t<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-2 d-flex justify-content-center"p>>'
             });

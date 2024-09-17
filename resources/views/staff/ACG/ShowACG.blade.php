@@ -139,7 +139,7 @@
 
             document.getElementById('generate-pdf').addEventListener('click', function () {
                 // Fetch the content from the /report-all-acg URL
-                fetch('/report-all-acg')
+                fetch("{{ route('report.all.acg') }}")
                     .then(response => response.text()) // Fetch HTML as text
                     .then(data => {
                         // Convert the fetched HTML into a DOM object
@@ -230,7 +230,7 @@
             // Add event listeners for each "generate-pdf" button
             function generatePdf(id) {
                 // Fetch the content from the specific report-acg/{id} URL
-                fetch(`/report-acg/${id}`)
+                fetch(`{{ route('report.acg', ':id') }}`.replace(':id', id))
                     .then(response => response.text()) // Fetch HTML as text
                     .then(data => {
                         // Convert the fetched HTML into a DOM object

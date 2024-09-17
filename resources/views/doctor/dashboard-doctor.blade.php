@@ -611,7 +611,7 @@
                     "zeroRecords": "ไม่พบข้อมูล",
                     "info": "กำลังแสดงรายการ _START_ ถึง _END_ จากทั้งหมด _TOTAL_ รายการ",
                     "infoEmpty": "ไม่พบข้อมูล",
-                    "infoFiltered": "(filtered from _MAX_ total records)"
+                    "infoFiltered": "(กรองจากทั้งหมด _MAX_ รายการ)"
                 },
                 "dom": '<"row"<"col-sm-12 col-md-12"l><"col-sm-12 col-md-12"f>>t<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-3 d-flex justify-content-center"p>>'
             });
