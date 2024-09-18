@@ -10,10 +10,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
 </head>
 
-<body class="g-sidenav-show bg-gray-100">
+<body >
 
     @include('layout.nav')
-
 
     <main class="main-content position-relative h-100 border-radius-lg">
         <div class="container-fluid py-4">
@@ -87,15 +86,8 @@
         </div>
     </main>
 
-    <!-- Include Argon Dashboard JS -->
-    <script src="{{ url('assets/js/argon-dashboard.js') }}"></script>
-    <script src="{{ url('assets/js/bootstrap.bundle.min.js') }}"></script>
-    <script src="{{ url('assets/js/popper.min.js') }}"></script>
-    <script src="{{ url('assets/js/bootstrap-notify.js') }}"></script>
-    <script src="{{ url('assets/js/chartjs.min.js') }}"></script>
-    <script src="{{ url('assets/js/Chart.extension.js') }}"></script>
-    <script src="{{ url('assets/js/perfect-scrollbar.min.js') }}"></script>
-    <script src="{{ url('assets/js/smooth-scrollbar.min.js') }}"></script>
+
+
 
     <!-- Include jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

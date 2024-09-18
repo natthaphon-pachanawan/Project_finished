@@ -9,7 +9,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
     <title>จัดการคำแนะนำการดูแลที่ยืนยันแล้ว</title>
 </head>
-<body class="g-sidenav-show bg-gray-100">
+<body>
 
     @include('layout.nav')
 

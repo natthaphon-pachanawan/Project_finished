@@ -18,7 +18,7 @@
     </style>
 </head>
 
-<body class="g-sidenav-show bg-gray-100">
+<body>
 
     @include('layout.nav')
 
