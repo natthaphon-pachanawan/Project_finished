@@ -58,7 +58,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
-<body class="g-sidenav-show bg-gray-100">
+<body>
     @include('layout.nav')
 
     <div class="container mt-5">

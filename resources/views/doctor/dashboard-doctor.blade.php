@@ -40,91 +40,160 @@
             border-color: rgb(65, 220, 255);
             color: white;
         }
+
+        .table-responsive {
+            display: block;
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+
+        @media only screen and (max-width: 767px) {
+            .container {
+                padding: 10px; /* ปรับ padding ให้น้อยลงสำหรับมือถือ */
+            }
+
+            .table th,
+            .table td {
+                font-size: 12px; /* ปรับขนาดตัวอักษรในตาราง */
+            }
+
+            .modal-xl {
+                max-width: 95% !important; /* ปรับขนาด modal ให้เหมาะกับมือถือ */
+            }
+
+            .modal-lg {
+                max-width: 90% !important;
+            }
+
+            .btn-adl, .btn-cg, .btn-info {
+                width: 100%; /* ทำให้ปุ่มเต็มความกว้างบนหน้าจอมือถือ */
+                margin-bottom: 5px;
+            }
+        }
+
+        @media only screen and (min-width: 768px) and (max-width: 1024px) {
+            .container {
+                padding: 20px; /* ปรับ padding สำหรับแท็บเล็ต */
+            }
+
+            .table th,
+            .table td {
+                font-size: 14px; /* ปรับขนาดตัวอักษรสำหรับแท็บเล็ต */
+            }
+
+            .modal-xl {
+                max-width: 85% !important; /* ปรับขนาด modal ให้เหมาะกับแท็บเล็ต */
+            }
+
+            .modal-lg {
+                max-width: 80% !important;
+            }
+
+            .btn-adl, .btn-cg, .btn-info {
+                width: 48%; /* ทำให้ปุ่มครึ่งหนึ่งของความกว้าง */
+                margin-bottom: 10px;
+            }
+        }
+
     </style>
 </head>
 
 <body>
     @include('layout.nav')
 
-    <br><br>
-    <div class="container">
-        <h4>ข้อมูลผู้สูงอายุ</h4>
-        <br>
-        <table id="doctorTable" class="table align-items-center mb-0">
-            <thead>
-                <tr>
-                    <th>รูป</th>
-                    <th>ชื่อ</th>
-                    <th>อายุ</th>
-                    <th>ที่อยู่</th>
-                    <th>เบอร์โทร</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($elderlys as $elderly)
-                    @php
-                        $latestCaregiverDate =
-                            \App\Models\CareGiver::where('ID_Elderly', $elderly->ID_Elderly)
-                                ->orderBy('Date_CG', 'desc')
-                                ->first()->Date_CG ?? null;
-                        $latestActivityDate =
-                            \App\Models\ActivityCaregiver::whereIn('ID_CG', function ($query) use ($elderly) {
-                                $query
-                                    ->select('ID_CG')
-                                    ->from('care_givers')
-                                    ->where('ID_Elderly', $elderly->ID_Elderly);
-                            })
-                                ->orderBy('Date_ACG', 'desc')
-                                ->first()->Date_ACG ?? null;
-                        $latestDateCI =
-                            \App\Models\CareInstruction::where('ID_Elderly', $elderly->ID_Elderly)
-                                ->orderBy('Date_CI', 'desc')
-                                ->first()->Date_CI ?? null;
+    <main class="main-content position-relative h-100 border-radius-lg">
+    <div class="container-fluid py-4">
+        <div class="row">
+            <div class="col-12">
+                <div class="card mb-4">
+                    <div class="card-header pb-0 d-flex justify-content-between align-items-center">
+                        <h4>ข้อมูลผู้สูงอายุ</h4>
+                    </div>
+                    <div class="card-body px-0 pt-0 pb-2">
+                        <div class="table-responsive p-0">
+                        <table id="doctorTable" class="table align-items-center mb-0">
+                            <thead>
+                                <tr>
+                                    <th>รูป</th>
+                                    <th>ชื่อ</th>
+                                    <th>อายุ</th>
+                                    <th>ที่อยู่</th>
+                                    <th>เบอร์โทร</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($elderlys as $elderly)
+                                    @php
+                                        $latestCaregiverDate =
+                                            \App\Models\CareGiver::where('ID_Elderly', $elderly->ID_Elderly)
+                                                ->orderBy('Date_CG', 'desc')
+                                                ->first()->Date_CG ?? null;
+                                        $latestActivityDate =
+                                            \App\Models\ActivityCaregiver::whereIn('ID_CG', function ($query) use ($elderly) {
+                                                $query
+                                                    ->select('ID_CG')
+                                                    ->from('care_givers')
+                                                    ->where('ID_Elderly', $elderly->ID_Elderly);
+                                            })
+                                                ->orderBy('Date_ACG', 'desc')
+                                                ->first()->Date_ACG ?? null;
+                                        $latestDateCI =
+                                            \App\Models\CareInstruction::where('ID_Elderly', $elderly->ID_Elderly)
+                                                ->orderBy('Date_CI', 'desc')
+                                                ->first()->Date_CI ?? null;
 
-                        $showElderly = false;
+                                        $showElderly = false;
 
-                        if (auth()->user()->Type_Personnel == 'Doctor' && $elderly->barthel_adl) {
-                            $typeDoctor = auth()->user()->Type_Doctor;
-                            if (($typeDoctor == 'กลุ่มติดสังคม' && $elderly->barthel_adl->Group_ADL == 'กลุ่มติดสังคม') ||
-                                ($typeDoctor == 'กลุ่มติดบ้าน' && $elderly->barthel_adl->Group_ADL == 'กลุ่มติดบ้าน') ||
-                                ($typeDoctor == 'กลุ่มติดเตียง' && $elderly->barthel_adl->Group_ADL == 'กลุ่มติดเตียง')) {
-                                $showElderly = true;
-                            }
-                        }
-                    @endphp
+                                        if (auth()->user()->Type_Personnel == 'Doctor' && $elderly->barthel_adl) {
+                                            $typeDoctor = auth()->user()->Type_Doctor;
+                                            if (($typeDoctor == 'กลุ่มติดสังคม' && $elderly->barthel_adl->Group_ADL == 'กลุ่มติดสังคม') ||
+                                                ($typeDoctor == 'กลุ่มติดบ้าน' && $elderly->barthel_adl->Group_ADL == 'กลุ่มติดบ้าน') ||
+                                                ($typeDoctor == 'กลุ่มติดเตียง' && $elderly->barthel_adl->Group_ADL == 'กลุ่มติดเตียง')) {
+                                                $showElderly = true;
+                                            }
+                                        }
+                                    @endphp
 
-                    @if ($showElderly && ($latestCaregiverDate > $latestDateCI || $latestActivityDate > $latestDateCI))
-                        <tr>
-                            <td>
-                                @if ($elderly->Image_Elderly)
-                                    <img src="{{ url('storage/' . $elderly->Image_Elderly) }}" alt="Elderly Image"
-                                        width="50">
-                                @else
-                                    <img src="{{ url('storage/default.png') }}" alt="Elderly Image" width="50">
-                                @endif
-                            </td>
-                            <td>{{ $elderly->Name_Elderly }}</td>
-                            <td>{{ \Carbon\Carbon::parse($elderly->Birthday)->age }} ปี</td>
-                            <td>{{ $elderly->Address }}</td>
-                            <td>{{ $elderly->Phone_Elderly }}</td>
-                            <td>
-                                <button class="btn btn-adl btn-sm" data-bs-toggle="modal"
-    data-bs-target="#adlModal-{{ $elderly->ID_Elderly }}">ข้อมูล ADL</button>
-                                    <button class="btn btn-cg btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#cgDatesModal-{{ $elderly->ID_Elderly }}">ข้อมูล CG</button>
-                                <button class="btn btn-info btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#acgDatesModal-{{ $elderly->ID_Elderly }}">ข้อมูล ACG</button>
-                                <a href="{{ route('ci.create', ['elderly_id' => $elderly->ID_Elderly]) }}" class="btn btn-success btn-sm">
-                                    <i class="fas fa-plus"></i> คำแนะนำ
-                                </a>
-                            </td>
-                        </tr>
-                    @endif
-                @endforeach
-            </tbody>
-        </table>
+                                    @if ($showElderly && ($latestCaregiverDate > $latestDateCI || $latestActivityDate > $latestDateCI))
+                                        <tr>
+                                            <td>
+                                                @if ($elderly->Image_Elderly)
+                                                    <img src="{{ url('storage/' . $elderly->Image_Elderly) }}" alt="Elderly Image" width="50">
+                                                @else
+                                                    <img src="{{ url('storage/default.png') }}" alt="Elderly Image" width="50">
+                                                @endif
+                                            </td>
+                                            <td>{{ $elderly->Name_Elderly }}</td>
+                                            <td>{{ \Carbon\Carbon::parse($elderly->Birthday)->age }} ปี</td>
+                                            <td>{{ $elderly->Address }}</td>
+                                            <td>{{ $elderly->Phone_Elderly }}</td>
+                                            <td>
+                                                <button class="btn btn-adl btn-sm" data-bs-toggle="modal"
+                                                    data-bs-target="#adlModal-{{ $elderly->ID_Elderly }}">ข้อมูล ADL</button>
+                                                <button class="btn btn-cg btn-sm" data-bs-toggle="modal"
+                                                    data-bs-target="#cgDatesModal-{{ $elderly->ID_Elderly }}">ข้อมูล CG</button>
+                                                <button class="btn btn-info btn-sm" data-bs-toggle="modal"
+                                                    data-bs-target="#acgDatesModal-{{ $elderly->ID_Elderly }}">ข้อมูล ACG</button>
+                                                <a href="{{ route('ci.create', ['elderly_id' => $elderly->ID_Elderly]) }}" class="btn btn-success btn-sm">
+                                                    <i class="fas fa-plus"></i> คำแนะนำ
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    @endif
+                                @endforeach
+                            </tbody>
+                        </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+    </main>
+
 
     <!-- ADL Modal -->
     @foreach ($elderlys as $elderly)

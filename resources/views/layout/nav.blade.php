@@ -16,44 +16,52 @@
 
         /* General mobile styles */
 @media only screen and (max-width: 767px) {
-    /* Sidebar adjustments */
-    .sidebar {
-        width: 100%; /* Full width on mobile */
-        position: relative;
-        display: none; /* You can use display:block if you want to show it */
+    .navbar {
+        padding: 5px 10px; /* Reduce padding for mobile */
+        font-size: 12px; /* Smaller font size */
     }
 
-    /* Nav adjustments */
-    .nav {
-        font-size: 14px; /* Adjust font size for mobile */
-        padding: 10px;
+    .navbar .logo img {
+        height: 30px; /* Smaller logo for mobile */
     }
 
-    /* Content adjustments */
+    .navbar .nav-links a {
+        font-size: 12px; /* Smaller font size for nav links */
+        margin-left: 10px; /* Reduce spacing between nav links */
+    }
+
+    .navbar .user-info img {
+        width: 25px; /* Smaller user profile image */
+        height: 25px;
+    }
+
+    /* Add margin to push content away from the navbar */
+    body {
+        margin-top: 60px; /* Adjust this value to create space between the navbar and the content */
+    }
+
+    /* Alternatively, if the content is inside a container, you can add margin or padding there */
     .content {
-        margin-left: 0; /* Remove margins for mobile view */
+        margin-top: 60px; /* Push the content down from the navbar */
     }
-
-    /* Any additional mobile-specific styles */
 }
 
-/* Tablet styles */
+
+/* Tablet Styles */
 @media only screen and (min-width: 768px) and (max-width: 1024px) {
-    .sidebar {
-        width: 250px; /* Adjust width for tablet */
-        position: relative;
-    }
-
-    .nav {
-        font-size: 16px; /* Adjust font size for tablets */
+    .navbar {
         padding: 15px;
+        font-size: 16px;
     }
 
-    .content {
-        margin-left: 250px; /* Adjust margin to account for sidebar width */
+    .navbar .logo img {
+        height: 50px;
+    }
+
+    .navbar .nav-links a {
+        font-size: 14px;
     }
 }
-
 
         .dataTables_wrapper .dataTables_paginate {
             display: flex;
