@@ -744,7 +744,7 @@
         imageContainer.innerHTML = '';
         images.forEach(function(imagePath) {
             let img = document.createElement('img');
-            img.src = `{{ url('storage') }}/${imagePath}`;
+            img.src = `${imagePath}`;
             img.alt = 'Current News Image';
             img.className = 'img-thumbnail';
             img.style.width = '100px';

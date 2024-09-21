@@ -164,7 +164,7 @@
                         </div>
                         <div class="form-group">
                             <label for="Phone_CG">เบอร์ติดต่อ</label>
-                            <input type="text" id="Phone_CG" name="Phone_CG" class="form-control"
+                            <input type="number" id="Phone_CG" name="Phone_CG" class="form-control"
                                 required>
                         </div>
                         <div class="form-group">
