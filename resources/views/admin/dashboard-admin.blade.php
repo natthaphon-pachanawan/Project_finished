@@ -101,7 +101,7 @@
                                         @foreach ($users as $user)
                                             <tr>
                                                 <td class="text-center">
-                                                    <img src="{{ url($user->Image_User) }}" alt="User Image" class="img-fluid" style="max-width: 50px;">
+                                                    <img src="{{ url('/' . $user->Image_User) }}" alt="User Image" class="img-fluid" style="max-width: 50px;">
                                                 </td>
                                                 <td class="text-center">{{ $user->Name_User ?: 'ไม่มีข้อมูล' }}</td>
                                                 <td class="text-center">{{ $user->Username ?: 'ไม่มีข้อมูล' }}</td>
@@ -152,97 +152,117 @@
 
 
     <script>
-
         document.getElementById('generate-pdf').addEventListener('click', function () {
-            // Fetch the content from report-admin.blade.php
-            fetch("{{ route('admin.report-user') }}")
-                .then(response => response.text()) // Fetch HTML as text
-                .then(data => {
-                    // Convert the fetched HTML into a DOM object
-                    const parser = new DOMParser();
-                    const doc = parser.parseFromString(data, 'text/html');
-                    const element = doc.getElementById('report-content'); // Get the content
+            // Fetch the filtered data from DataTable
+            var filteredData = $('#myTable').DataTable().rows({ filter: 'applied' }).data().toArray();
 
-                    // Add CSS to set the font back to the template's original font
-                    const style = document.createElement('style');
-                    style.innerHTML = `
-                        * {
+            if (filteredData.length === 0) {
+                Swal.fire('ไม่พบข้อมูลที่ตรงกับการค้นหา', '', 'error');
+                return;
+            }
+
+            var opt = {
+                margin: 0.5,
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+            };
+
+            // Create a hidden div to hold the content
+            var reportContent = document.createElement('div');
+            reportContent.innerHTML = `
+                <style>
+                    * {
                             font-family: 'Open Sans', Arial, sans-serif !important;
                             color: black !important;
                             background-color: white !important;
                         }
-                        <style>
-                            /* สไตล์สำหรับ h5 */
-                            h5 {
-                                font-size: 20px;
-                            }
+                    /* สไตล์สำหรับ h5 */
+                    h5 {
+                        font-size: 20px;
+                    }
 
-                            /* สไตล์สำหรับรูปภาพ */
-                            img {
-                                height: 80px;
-                                vertical-align: middle;
-                            }
+                    /* สไตล์สำหรับรูปภาพ */
+                    img {
+                        height: 80px;
+                        vertical-align: middle;
+                    }
 
-                            /* สไตล์สำหรับตาราง */
-                            table {
-                                width: 100%;
-                                border-collapse: collapse;
-                                margin-bottom: 20px;
-                                font-size: 14px;
-                            }
+                    /* สไตล์สำหรับตาราง */
+                    table {
+                        width: 100%;
+                        border-collapse: collapse;
+                        margin-bottom: 20px;
+                        font-size: 14px;
+                    }
 
-                            th, td {
-                                font-size: 14px;
-                                padding: 8px;
-                                text-align: center;
-                                border: 1px solid black;
-                            }
+                    th, td {
+                        font-size: 14px;
+                        padding: 8px;
+                        text-align: center;
+                        border: 1px solid black;
+                    }
 
-                            td {
-                                font-size: 13px;
-                                text-align: left;
-                            }
+                    td {
+                        font-size: 12.5px;
+                        text-align: left;
+                    }
 
-                            /* สไตล์สำหรับคอลัมน์ที่อยู่ */
-                            .address-column {
-                                white-space: normal;
-                                word-break: keep-all;
-                                max-width: 250px;
-                            }
+                    /* สไตล์สำหรับรูปในตาราง */
+                    .user-image {
+                        max-width: 40px;
+                        height: auto;
+                    }
 
-                            /* สไตล์สำหรับรูปในตาราง */
-                            .user-image {
-                                max-width: 40px;
-                                height: auto;
-                            }
+                    /* สไตล์สำหรับการขึ้นหน้าใหม่ */
+                    .page-break {
+                        page-break-before: always; /* บังคับขึ้นหน้าใหม่ */
+                    }
+                </style>
 
-                            /* สไตล์สำหรับการขึ้นหน้าใหม่ */
-                            .page-break {
-                                page-break-before: always; /* บังคับขึ้นหน้าใหม่ */
-                            }
-                        </style>
-                    `;
-                    element.appendChild(style);
+                <h5>
+                    <img src="{{ url('images/Logo.png') }}" alt="Logo">
+                    รายงานข้อมูลผู้ใช้
+                </h5>
+                <br>
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 10%;">รูป</th>
+                            <th style="width: 20%;">ชื่อ - นามสกุล</th>
+                            <th style="width: 15%;">ประเภทผู้ใช้</th>
+                            <th style="width: 40%;">ที่อยู่</th>
+                            <th style="width: 15%;">เบอร์โทร</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${filteredData.map((user, index) => `
+                            ${(index % 11 === 0 && index !== 0) ? `
+                                <tr class="page-break">
+                                    <th style="width: 10%;">รูป</th>
+                                    <th style="width: 20%;">ชื่อ - นามสกุล</th>
+                                    <th style="width: 15%;">ประเภทผู้ใช้</th>
+                                    <th style="width: 40%;">ที่อยู่</th>
+                                    <th style="width: 15%;">เบอร์โทร</th>
+                                </tr>` : ''}
+                            <tr>
+                                <td>${user[0]}</td>
+                                <td>${user[1]}</td>
+                                <td>${user[3]}</td>
+                                <td>${user[6]}</td>
+                                <td>${user[7]}</td>
+                            </tr>`).join('')}
+                    </tbody>
+                </table>
+            `;
 
-
-                    setTimeout(function () {
-
-                        var opt = {
-                            margin: 0.5,
-                            image: { type: 'jpeg', quality: 0.98 },
-                            html2canvas: { scale: 2 },
-                            jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
-                        };
-
-
-                        html2pdf().set(opt).from(element).outputPdf('blob').then(function (pdfBlob) {
-                            var pdfUrl = URL.createObjectURL(pdfBlob);
-                            var pdfWindow = window.open();
-                            pdfWindow.location.href = pdfUrl;
-                        });
-                    });
-                })
-                .catch(error => console.error('Error fetching report data:', error));
+            setTimeout(function () {
+                html2pdf().set(opt).from(reportContent).outputPdf('blob').then(function (pdfBlob) {
+                    var pdfUrl = URL.createObjectURL(pdfBlob); // สร้าง URL จาก Blob
+                    var pdfWindow = window.open(); // เปิดหน้าแท็บใหม่
+                    pdfWindow.location.href = pdfUrl; // ตั้งค่า URL ของ PDF
+                });
+            });
         });
 
         function confirmDelete(userId) {

@@ -133,92 +133,120 @@
         }
 
         document.getElementById('generate-pdf').addEventListener('click', function () {
-            // Fetch the content from the Care Instructions report page
-            fetch("{{ route('report.ci') }}")
-                .then(response => response.text()) // Fetch HTML as text
-                .then(data => {
-                    // Convert the fetched HTML into a DOM object
-                    const parser = new DOMParser();
-                    const doc = parser.parseFromString(data, 'text/html');
-                    const element = doc.querySelector('.container'); // Get the report container
+            // Fetch the filtered data from DataTable
+            var filteredData = $('#ciTable').DataTable().rows({ filter: 'applied' }).data().toArray();
 
-                    // Add CSS to set the font back to the template's original font
-                    const style = document.createElement('style');
-                    style.innerHTML = `
-                        * {
-                            font-family: 'Open Sans', Arial, sans-serif !important;
-                            color: black !important;
-                            background-color: white !important;
-                        }
-                        <style>
+            if (filteredData.length === 0) {
+                Swal.fire('ไม่พบข้อมูลที่ตรงกับการค้นหา', '', 'error');
+                return;
+            }
 
-                            h5 {
-                                font-size: 20px;
-                                margin: 0;
-                            }
+            // Configure options for generating the PDF
+            var opt = {
+                margin: 0.5,
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+            };
 
-                            img {
-                                height: 80px;
-                                margin-right: 10px;
-                            }
+            // Create a hidden div to hold the content
+            var reportContent = document.createElement('div');
+            reportContent.innerHTML = `
+                <style>
+                    * {
+                        font-family: 'Open Sans', Arial, sans-serif !important;
+                        color: black !important;
+                        background-color: white !important;
+                    }
 
-                            /* กำหนดความกว้างของตาราง */
-                            table {
-                                width: 103%; /* เพิ่มความกว้างของตาราง */
-                                border-collapse: collapse;
-                                margin-bottom: 20px;
-                                font-size: 14px; /* เพิ่มขนาดฟอนต์ในตาราง */
-                            }
+                    h5 {
+                        font-size: 20px;
+                        margin: 0;
+                    }
 
-                            /* กำหนดสไตล์สำหรับ th และ td */
-                            th, td {
-                                padding: 8px; /* เพิ่ม padding ให้ดูใหญ่ขึ้น */
-                                text-align: center;
-                                border: 1px solid black;
-                            }
+                    img {
+                        height: 80px;
+                        margin-right: 10px;
+                    }
 
-                            /* ขนาดฟอนต์ใน td */
-                            td {
-                                font-size: 12px;
-                                text-align: left;
-                            }
+                    /* กำหนดความกว้างของตาราง */
+                    table {
+                        width: 100%;
+                        border-collapse: collapse;
+                        margin-bottom: 20px;
+                        font-size: 14px; /* เพิ่มขนาดฟอนต์ในตาราง */
+                    }
 
-                            /* คำแนะนำการดูแล */
-                            .care-instructions {
-                                font-size: 11px;
-                                text-align: left;
-                                white-space: normal;
-                                overflow-wrap: wrap;
-                                padding: 14px;
-                            }
+                    /* กำหนดสไตล์สำหรับ th และ td */
+                    th, td {
+                        padding: 8px; /* เพิ่ม padding ให้ดูใหญ่ขึ้น */
+                        text-align: center;
+                        border: 1px solid black;
+                    }
 
-                            .page-break {
-                                page-break-before: always; /* บังคับขึ้นหน้าใหม่ */
-                            }
-                        </style>
+                    /* ขนาดฟอนต์ใน td */
+                    td {
+                        font-size: 12.5px;
+                        text-align: left;
+                    }
 
+                    /* คำแนะนำการดูแล */
+                    .care-instructions {
+                        font-size: 11.5px;
+                        text-align: left;
+                        padding: 14px;
+                    }
 
-                    `;
-                    element.appendChild(style);
+                    /* สไตล์สำหรับการขึ้นหน้าใหม่ */
+                    .page-break {
+                        page-break-before: always; /* บังคับขึ้นหน้าใหม่ */
+                    }
+                </style>
 
-                    setTimeout(function () {
-                        // Configure options for generating the PDF
-                        var opt = {
-                            margin: 0.5,
-                            image: { type: 'jpeg', quality: 0.98 },
-                            html2canvas: { scale: 2 },
-                            jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
-                        };
+                <h5>
+                    <img src="{{ url('images/Logo.png') }}" alt="Logo">
+                    รายงานคำแนะนำการดูแล
+                </h5>
+                <br>
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 13%;">วันที่</th>
+                            <th style="width: 17%;">ชื่อผู้สูงอายุ</th>
+                            <th style="width: 17%;">ชื่อแพทย์</th>
+                            <th style="width: 18%;">ชื่อเจ้าหน้าที่</th>
+                            <th style="width: 40%;">คำแนะนำการดูแล</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${filteredData.map((ci, index) => `
+                            ${(index % 12 === 0 && index !== 0) ? `
+                                <tr class="page-break">
+                                    <th style="width: 13%;">วันที่</th>
+                                    <th style="width: 17%;">ชื่อผู้สูงอายุ</th>
+                                    <th style="width: 17%;">ชื่อแพทย์</th>
+                                    <th style="width: 18%;">ชื่อเจ้าหน้าที่</th>
+                                    <th style="width: 40%;">คำแนะนำการดูแล</th>
+                                </tr>` : ''}
+                            <tr>
+                                <td style="text-align: center;">${ci[0]}</td>
+                                <td style="text-align: center;">${ci[1]}</td>
+                                <td style="text-align: center;">${ci[2]}</td>
+                                <td style="text-align: center;">${ci[3]}</td>
+                                <td class="care-instructions">${ci[4]}</td>
+                            </tr>`).join('')}
+                    </tbody>
+                </table>
+            `;
 
-                        // Create the PDF and open it in a new window
-                        html2pdf().set(opt).from(element).outputPdf('blob').then(function (pdfBlob) {
-                            var pdfUrl = URL.createObjectURL(pdfBlob);
-                            var pdfWindow = window.open();
-                            pdfWindow.location.href = pdfUrl;
-                        });
-                    });
-                })
-                .catch(error => console.error('Error fetching report data:', error));
+            setTimeout(function () {
+                // Generate the PDF
+                html2pdf().set(opt).from(reportContent).outputPdf('blob').then(function (pdfBlob) {
+                    var pdfUrl = URL.createObjectURL(pdfBlob);
+                    var pdfWindow = window.open();
+                    pdfWindow.location.href = pdfUrl;
+                });
+            });
         });
 
     </script>

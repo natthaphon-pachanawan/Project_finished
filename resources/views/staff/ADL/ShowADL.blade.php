@@ -191,93 +191,117 @@
         }
 
         document.getElementById('generate-pdf').addEventListener('click', function () {
-            // Fetch the content from the /report-all-adl URL
-            fetch("{{ route('report.all.adl') }}")
-                .then(response => response.text()) // Fetch HTML as text
-                .then(data => {
-                    // Convert the fetched HTML into a DOM object
-                    const parser = new DOMParser();
-                    const doc = parser.parseFromString(data, 'text/html');
-                    const element = doc.querySelector('.container'); // Get the content
+            // Fetch the filtered data from the DataTable (if any filters are applied)
+            var filteredData = $('#adlTable').DataTable().rows({ filter: 'applied' }).data().toArray();
 
-                    // Add CSS to set the font back to the template's original font
-                    const style = document.createElement('style');
-                    style.innerHTML = `
-                        * {
-                            font-family: 'Open Sans', Arial, sans-serif !important;
-                            color: black !important;
-                            background-color: white !important;
-                        }
-                        <style>
+            if (filteredData.length === 0) {
+                Swal.fire('ไม่พบข้อมูลที่ตรงกับการค้นหา', '', 'error');
+                return;
+            }
 
-                            h5 {
-                                font-size: 20px;
-                                margin: 0;
-                            }
+            // Create a hidden div to hold the content
+            var reportContent = document.createElement('div');
+            reportContent.innerHTML = `
+                <style>
+                    * {
+                        font-family: 'Open Sans', Arial, sans-serif !important;
+                        color: black !important;
+                        background-color: white !important;
+                    }
 
-                            img {
-                                height: 80px;
-                                margin-right: 10px;
-                            }
+                    h5 {
+                        font-size: 20px;
+                        margin: 0;
+                    }
 
-                            /* กำหนดความกว้างของตาราง */
-                            table {
-                                width: 103%; /* เพิ่มความกว้างของตาราง */
-                                border-collapse: collapse;
-                                margin-bottom: 20px;
-                                font-size: 14px; /* เพิ่มขนาดฟอนต์ในตาราง */
-                            }
+                    img {
+                        height: 80px;
+                        margin-right: 10px;
+                    }
 
-                            /* กำหนดสไตล์สำหรับ th และ td */
-                            th, td {
-                                padding: 8px; /* เพิ่ม padding ให้ดูใหญ่ขึ้น */
-                                text-align: center;
-                                border: 1px solid black;
-                            }
+                    /* กำหนดความกว้างของตาราง */
+                    table {
+                        width: 100%;
+                        border-collapse: collapse;
+                        margin-bottom: 20px;
+                        font-size: 14px; /* เพิ่มขนาดฟอนต์ในตาราง */
+                    }
 
-                            /* ขนาดฟอนต์ใน td */
-                            td {
-                                font-size: 12px;
-                                text-align: center;
-                            }
+                    /* กำหนดสไตล์สำหรับ th และ td */
+                    th, td {
+                        padding: 8px; /* เพิ่ม padding ให้ดูใหญ่ขึ้น */
+                        text-align: center;
+                        border: 1px solid black;
+                    }
 
-                            /* คำแนะนำการดูแล */
-                            .care-instructions {
-                                font-size: 11px;
-                                text-align: left;
-                                white-space: normal;
-                                overflow-wrap: wrap;
-                                padding: 14px;
-                            }
+                    /* ขนาดฟอนต์ใน td */
+                    td {
+                        font-size: 12.5px;
+                        text-align: center;
+                    }
 
-                            .page-break {
-                                page-break-before: always; /* บังคับขึ้นหน้าใหม่ */
-                            }
-                        </style>
+                    .adl-details {
+                        font-size: 11.5px;
+                        text-align: left;
+                        padding: 14px;
+                    }
 
+                    .page-break {
+                        page-break-before: always; /* บังคับขึ้นหน้าใหม่ */
+                    }
+                </style>
 
-                    `;
-                    element.appendChild(style);
+                <h5>
+                    <img src="{{ url('images/Logo.png') }}" alt="Logo">
+                    รายงานการประเมินประเมินความสามารถในการดำเนินชีวิตประจำวัน
+                </h5>
+                <br>
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 20%;">ชื่อผู้สูงอายุ</th>
+                            <th style="width: 20%;">ชื่อเจ้าหน้าที่</th>
+                            <th style="width: 20%;">คะแนนการประเมิน ADL</th>
+                            <th style="width: 20%;">ประเภทกลุ่ม ADL</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${filteredData.map((adl, index) => `
+                            ${(index % 12 === 0 && index !== 0) ? `
+                                <tr class="page-break">
+                                    <th style="width: 20%;">ชื่อผู้สูงอายุ</th>
+                                    <th style="width: 20%;">ชื่อเจ้าหน้าที่</th>
+                                    <th style="width: 20%;">คะแนนการประเมิน ADL</th>
+                                    <th style="width: 20%;">ประเภทกลุ่ม ADL</th>
+                                </tr>` : ''}
+                            <tr>
+                                <td>${adl[0]}</td>
+                                <td>${adl[1]}</td>
+                                <td>${adl[2]}</td>
+                                <td>${adl[3]}</td>
+                            </tr>`).join('')}
+                    </tbody>
+                </table>
+            `;
 
-                    // Configure options for generating the PDF
-                    var opt = {
-                        margin: 0.5,
-                        filename: 'รายงานข้อมูล_ADL.pdf',
-                        image: { type: 'jpeg', quality: 0.98 },
-                        html2canvas: { scale: 2 },
-                        jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
-                    };
+            setTimeout(function () {
+                // Configure options for generating the PDF
+                var opt = {
+                    margin: 0.5,
+                    filename: 'รายงาน_ADL.pdf',
+                    image: { type: 'jpeg', quality: 0.98 },
+                    html2canvas: { scale: 2 },
+                    jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+                };
 
-                    // สร้าง PDF และเปิดในหน้าต่างใหม่
-                    html2pdf().set(opt).from(element).output('blob').then(function (pdfBlob) {
-                        var pdfUrl = URL.createObjectURL(pdfBlob);
-                        var pdfWindow = window.open();
-                        pdfWindow.location.href = pdfUrl;
-                    });
-                })
-                .catch(error => console.error('Error fetching report data:', error));
+                // Generate the PDF and open it in a new window
+                html2pdf().set(opt).from(reportContent).output('blob').then(function (pdfBlob) {
+                    var pdfUrl = URL.createObjectURL(pdfBlob);
+                    var pdfWindow = window.open();
+                    pdfWindow.location.href = pdfUrl;
+                });
+            });
         });
-
 
         document.querySelectorAll('.generate-pdf2').forEach(button => {
             button.addEventListener('click', function (event) {
