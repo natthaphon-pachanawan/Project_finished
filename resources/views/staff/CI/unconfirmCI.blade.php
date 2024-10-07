@@ -33,6 +33,7 @@
                                             <th class="text-center">ที่อยู่</th>
                                             <th class="text-center">เบอร์โทร</th>
                                             <th class="text-center">ชื่อแพทย์</th>
+                                            <th class="text-center">ชื่อเจ้าหน้าที่</th>
                                             <th class="text-center">คำแนะนำ</th>
                                             <th class="text-center">Actions</th>
                                         </tr>
@@ -46,6 +47,7 @@
                                                     <td class="text-center">{{ $ci->elderly->Address }}</td>
                                                     <td class="text-center">{{ $ci->elderly->Phone_Elderly }}</td>
                                                     <td class="text-center">{{ $ci->Name_Doctor }}</td>
+                                                    <td class="text-center">{{ $ci->Name_Staff }}</td>
                                                     <td class="text-center">{{ $ci->Care_instructions }}</td>
                                                     <td class="text-center">
                                                         <a href="{{ route('search-location', ['id' => $ci->elderly->ID_Elderly]) }}" target="_blank" class="btn btn-info btn-sm">ค้นหาที่อยู่</a>
@@ -93,125 +95,142 @@
             });
         });
 
-            document.getElementById('generate-pdf').addEventListener('click', function () {
-                // Fetch the content from the /report-ci-confirm URL
-                fetch(`{{ route('report.ci.confirm') }}`)
-                    .then(response => response.text()) // Fetch HTML as text
-                    .then(data => {
-                        // Convert the fetched HTML into a DOM object
-                        const parser = new DOMParser();
-                        const doc = parser.parseFromString(data, 'text/html');
-                        const element = doc.querySelector('.container'); // Get the content
+        document.getElementById('generate-pdf').addEventListener('click', function () {
+            // Fetch the filtered data from the DataTable (if any filters are applied)
+            var filteredData = $('#ciTableConfirmed').DataTable().rows({ filter: 'applied' }).data().toArray();
 
-                        // Add CSS to set the font back to the template's original font
-                        const style = document.createElement('style');
-                        style.innerHTML = `
-                            * {
-                                font-family: 'Open Sans', Arial, sans-serif !important;
-                                color: black !important;
-                                background-color: white !important;
-                            }
+            if (filteredData.length === 0) {
+                Swal.fire('ไม่พบข้อมูลที่ตรงกับการค้นหา', '', 'error');
+                return;
+            }
 
-                            <style>
-                                body {
-                                    width: 210mm;
-                                    height: 297mm;
-                                    margin: 0;
-                                    padding: 20mm;
-                                    font-family: Arial, sans-serif;
-                                    font-size: 12px;
-                                    color: #333;
-                                    background-color: #fff;
-                                }
+            // Create a hidden div to hold the content
+            var reportContent = document.createElement('div');
+            reportContent.innerHTML = `
+                <style>
+                    * {
+                        font-family: 'Open Sans', Arial, sans-serif !important;
+                        color: black !important;
+                        background-color: white !important;
+                    }
 
-                                img {
-                                    height: 80px;
-                                    margin-right: 10px;
-                                }
+                    h5 {
+                        font-size: 18px;
+                        margin-bottom: 20px;
+                    }
 
-                                .container {
-                                    padding: 10mm;
-                                    border-radius: 5px;
-                                }
+                    img {
+                        height: 80px;
+                        margin-right: 10px;
+                        vertical-align: middle;
+                    }
 
-                                h5 {
-                                    text-align: left;
-                                    margin-bottom: 20px;
-                                    font-size: 20px;
-                                }
+                    /* Customize table styling */
+                    table {
+                        width: 100%;
+                        border-collapse: collapse;
+                        margin-bottom: 20px;
+                        font-size: 13px;
+                    }
 
-                                table {
-                                    width: 106%;
+                    /* Customize table headers and cells */
+                    th, td {
+                        padding: 3px;
+                        text-align: center;
+                        border: 1px solid black;
+                        vertical-align: middle;
+                    }
 
-                                }
+                    /* Header background color and text alignment */
+                    th {
+                        background-color: #f2f2f2;
+                        text-align: center;
+                        font-weight: bold;
+                    }
 
-                                th, td {
-                                    font-size: 12px;
-                                    border: 1px solid black;
-                                    padding: 8px;
-                                    text-align: left;
-                                }
+                    /* Adjust column widths */
+                    th.date-col, td.date-col {
+                        width: 11%; /* Adjust as needed */
+                    }
 
-                                td.instructions-col {
-                                    font-size: 10px;
-                                }
+                    th.name-col, td.name-col {
+                        width: 13%; /* Adjust as needed */
+                    }
 
-                                th {
-                                    text-align: center;
-                                    background-color: #f2f2f2;
-                                }
+                    th.doctor-col, td.doctor-col {
+                       width: 16%; /* Adjust as needed */
+                    }
 
-                                .page-break {
-                                    page-break-before: always;
-                                }
+                    th.staff-col, td.staff-col {
+                        width: 14%; /* Adjust as needed */
+                    }
 
-                                /* Adjust column widths */
-                                th.date-col, td.date-col {
-                                    width: 11%; /* Adjust as needed */
-                                }
+                    td.instructions-col {
+                        width: 35%; /* Adjust as needed */
+                        text-align: left;
+                        font-size: 11px;
+                    }
 
-                                th.name-col, td.name-col {
-                                    width: 15%; /* Adjust as needed */
-                                }
+                    /* Page break for long content */
+                    .page-break {
+                        page-break-before: always; /* Force page break */
+                    }
+                </style>
 
-                                th.phone-col, td.phone-col {
-                                    width: 15%; /* Adjust as needed */
-                                }
+                <h5>
+                    <img src="{{ url('images/Logo.png') }}" alt="Logo">
+                    รายงานคำแนะนำการดูแลที่ยืนยันแล้ว
+                </h5>
+                <br>
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="date-col">วันที่</th>
+                            <th class="name-col">ชื่อผู้สูงอายุ</th>
+                            <th class="doctor-col">ชื่อแพทย์</th>
+                            <th class="staff-col">ชื่อเจ้าหน้าที่</th>
+                            <th class="instructions-col">คำแนะนำ</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${filteredData.map((ci, index) => `
+                            ${(index % 17 === 0 && index !== 0) ? `
+                                <tr class="page-break">
+                                    <th class="date-col">วันที่</th>
+                                    <th class="name-col">ชื่อผู้สูงอายุ</th>
+                                    <th class="doctor-col">ชื่อแพทย์</th>
+                                    <th class="staff-col">ชื่อเจ้าหน้าที่</th>
+                                    <th class="instructions-col">คำแนะนำ</th>
+                                </tr>` : ''}
+                            <tr>
+                                <td class="date-col">${ci[0]}</td>
+                                <td class="name-col">${ci[1]}</td>
+                                <td class="doctor-col">${ci[4]}</td>
+                                <td class="staff-col">${ci[5]}</td>
+                                <td class="instructions-col">${ci[6]}</td>
+                            </tr>`).join('')}
+                    </tbody>
+                </table>
+            `;
 
-                                th.doctor-col, td.doctor-col {
-                                   width: 15%; /* Adjust as needed */
-                                }
+            setTimeout(function () {
+                // Configure options for generating the PDF
+                var opt = {
+                    margin: 0.5,
+                    filename: 'รายงานคำแนะนำการดูแลที่ยืนยันแล้ว.pdf',
+                    image: { type: 'jpeg', quality: 0.98 },
+                    html2canvas: { scale: 2 },
+                    jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+                };
 
-                                th.staff-col, td.staff-col {
-                                    width: 15%; /* Adjust as needed */
-                                }
-
-                                th.instructions-col, td.instructions-col {
-                                    width: 35%; /* Adjust as needed */
-                                }
-                            </style>
-
-                        `;
-                        element.appendChild(style);
-
-                        // Configure options for generating the PDF
-                        var opt = {
-                            margin: 0.5,
-                            filename: 'รายงานคำแนะนำการดูแล_CI.pdf',
-                            image: { type: 'jpeg', quality: 0.98 },
-                            html2canvas: { scale: 2 },
-                            jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
-                        };
-
-                        // สร้าง PDF และเปิดในหน้าต่างใหม่
-                        html2pdf().set(opt).from(element).output('blob').then(function (pdfBlob) {
-                            var pdfUrl = URL.createObjectURL(pdfBlob);
-                            var pdfWindow = window.open();
-                            pdfWindow.location.href = pdfUrl;
-                        });
-                    })
-                    .catch(error => console.error('Error fetching report data:', error));
+                // Generate the PDF and open it in a new window
+                html2pdf().set(opt).from(reportContent).output('blob').then(function (pdfBlob) {
+                    var pdfUrl = URL.createObjectURL(pdfBlob);
+                    var pdfWindow = window.open();
+                    pdfWindow.location.href = pdfUrl;
+                });
             });
+        });
 
             document.querySelectorAll('.generate-single-report').forEach(button => {
                 button.addEventListener('click', function() {

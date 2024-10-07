@@ -137,95 +137,116 @@
             });
         }
 
-            document.getElementById('generate-pdf').addEventListener('click', function () {
-                // Fetch the content from the /report-all-acg URL
-                fetch("{{ route('report.all.acg') }}")
-                    .then(response => response.text()) // Fetch HTML as text
-                    .then(data => {
-                        // Convert the fetched HTML into a DOM object
-                        const parser = new DOMParser();
-                        const doc = parser.parseFromString(data, 'text/html');
-                        const element = doc.querySelector('.container'); // Get the content
+        document.getElementById('generate-pdf').addEventListener('click', function () {
+            // Fetch the filtered data from the DataTable (if any filters are applied)
+            var filteredData = $('#acgTable').DataTable().rows({ filter: 'applied' }).data().toArray();
 
-                        // Add CSS to set the font back to the template's original font
-                        const style = document.createElement('style');
-                        style.innerHTML = `
-                            * {
-                                font-family: 'Open Sans', Arial, sans-serif !important;
-                                color: black !important;
-                                background-color: white !important;
-                            }
-                            <style>
-                                body {
-                                    width: 210mm;
-                                    height: 297mm;
-                                    margin: 0;
-                                    padding: 20mm;
-                                    font-family: Arial, sans-serif;
-                                    font-size: 12px;
-                                    color: #333;
-                                    background-color: #fff;
-                                }
+            if (filteredData.length === 0) {
+                Swal.fire('ไม่พบข้อมูลที่ตรงกับการค้นหา', '', 'error');
+                return;
+            }
 
-                                img {
-                                height: 80px;
-                                margin-right: 10px;
-                                }
+            // Create a hidden div to hold the content
+            var reportContent = document.createElement('div');
+            reportContent.innerHTML = `
+                <style>
+                    * {
+                        font-family: 'Open Sans', Arial, sans-serif !important;
+                        color: black !important;
+                        background-color: white !important;
+                    }
 
-                                .container {
-                                    padding: 10mm;
-                                    border-radius: 5px;
-                                }
+                    h5 {
+                        font-size: 20px;
+                        margin: 0;
+                    }
 
-                                h5 {
-                                    text-align: left;
-                                    margin-bottom: 20px;
-                                    font-size: 24px;
-                                }
+                    img {
+                        height: 80px;
+                        margin-right: 10px;
+                    }
 
-                                table {
-                                    width: 100%;
-                                    margin-bottom: 20px;
-                                }
+                    /* กำหนดความกว้างของตาราง */
+                    table {
+                        width: 100%;
+                        border-collapse: collapse;
+                        margin-bottom: 20px;
+                        font-size: 14px; /* เพิ่มขนาดฟอนต์ในตาราง */
+                    }
 
-                                th, td {
-                                    border: 1px solid black;
-                                }
+                    /* กำหนดสไตล์สำหรับ th และ td */
+                    th, td {
+                        padding: 8px; /* เพิ่ม padding ให้ดูใหญ่ขึ้น */
+                        text-align: center;
+                        border: 1px solid black;
+                    }
 
-                                th, td {
-                                    padding: 8px;
-                                    text-align: left;
-                                }
+                    /* ขนาดฟอนต์ใน td */
+                    td {
+                        font-size: 12.5px;
+                        text-align: center;
+                    }
 
-                                th {
-                                    background-color: #f2f2f2;
-                                }
+                    .adl-details {
+                        font-size: 11.5px;
+                        text-align: left;
+                        padding: 14px;
+                    }
 
-                                .page-break {
-                                    page-break-before: always;
-                                }
-                            </style>
-                        `;
-                        element.appendChild(style);
+                    .page-break {
+                        page-break-before: always; /* บังคับขึ้นหน้าใหม่ */
+                    }
+                </style>
 
-                        // Configure options for generating the PDF
-                        var opt = {
-                            margin: 0.5,
-                            filename: 'รายงานกิจกรรมผู้ดูแลผู้สูงอายุ.pdf',
-                            image: { type: 'jpeg', quality: 0.98 },
-                            html2canvas: { scale: 2 },
-                            jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
-                        };
+                <h5>
+                    <img src="{{ url('images/Logo.png') }}" alt="Logo">
+                    รายงานการประเมินกิจกรรมการดูแลผู้สูงอายุ (ACG)
+                </h5>
+                <br>
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 20%;">วันที่</th>
+                            <th style="width: 30%;">ชื่อผู้สูงอายุ</th>
+                            <th style="width: 30%;">ชื่อผู้ดูแลผู้สูงอายุ</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${filteredData.map((acg, index) => `
+                            ${(index % 12 === 0 && index !== 0) ? `
+                                <tr class="page-break">
+                                    <th style="width: 20%;">วันที่</th>
+                                    <th style="width: 30%;">ชื่อผู้สูงอายุ</th>
+                                    <th style="width: 30%;">ชื่อผู้ดูแลผู้สูงอายุ</th>
+                                </tr>` : ''}
+                            <tr>
+                                <td>${acg[0]}</td>
+                                <td>${acg[1]}</td>
+                                <td>${acg[2]}</td>
+                            </tr>`).join('')}
+                    </tbody>
+                </table>
+            `;
 
-                        // สร้าง PDF และเปิดในหน้าต่างใหม่
-                        html2pdf().set(opt).from(element).output('blob').then(function (pdfBlob) {
-                            var pdfUrl = URL.createObjectURL(pdfBlob);
-                            var pdfWindow = window.open();
-                            pdfWindow.location.href = pdfUrl;
-                        });
-                    })
-                    .catch(error => console.error('Error fetching report data:', error));
+            setTimeout(function () {
+                // Configure options for generating the PDF
+                var opt = {
+                    margin: 0.5,
+                    filename: 'รายงานกิจกรรมผู้สูงอายุ.pdf',
+                    image: { type: 'jpeg', quality: 0.98 },
+                    html2canvas: { scale: 2 },
+                    jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+                };
+
+                // Generate the PDF and open it in a new window
+                html2pdf().set(opt).from(reportContent).output('blob').then(function (pdfBlob) {
+                    var pdfUrl = URL.createObjectURL(pdfBlob);
+                    var pdfWindow = window.open();
+                    pdfWindow.location.href = pdfUrl;
+                });
             });
+        });
+
 
             // Add event listeners for each "generate-pdf" button
             function generatePdf(id) {
