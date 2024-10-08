@@ -197,13 +197,13 @@
                     }
 
                     th, td {
-                        font-size: 14px;
+                        font-size: 12.5px;
                         padding: 8px;
                         text-align: center;
                         border: 1px solid black;
                     }
 
-                    td {
+                    .address {
                         font-size: 12.5px;
                         text-align: left;
                     }
@@ -231,7 +231,7 @@
                             <th style="width: 10%;">รูป</th>
                             <th style="width: 20%;">ชื่อ - นามสกุล</th>
                             <th style="width: 15%;">ประเภทผู้ใช้</th>
-                            <th style="width: 40%;">ที่อยู่</th>
+                            <th style="width: 40%;" class="address">ที่อยู่</th>
                             <th style="width: 15%;">เบอร์โทร</th>
                         </tr>
                     </thead>
@@ -242,14 +242,14 @@
                                     <th style="width: 10%;">รูป</th>
                                     <th style="width: 20%;">ชื่อ - นามสกุล</th>
                                     <th style="width: 15%;">ประเภทผู้ใช้</th>
-                                    <th style="width: 40%;">ที่อยู่</th>
+                                    <th style="width: 40%;" class="address">ที่อยู่</th>
                                     <th style="width: 15%;">เบอร์โทร</th>
                                 </tr>` : ''}
                             <tr>
                                 <td>${user[0]}</td>
                                 <td>${user[1]}</td>
                                 <td>${user[3]}</td>
-                                <td>${user[6]}</td>
+                                <td class="address">${user[6]}</td>
                                 <td>${user[7]}</td>
                             </tr>`).join('')}
                     </tbody>
