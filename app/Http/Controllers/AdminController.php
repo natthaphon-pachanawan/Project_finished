@@ -7,6 +7,8 @@ use App\Models\News;
 use App\Models\NewsImage;
 use App\Models\Slider;
 use App\Models\Personnel;
+use App\Models\BarthelAdl;
+use App\Models\CareGiver;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
@@ -15,13 +17,14 @@ class AdminController extends Controller
 {
     public function showAdmin()
     {
-        $users = User::all();
+        $users = User::withCount('barthel_adls')->get();
         return view('admin.dashboard-admin', compact('users'));
     }
 
+
     public function registerUser()
     {
-        $personnelTypes = Personnel::where('Type_Personnel', '!=', 'Admin')->get();
+        $personnelTypes = Personnel::all();
         return view('admin.register-user', compact('personnelTypes'));
     }
 
@@ -93,9 +96,9 @@ class AdminController extends Controller
     {
         $sliders = Slider::all();
         $news = News::all();
-        $visitorCount = 12344865; // ตัวอย่างข้อมูล
-        $adlAssessmentCount = 6789; // ตัวอย่างข้อมูล
-        $cgAssessmentCount = 6548;
+        $visitorCount = 12344865; // ตัวอย่างข้อมูล (เนื่องจากยังไม่มีระบบนับจำนวนผู้เข้าชมจริง)
+        $adlAssessmentCount = BarthelAdl::count();
+        $cgAssessmentCount = CareGiver::count();
         return view('admin.layout-admin', compact('sliders', 'news', 'visitorCount', 'adlAssessmentCount', 'cgAssessmentCount'));
     }
 

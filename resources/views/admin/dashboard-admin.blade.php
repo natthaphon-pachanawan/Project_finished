@@ -10,8 +10,8 @@
     <!-- Include SweetAlert2 CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 
-    {{--  pdf  --}}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+    {{-- pdf --}}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -29,7 +29,8 @@
                 padding: 10px;
             }
 
-            .table th, .table td {
+            .table th,
+            .table td {
                 font-size: 12px;
             }
 
@@ -44,7 +45,8 @@
                 padding: 15px;
             }
 
-            .table th, .table td {
+            .table th,
+            .table td {
                 font-size: 14px;
             }
 
@@ -53,12 +55,10 @@
                 margin-bottom: 10px;
             }
         }
-
-
     </style>
 </head>
 
-<body >
+<body>
 
     @include('layout.nav')
 
@@ -94,6 +94,7 @@
                                             <th class="text-center">อีเมล</th>
                                             <th class="text-center">ที่อยู่</th>
                                             <th class="text-center">เบอร์โทร</th>
+                                            <th class="text-center">จำนวนการประเมิน ADL</th>
                                             <th class="text-center">Action</th>
                                         </tr>
                                     </thead>
@@ -101,7 +102,8 @@
                                         @foreach ($users as $user)
                                             <tr>
                                                 <td class="text-center">
-                                                    <img src="{{ url('/' . $user->Image_User) }}" alt="User Image" class="img-fluid" style="max-width: 50px;">
+                                                    <img src="{{ url('/' . $user->Image_User) }}" alt="User Image"
+                                                        class="img-fluid" style="max-width: 50px;">
                                                 </td>
                                                 <td class="text-center">{{ $user->Name_User ?: 'ไม่มีข้อมูล' }}</td>
                                                 <td class="text-center">{{ $user->Username ?: 'ไม่มีข้อมูล' }}</td>
@@ -121,10 +123,16 @@
                                                 <td class="text-center">{{ $user->Address ?: 'ไม่มีข้อมูล' }}</td>
                                                 <td class="text-center">{{ $user->Phone ?: 'ไม่มีข้อมูล' }}</td>
                                                 <td class="text-center">
+                                                    <span class="badge bg-secondary">{{ $user->barthel_adls_count }}</span>
+                                                </td>
+                                                <td class="text-center">
                                                     @if ($user->Type_Personnel !== 'Admin')
-                                                        <button onclick="confirmDelete('{{ $user->ID_User }}')" class="btn btn-danger btn-sm">ลบ</button>
+                                                        <button onclick="confirmDelete('{{ $user->ID_User }}')"
+                                                            class="btn btn-danger btn-sm">ลบ</button>
                                                         <!-- Hidden form to submit DELETE request -->
-                                                        <form id="delete-form-{{ $user->ID_User }}" action="{{ route('user.delete', $user->ID_User) }}" method="POST" style="display:none;">
+                                                        <form id="delete-form-{{ $user->ID_User }}"
+                                                            action="{{ route('user.delete', $user->ID_User) }}" method="POST"
+                                                            style="display:none;">
                                                             @csrf
                                                             @method('DELETE')
                                                         </form>
@@ -265,6 +273,10 @@
             });
         });
 
+            });
+        });
+
+
         function confirmDelete(userId) {
             Swal.fire({
                 title: 'คุณแน่ใจหรือไม่?',
@@ -283,7 +295,7 @@
             });
         }
 
-        $(document).ready(function() {
+        $(document).ready(function () {
             $('#myTable').DataTable({
                 "language": {
                     "paginate": {
@@ -304,5 +316,3 @@
 </body>
 
 </html>
-
-

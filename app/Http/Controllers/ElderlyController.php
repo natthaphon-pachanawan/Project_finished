@@ -49,14 +49,14 @@ class ElderlyController extends Controller
     public function Showelderly(Request $request)
     {
         // 1. โหลด Elderly พร้อมที่อยู่และ ADL group
-        $elderlies = Elderly::with(['addressElderly','barthel_adl','care_giver'])->get();
+        $elderlies = Elderly::with(['addressElderly', 'barthel_adl', 'care_giver'])->get();
 
         // 2. คำนวณช่วงอายุ
         $ageGroups = [
             'ช่วงอายุ 60-69' => 0,
             'ช่วงอายุ 70-79' => 0,
             'ช่วงอายุ 80-89' => 0,
-            'ช่วงอายุ 90+'   => 0,
+            'ช่วงอายุ 90+' => 0,
         ];
         foreach ($elderlies as $e) {
             $age = Carbon::parse($e->Birthday)->age;
@@ -73,32 +73,60 @@ class ElderlyController extends Controller
 
         // 3. คำนวณสัดส่วน ADL
         $adlGroups = [
-            'กลุ่มติดสังคม' => BarthelAdl::where('Group_ADL','กลุ่มติดสังคม')->count(),
-            'กลุ่มติดบ้าน' => BarthelAdl::where('Group_ADL','กลุ่มติดบ้าน')->count(),
-            'กลุ่มติดเตียง'=> BarthelAdl::where('Group_ADL','กลุ่มติดเตียง')->count(),
+            'กลุ่มติดสังคม' => BarthelAdl::where('Group_ADL', 'กลุ่มติดสังคม')->count(),
+            'กลุ่มติดบ้าน' => BarthelAdl::where('Group_ADL', 'กลุ่มติดบ้าน')->count(),
+            'กลุ่มติดเตียง' => BarthelAdl::where('Group_ADL', 'กลุ่มติดเตียง')->count(),
         ];
 
-        // 4. เตรียม JSON สำหรับ Marker บนแผนที่
+        // 4. เตรียม JSON สำหรับ Marker บนแผนที่ และ เพิ่มข้อมูล Alert
         $elderlyLocations = [];
         foreach ($elderlies as $e) {
-            if ($e->addressElderly
+            // Check for alerts
+            $e->needs_reassessment = false;
+            $e->rapid_decline = false;
+
+            if ($e->barthel_adl) {
+                // Overdue alert (3 months)
+                if ($e->barthel_adl->created_at->diffInMonths(now()) >= 3) {
+                    $e->needs_reassessment = true;
+                }
+
+                // Rapid decline check (compare with previous assessment)
+                $previousAdl = BarthelAdl::where('ID_Elderly', $e->ID_Elderly)
+                    ->where('ID_ADL', '<', $e->barthel_adl->ID_ADL)
+                    ->orderBy('created_at', 'desc')
+                    ->first();
+
+                if ($previousAdl && ($previousAdl->Score_ADL - $e->barthel_adl->Score_ADL) >= 2) {
+                    $e->rapid_decline = true;
+                }
+            } else {
+                // Never assessed
+                $e->needs_reassessment = true;
+            }
+
+            if (
+                $e->addressElderly
                 && $e->addressElderly->Latitude_position
                 && $e->addressElderly->Longitude_position
             ) {
                 $adlGroup = optional($e->barthel_adl)->Group_ADL ?: 'ยังไม่ได้ประเมิน';
                 $elderlyLocations[] = [
-                    'latitude'  => $e->addressElderly->Latitude_position,
+                    'latitude' => $e->addressElderly->Latitude_position,
                     'longitude' => $e->addressElderly->Longitude_position,
-                    'name'      => $e->Name_Elderly,
-                    'address'   => $e->Address,
-                    'adlGroup'  => $adlGroup,
+                    'name' => $e->Name_Elderly,
+                    'address' => $e->Address,
+                    'adlGroup' => $adlGroup,
                 ];
             }
         }
 
         // 5. ส่งข้อมูลไปยัง View
         return view('staff.dashboard-staff', compact(
-            'elderlies','ageGroups','adlGroups','elderlyLocations'
+            'elderlies',
+            'ageGroups',
+            'adlGroups',
+            'elderlyLocations'
         ));
     }
 
@@ -108,6 +136,19 @@ class ElderlyController extends Controller
         $elderly = Elderly::findOrFail($id);
         $addressElderly = AddressElderly::where('ID_Elderly', $id)->first();
         return view('staff.elderly.editelderly', compact('elderly', 'addressElderly'));
+    }
+
+    public function getAdlHistory($id)
+    {
+        $elderly = Elderly::findOrFail($id);
+        $adlHistory = BarthelAdl::where('ID_Elderly', $id)
+            ->orderBy('created_at', 'asc')
+            ->get(['Score_ADL', 'Group_ADL', 'created_at']);
+
+        return response()->json([
+            'name' => $elderly->Name_Elderly,
+            'history' => $adlHistory
+        ]);
     }
 
     public function Updateelderly(Request $request, $id)
@@ -201,6 +242,6 @@ class ElderlyController extends Controller
             'กลุ่มติดเตียง' => BarthelAdl::where('Group_ADL', 'กลุ่มติดเตียง')->count(),
         ];
 
-        return view('staff.Report.report-elderly', compact('elderlies', 'ageGroups','adlGroups'));
+        return view('staff.Report.report-elderly', compact('elderlies', 'ageGroups', 'adlGroups'));
     }
 }

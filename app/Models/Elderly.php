@@ -24,12 +24,17 @@ class Elderly extends Model
 
     public function barthel_adl()
     {
-        return $this->hasOne(BarthelAdl::class, 'ID_Elderly', 'ID_Elderly');
+        return $this->hasOne(BarthelAdl::class, 'ID_Elderly', 'ID_Elderly')->latestOfMany();
+    }
+
+    public function barthel_adls()
+    {
+        return $this->hasMany(BarthelAdl::class, 'ID_Elderly', 'ID_Elderly');
     }
 
     public function care_giver()
     {
-        return $this->hasOne(CareGiver::class, 'ID_Elderly', 'ID_Elderly');
+        return $this->hasOne(CareGiver::class, 'ID_Elderly', 'ID_Elderly')->latestOfMany();
     }
 
     public function addressElderly()

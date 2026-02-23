@@ -13,8 +13,6 @@ use App\Http\Controllers\CIController;
 use App\Http\Controllers\DoctorController;
 use App\Models\BarthelAdl;
 use App\Models\CareGiver;
-use App\Http\Controllers\ADLExportController;
-use App\Http\Controllers\CGExportController;
 use App\Http\Controllers\TAIController;
 use App\Http\Controllers\PerformanceReportController;
 use App\Http\Controllers\ReportController;
@@ -139,110 +137,81 @@ Route::middleware(['CheckLogin', 'IsAdmin'])->group(function () {
     Route::delete('sliders/{id}', [AdminController::class, 'destroySlider'])->name('admin.sliders.destroy');
 });
 
-Route::middleware(['CheckLogin', 'IsStaff'])->group(function () {
+Route::middleware(['CheckLogin'])->group(function () {
+    // Shared access for both Nurse (Staff) and Doctor
+    Route::middleware(['IsNurseOrDoctor'])->group(function () {
+        Route::get('staff-dashboard', [ElderlyController::class, 'Showelderly'])->name('staff-dashboard');
+        Route::get('elderly-report', [ElderlyController::class, 'showReport'])->name('elderly-report');
+        Route::get('elderly/{id}/adl-history', [ElderlyController::class, 'getAdlHistory'])->name('elderly.adl-history');
+        Route::get('search-location/{id}', [ElderlyController::class, 'searchLocation'])->name('search-location');
+        Route::get('get-elderly-details/{elderlyId}', [CGController::class, 'getElderlyDetails'])->name('get-elderly-details');
 
-    Route::get('get-elderly-details/{elderlyId}', [CGController::class, 'getElderlyDetails'])->name('get-elderly-details');
+        Route::get('adl-show', [ADLController::class, 'index'])->name('adl.index');
+        Route::get('cg-show', [CGController::class, 'index'])->name('cg.index');
+        Route::get('tai-show', [TAIController::class, 'index'])->name('tai.index');
+        Route::get('acg-show', [CGController::class, 'showACG'])->name('acg.index');
+        Route::get('staff-ci', [CIController::class, 'ShowStaffCI'])->name('staff.ci.index');
 
-    Route::get('staff-dashboard', [ElderlyController::class, 'Showelderly'])->name('staff-dashboard');
-    Route::get('adl-show', [ADLController::class, 'index'])->name('adl.index');
-    Route::get('adl-edit/{id}', [ADLController::class, 'edit'])->name('adl.edit');
-    Route::patch('adl-update/{id}', [ADLController::class, 'update'])->name('adl.update');
-    Route::delete('adl-destroy/{id}', [ADLController::class, 'destroy'])->name('adl.destroy');
-    Route::get('adl-elderly', [ADLController::class, 'create'])->name('adl.create');
-    Route::post('/adl/submit', [ADLController::class,  'submitADL'])->name('adl.submit');
-    Route::get('/report-all-adl', [ADLController::class, 'ReportADLAll'])->name('report.all.adl');
-    Route::get('/report-adl/{id}', [ADLController::class, 'ReportADL'])->name('report.adl');
-
-    Route::get('cg-show', [CGController::class, 'index'])->name('cg.index');
-    Route::get('cg-edit/{id}', [CGController::class, 'edit'])->name('cg.edit');
-    Route::put('cg-update/{id}', [CGController::class, 'update'])->name('cg.update');
-    Route::delete('cg-destroy/{id}', [CGController::class, 'destroy'])->name('cg.destroy');
-    Route::get('cg-create', [CGController::class, 'create'])->name('cg.create');
-    Route::post('cg-store', [CGController::class, 'store'])->name('cg.store');
-    Route::get('/report-all-cg', [CGController::class, 'ReportCGAll'])->name('report.all.cg');
-    Route::get('report-cg/{id}', [CGController::class, 'ReportCG'])->name('report.cg');
-    Route::get('cg/{id}/export-pdf', [ReportController::class, 'ReportCG'])
-     ->name('cg.exportPdf');
-
-    Route::get('tai-show', [TAIController::class, 'index'])->name('tai.index');
-    Route::get('tai-edit/{id}', [TAIController::class, 'edit'])->name('tai.edit');
-    Route::patch('tai-update/{id}', [TAIController::class, 'update'])->name('tai.update');
-    Route::delete('tai-destroy/{id}', [TAIController::class, 'destroy'])->name('tai.destroy');
-    // Route::get('tai-edit/{id}', [TAIController::class, 'edit'])->name('tai.edit');
-    // Route::put('tai-update/{id}', [TAIController::class, 'update'])->name('tai.update');
-    // Route::delete('tai-destroy/{id}', [TAIController::class, 'destroy'])->name('tai.destroy');
-    // Route::put('tai-store', [TAIController::class, 'store'])->name('tai.store');
-    // Route::get('tai-create/{id}', [TAIController::class, 'create'])->name('tai.create');
-    // Route::get('/report-all-tai', [TAIController::class, 'ReportTAIAll'])->name('report.all.tai');
-    // Route::get('report-tai/{id}', [TAIController::class, 'ReportTAI'])->name('report.tai');
-
-
-    Route::get('acg-create', [CGController::class, 'createActivity'])->name('activities.create');
-    Route::post('/acg-store', [CGController::class, 'storeActivity'])->name('activities.store');
-    Route::get('acg-show', [CGController::class, 'showACG'])->name('acg.index');
-    Route::get('acg-edit/{id}', [CGController::class, 'editActivity'])->name('acg.edit');
-    Route::patch('/acg-update/{id}', [CGController::class, 'updateActivity'])->name('acg.update');
-    Route::delete('/acg-destroy/{id}', [CGController::class, 'destroyActivity'])->name('acg.destroy');
-    Route::get('report-all-acg', [CGController::class, 'ReportACGAll'])->name('report.all.acg');
-    Route::get('report-acg/{id}', [CGController::class, 'ReportACG'])->name('report.acg');
-
-    Route::get('staff-ci', [CIController::class, 'ShowStaffCI'])->name('staff.ci.index');
-    Route::get('staff-unconfirm', [CIController::class, 'ShowUnconfirmCI'])->name('staff.ci.unconfirm');
-    Route::put('staff-ci/{id}/confirm', [CIController::class, 'confirmCI'])->name('ci.confirm');
-    Route::put('ci/{id}/unconfirm', [CIController::class, 'unconfirmCI'])->name('ci.unconfirm');
-    Route::get('report-ci-confirm', [CIController::class, 'ReportCIConfirm'])->name('report.ci.confirm');
-
-    Route::get('/report-ci-single/{id}', [CIController::class, 'generateSingleReport'])->name('report.ci.single');
-
-
-    Route::get('search-location/{id}', [ElderlyController::class, 'searchLocation'])->name('search-location');
-
-    Route::controller(ElderlyController::class)->group(function () {
-
-        Route::get('add-elderly', 'Addelderly');
-        Route::post('/store-elderly', 'Storeelderly')->name('store-elderly');
-        Route::get('edit-elderly/{id}', 'Editelderly')->name('edit-elderly');
-        Route::put('/update-elderly/{id}', 'Updateelderly')->name('update-elderly');
-        Route::delete('/delete-elderly/{id}', 'Deleteelderly')->name('delete-elderly');
-
-        Route::get('elderly-report', 'showReport')->name('elderly-report');
+        Route::get('/report-adl/{id}', [ADLController::class, 'ReportADL'])->name('report.adl');
+        Route::get('report-cg/{id}', [CGController::class, 'ReportCG'])->name('report.cg');
+        Route::get('report-acg/{id}', [CGController::class, 'ReportACG'])->name('report.acg');
+        Route::get('report-ci-confirm', [CIController::class, 'ReportCIConfirm'])->name('report.ci.confirm');
+        Route::get('/report-ci-single/{id}', [CIController::class, 'generateSingleReport'])->name('report.ci.single');
     });
-    //Expoert ADL
-    Route::get('/export-adl', [ADLExportController::class, 'export'])->name('adl.export');
-    //Export CG
-    Route::get('/export-cg', [CGExportController::class, 'export'])->name('cg.export');
-     //Export TAI
-     Route::get('/export-tai', [TAIController::class, 'ExportTAI'])->name('tai.export');
 
-    Route::get('performance-report', [PerformanceReportController::class, 'index'])->name('performanceReport.index');
-    Route::get('performance-report/create', [PerformanceReportController::class, 'create'])->name('performanceReport.create');
-    Route::post('performance-report/store', [PerformanceReportController::class, 'store'])->name('performanceReport.store');
-    Route::get('performance-report/{id}', [PerformanceReportController::class, 'show'])->name('performanceReport.show');
-    Route::get('performance-report/{id}/edit', [PerformanceReportController::class, 'edit'])->name('performanceReport.edit');
-    Route::put('performance-report/{id}', [PerformanceReportController::class, 'update'])->name('performanceReport.update');
-    Route::delete('performance-report/{id}', [PerformanceReportController::class, 'destroy'])->name('performanceReport.destroy');
-    // routes/web.php
-    Route::get('performance-report/data/{elderly}', [PerformanceReportController::class, 'getPerformanceData'])
-        ->name('performanceReport.data');
+    // --- NURSE (STAFF) ONLY ---
+    Route::middleware(['IsNurse'])->group(function () {
+        Route::get('add-elderly', [ElderlyController::class, 'Addelderly']);
+        Route::post('/store-elderly', [ElderlyController::class, 'Storeelderly'])->name('store-elderly');
+        Route::get('edit-elderly/{id}', [ElderlyController::class, 'Editelderly'])->name('edit-elderly');
+        Route::put('/update-elderly/{id}', [ElderlyController::class, 'Updateelderly'])->name('update-elderly');
+        Route::delete('/delete-elderly/{id}', [ElderlyController::class, 'Deleteelderly'])->name('delete-elderly');
 
-    Route::get(
-        'performance-report/{id}/export-pdf',
-        [ReportController::class, 'ReportPerformanceReport']
-    )->name('performanceReport.exportPDF');
-});
+        Route::get('adl-elderly', [ADLController::class, 'create'])->name('adl.create');
+        Route::post('/adl/submit', [ADLController::class, 'submitADL'])->name('adl.submit');
+        Route::get('adl-edit/{id}', [ADLController::class, 'edit'])->name('adl.edit');
+        Route::patch('adl-update/{id}', [ADLController::class, 'update'])->name('adl.update');
+        Route::delete('adl-destroy/{id}', [ADLController::class, 'destroy'])->name('adl.destroy');
 
+        Route::get('cg-create', [CGController::class, 'create'])->name('cg.create');
+        Route::post('cg-store', [CGController::class, 'store'])->name('cg.store');
+        Route::get('cg-edit/{id}', [CGController::class, 'edit'])->name('cg.edit');
+        Route::put('cg-update/{id}', [CGController::class, 'update'])->name('cg.update');
+        Route::delete('cg-destroy/{id}', [CGController::class, 'destroy'])->name('cg.destroy');
 
-Route::middleware(['CheckLogin', 'IsDoctor'])->group(function () {
+        Route::get('tai-edit/{id}', [TAIController::class, 'edit'])->name('tai.edit');
+        Route::patch('tai-update/{id}', [TAIController::class, 'update'])->name('tai.update');
+        Route::delete('tai-destroy/{id}', [TAIController::class, 'destroy'])->name('tai.destroy');
 
+        Route::get('acg-create', [CGController::class, 'createActivity'])->name('activities.create');
+        Route::post('/acg-store', [CGController::class, 'storeActivity'])->name('activities.store');
+        Route::get('acg-edit/{id}', [CGController::class, 'editActivity'])->name('acg.edit');
+        Route::patch('/acg-update/{id}', [CGController::class, 'updateActivity'])->name('acg.update');
+        Route::delete('/acg-destroy/{id}', [CGController::class, 'destroyActivity'])->name('acg.destroy');
 
-    Route::controller(DoctorController::class)->group(function () {
-        Route::get('doctor-dashboard', 'ShowDataElderly')->name('doctor.dashboard');
-        Route::get('ci-show', 'ShowCI')->name('ci.index');
-        Route::get('ci-create', 'CreateCI')->name('ci.create');
-        Route::post('/ci-store', 'storeCI')->name('ci.store');
-        Route::delete('/ci/{id}', 'DestroyCI')->name('ci.destroy');
-        Route::get('ci/{id}/edit', 'editCI')->name('ci.edit');
-        Route::put('/ci/{id}', 'updateCI')->name('ci.update');
-        Route::get('/care-instructions/report', 'ReportCI')->name('report.ci');
+        Route::get('staff-unconfirm', [CIController::class, 'ShowUnconfirmCI'])->name('staff.ci.unconfirm');
+        Route::put('staff-ci/{id}/confirm', [CIController::class, 'confirmCI'])->name('ci.confirm');
+        Route::put('ci/{id}/unconfirm', [CIController::class, 'unconfirmCI'])->name('ci.unconfirm');
+
+        Route::get('performance-report', [PerformanceReportController::class, 'index'])->name('performanceReport.index');
+        Route::get('performance-report/create', [PerformanceReportController::class, 'create'])->name('performanceReport.create');
+        Route::post('performance-report/store', [PerformanceReportController::class, 'store'])->name('performanceReport.store');
+        Route::get('performance-report/{id}', [PerformanceReportController::class, 'show'])->name('performanceReport.show');
+        Route::get('performance-report/{id}/edit', [PerformanceReportController::class, 'edit'])->name('performanceReport.edit');
+        Route::put('performance-report/{id}', [PerformanceReportController::class, 'update'])->name('performanceReport.update');
+        Route::delete('performance-report/{id}', [PerformanceReportController::class, 'destroy'])->name('performanceReport.destroy');
+        Route::get('performance-report/data/{elderly}', [PerformanceReportController::class, 'getPerformanceData'])->name('performanceReport.data');
+        Route::get('performance-report/{id}/export-pdf', [ReportController::class, 'ReportPerformanceReport'])->name('performanceReport.exportPDF');
+    });
+
+    // --- DOCTOR ONLY ---
+    Route::middleware(['IsDoctor'])->group(function () {
+        Route::get('doctor-dashboard', [DoctorController::class, 'ShowDataElderly'])->name('doctor.dashboard');
+        Route::get('ci-create', [DoctorController::class, 'CreateCI'])->name('ci.create');
+        Route::post('/ci-store', [DoctorController::class, 'storeCI'])->name('ci.store');
+        Route::get('ci/{id}/edit', [DoctorController::class, 'editCI'])->name('ci.edit');
+        Route::put('/ci/{id}', [DoctorController::class, 'updateCI'])->name('ci.update');
+        Route::delete('/ci/{id}', [DoctorController::class, 'DestroyCI'])->name('ci.destroy');
+        Route::get('/care-instructions/report', [DoctorController::class, 'ReportCI'])->name('report.ci');
     });
 });
